@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Array Editor by Belt</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; }
+    label { display: block; margin-top: 1em; }
+    select, input, button, textarea { margin-top: 0.5em; }
+    .array-list { margin-top: 1em; }
+    .array-item { margin-bottom: 1em; border: 1px solid #ccc; padding: 1em; border-radius: 5px; }
+    .item-values { width: 100%; min-height: 40px; }
+    .array-controls { margin-top: 0.5em; }
+  </style>
+</head>
+<body>
+  <h2>Edit Arrays by Belt</h2>
+  
+  <label for="beltSelect">Select Belt:</label>
+  <select id="beltSelect"></select>
+  <button onclick="addBelt()">Add New Belt</button>
+  <input type="text" id="newBeltName" placeholder="New belt name">
+
+  <div class="array-list" id="arrayList"></div>
+  <button onclick="addArray()">Add New Array to Belt</button>
+
+  <script>
+    // Sample data structure: { beltName: [ [array1], [array2], ... ] }
+    let belts = {
+      White: [['Punch', 'Kick'], ['Block', 'Dodge']],
+      Yellow: [['Sweep', 'Throw']],
+      Green: [['Elbow', 'Knee']]
+    };
+
+    function populateBeltSelect() {
+      const beltSelect = document.getElementById('beltSelect');
+      beltSelect.innerHTML = '';
+      Object.keys(belts).forEach(belt => {
+        const option = document.createElement('option');
+        option.value = belt;
+        option.textContent = belt;
+        beltSelect.appendChild(option);
+      });
+      showArrays();
+    }
+
+    function addBelt() {
+      const newBelt = document.getElementById('newBeltName').value.trim();
+      if (newBelt && !belts[newBelt]) {
+        belts[newBelt] = [];
+        populateBeltSelect();
+        document.getElementById('beltSelect').value = newBelt;
+        showArrays();
+      }
+      document.getElementById('newBeltName').value = '';
+    }
+
+    function showArrays() {
+      const belt = document.getElementById('beltSelect').value;
+      const arrayList = document.getElementById('arrayList');
+      arrayList.innerHTML = '';
+      if (!belt || !belts[belt]) return;
+      belts[belt].forEach((arr, idx) => {
+        const div = document.createElement('div');
+        div.className = 'array-item';
+
+        // Editable array values
+        div.innerHTML = `
+          <label>Array ${idx + 1}:</label>
+          <textarea class="item-values" id="array-${idx}">${arr.join('\n')}</textarea>
+          <div class="array-controls">
+            <button onclick="saveArray(${idx})">Save</button>
+            <button onclick="removeArray(${idx})">Remove</button>
+          </div>
+        `;
+        arrayList.appendChild(div);
+      });
+    }
+
+    function saveArray(idx) {
+      const belt = document.getElementById('beltSelect').value;
+      const textArea = document.getElementById(`array-${idx}`);
+      const values = textArea.value.split('\n').map(v => v.trim()).filter(Boolean);
+      belts[belt][idx] = values;
+      showArrays();
+    }
+
+    function removeArray(idx) {
+      const belt = document.getElementById('beltSelect').value;
+      belts[belt].splice(idx, 1);
+      showArrays();
+    }
+
+    function addArray() {
+      const belt = document.getElementById('beltSelect').value;
+      if (!belt) return;
+      belts[belt].push([]);
+      showArrays();
+    }
+
+    // Update arrays when belt is changed
+    document.getElementById('beltSelect').addEventListener('change', showArrays);
+
+    // Initial population
+    populateBeltSelect();
+  </script>
+</body>
+</html>
