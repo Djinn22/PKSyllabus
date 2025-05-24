@@ -1,108 +1,105 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Array Editor by Belt</title>
+  <meta charset="UTF-8" />
+  <title>Edit Syllabus</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 2em; }
-    label { display: block; margin-top: 1em; }
-    select, input, button, textarea { margin-top: 0.5em; }
-    .array-list { margin-top: 1em; }
-    .array-item { margin-bottom: 1em; border: 1px solid #ccc; padding: 1em; border-radius: 5px; }
-    .item-values { width: 100%; min-height: 40px; }
-    .array-controls { margin-top: 0.5em; }
+    /* Basic styling for clarity */
+    .belt-section { border: 1px solid #ccc; margin: 1em 0; padding: 1em; }
+    .category-section { margin-left: 1em; }
+    .array-item { margin-bottom: 0.5em; }
   </style>
 </head>
 <body>
-  <h2>Edit Arrays by Belt</h2>
-  
-  <label for="beltSelect">Select Belt:</label>
-  <select id="beltSelect"></select>
-  <button onclick="addBelt()">Add New Belt</button>
-  <input type="text" id="newBeltName" placeholder="New belt name">
-
-  <div class="array-list" id="arrayList"></div>
-  <button onclick="addArray()">Add New Array to Belt</button>
+  <h1>Edit Syllabus</h1>
+  <form id="syllabusForm"></form>
+  <button type="button" onclick="saveSyllabus()">Save</button>
+  <div id="message"></div>
 
   <script>
-    // Sample data structure: { beltName: [ [array1], [array2], ... ] }
-    let belts = {
-      White: [['Punch', 'Kick'], ['Block', 'Dodge']],
-      Yellow: [['Sweep', 'Throw']],
-      Green: [['Elbow', 'Knee']]
-    };
+    let syllabusData = {};
 
-    function populateBeltSelect() {
-      const beltSelect = document.getElementById('beltSelect');
-      beltSelect.innerHTML = '';
-      Object.keys(belts).forEach(belt => {
-        const option = document.createElement('option');
-        option.value = belt;
-        option.textContent = belt;
-        beltSelect.appendChild(option);
-      });
-      showArrays();
+    async function fetchSyllabus() {
+      const res = await fetch('/syllabus');
+      syllabusData = await res.json();
+      renderForm();
     }
 
-    function addBelt() {
-      const newBelt = document.getElementById('newBeltName').value.trim();
-      if (newBelt && !belts[newBelt]) {
-        belts[newBelt] = [];
-        populateBeltSelect();
-        document.getElementById('beltSelect').value = newBelt;
-        showArrays();
+    function renderForm() {
+      const form = document.getElementById('syllabusForm');
+      form.innerHTML = '';
+      // Assuming syllabusData is an object: { [beltColor]: { [category]: [array of items] } }
+      Object.entries(syllabusData).forEach(([beltColor, categories]) => {
+        const beltDiv = document.createElement('div');
+        beltDiv.className = 'belt-section';
+        beltDiv.innerHTML = `<h2>${beltColor}</h2>`;
+
+        Object.entries(categories).forEach(([category, items]) => {
+          const catDiv = document.createElement('div');
+          catDiv.className = 'category-section';
+          catDiv.innerHTML = `<h3>${category}</h3>`;
+
+          items.forEach((item, idx) => {
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'array-item';
+            itemDiv.innerHTML = `
+              <input type="text" name="${beltColor}.${category}.${idx}" value="${item}" />
+              <button type="button" onclick="removeItem('${beltColor}','${category}',${idx})">Remove</button>
+            `;
+            catDiv.appendChild(itemDiv);
+          });
+          // Add new item input
+          const addDiv = document.createElement('div');
+          addDiv.innerHTML = `
+            <input type="text" id="add-${beltColor}-${category}" placeholder="Add new item" />
+            <button type="button" onclick="addItem('${beltColor}','${category}')">Add</button>
+          `;
+          catDiv.appendChild(addDiv);
+
+          beltDiv.appendChild(catDiv);
+        });
+        form.appendChild(beltDiv);
+      });
+    }
+
+    function removeItem(belt, category, idx) {
+      syllabusData[belt][category].splice(idx, 1);
+      renderForm();
+    }
+
+    function addItem(belt, category) {
+      const input = document.getElementById(`add-${belt}-${category}`);
+      if (input.value.trim() !== '') {
+        syllabusData[belt][category].push(input.value.trim());
+        input.value = '';
+        renderForm();
       }
-      document.getElementById('newBeltName').value = '';
     }
 
-    function showArrays() {
-      const belt = document.getElementById('beltSelect').value;
-      const arrayList = document.getElementById('arrayList');
-      arrayList.innerHTML = '';
-      if (!belt || !belts[belt]) return;
-      belts[belt].forEach((arr, idx) => {
-        const div = document.createElement('div');
-        div.className = 'array-item';
-
-        // Editable array values
-        div.innerHTML = `
-          <label>Array ${idx + 1}:</label>
-          <textarea class="item-values" id="array-${idx}">${arr.join('\n')}</textarea>
-          <div class="array-controls">
-            <button onclick="saveArray(${idx})">Save</button>
-            <button onclick="removeArray(${idx})">Remove</button>
-          </div>
-        `;
-        arrayList.appendChild(div);
+    async function saveSyllabus() {
+      // Gather updated data from the form (in case user changed any inputs)
+      const inputs = document.querySelectorAll('#syllabusForm input[type="text"]');
+      inputs.forEach(input => {
+        const [belt, category, idx] = input.name.split('.');
+        if (typeof syllabusData[belt][category][idx] !== 'undefined') {
+          syllabusData[belt][category][idx] = input.value;
+        }
       });
+
+      const res = await fetch('/syllabus', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(syllabusData)
+      });
+      if (res.ok) {
+        document.getElementById('message').innerText = 'Syllabus saved!';
+      } else {
+        document.getElementById('message').innerText = 'Error saving syllabus!';
+      }
     }
 
-    function saveArray(idx) {
-      const belt = document.getElementById('beltSelect').value;
-      const textArea = document.getElementById(`array-${idx}`);
-      const values = textArea.value.split('\n').map(v => v.trim()).filter(Boolean);
-      belts[belt][idx] = values;
-      showArrays();
-    }
-
-    function removeArray(idx) {
-      const belt = document.getElementById('beltSelect').value;
-      belts[belt].splice(idx, 1);
-      showArrays();
-    }
-
-    function addArray() {
-      const belt = document.getElementById('beltSelect').value;
-      if (!belt) return;
-      belts[belt].push([]);
-      showArrays();
-    }
-
-    // Update arrays when belt is changed
-    document.getElementById('beltSelect').addEventListener('change', showArrays);
-
-    // Initial population
-    populateBeltSelect();
+    // Initial load
+    fetchSyllabus();
   </script>
 </body>
 </html>
