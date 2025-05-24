@@ -117,276 +117,113 @@
   </footer>
 
   <script>
-    const beltColors = {
-      "Red Belt": "red",
-      "Yellow Belt": "gold",
-      "Orange Belt": "orange",
-      "Green Belt": "green",
-      "Purple Belt": "purple",
-      "Blue Belt": "blue",
-      "Brown Belt": "saddlebrown",
-      "Brown/Black Stripe": "black",
-      "Black Belt": "black"
-    };
+  const beltColors = {
+    "Red Belt": "red",
+    "Yellow Belt": "gold",
+    "Orange Belt": "orange",
+    "Green Belt": "green",
+    "Purple Belt": "purple",
+    "Blue Belt": "blue",
+    "Brown Belt": "saddlebrown",
+    "Brown/Black Stripe": "black",
+    "Black Belt": "black"
+  };
 
-    const categories = [
-      "Stances",
-      "Punches and Strikes",
-      "Blocks",
-      "Kicks",
-      "Kata",
-      "Basic Drills",
-      "Fighting Drills",
-      "Application / Demonstration / Impact"
+  const categories = [
+    "Stances",
+    "Punches and Strikes",
+    "Blocks",
+    "Kicks",
+    "Kata",
+    "Basic Drills",
+    "Fighting Drills",
+    "Application / Demonstration / Impact"
+  ];
+
+  let syllabus = {};
+
+  // --- START OF CUSTOM GROUPING ---
+  function getAppImpactBySub(belt) {
+    const beltOrder = [
+      "Red Belt", "Yellow Belt", "Orange Belt", "Green Belt", "Purple Belt",
+      "Blue Belt", "Brown Belt", "Brown/Black Stripe", "Black Belt"
     ];
-
-    // --- START OF CUSTOM GROUPING ---
-    // Only "Application / Demonstration / Impact" uses subcategories!
-    function getAppImpactBySub(belt) {
-      // All belts in order
-      const beltOrder = [
-        "Red Belt", "Yellow Belt", "Orange Belt", "Green Belt", "Purple Belt",
-        "Blue Belt", "Brown Belt", "Brown/Black Stripe", "Black Belt"
-      ];
-
-      // Map of subCategory -> array of drills (per belt up to and including selected)
-      const grouped = {};
-
-      for (let b of beltOrder) {
-        if (syllabus[b] && syllabus[b]["Application / Demonstration / Impact"]) {
-          const drills = syllabus[b]["Application / Demonstration / Impact"];
-          for (const entry of drills) {
-            // Flexible: if entry is already a subcat object, use it; else treat as ["name", "desc"] under "Other"
-            if (entry.subCategory) {
-              const key = entry.subCategory;
-              if (!grouped[key]) grouped[key] = [];
-              // Tag each drill with the belt it comes from
-              for (const req of entry.requirements) {
-                grouped[key].push({
-                  name: req[0], desc: req[1], current: b === belt
-                });
-              }
-            } else if (Array.isArray(entry)) {
-              // For legacy flat arrays (Black Belt)
-              if (!grouped.Other) grouped.Other = [];
-              grouped.Other.push({ name: entry[0], desc: entry[1], current: b === belt });
+    const grouped = {};
+    for (let b of beltOrder) {
+      if (syllabus[b] && syllabus[b]["Application / Demonstration / Impact"]) {
+        const drills = syllabus[b]["Application / Demonstration / Impact"];
+        for (const entry of drills) {
+          if (entry.subCategory) {
+            const key = entry.subCategory;
+            if (!grouped[key]) grouped[key] = [];
+            for (const req of entry.requirements) {
+              grouped[key].push({
+                name: req[0], desc: req[1], current: b === belt
+              });
             }
+          } else if (Array.isArray(entry)) {
+            if (!grouped.Other) grouped.Other = [];
+            grouped.Other.push({ name: entry[0], desc: entry[1], current: b === belt });
           }
         }
-        if (b === belt) break;
       }
-      // Convert map to array for stable display order
-      return Object.entries(grouped).map(([subCategory, requirements]) => ({ subCategory, requirements }));
+      if (b === belt) break;
     }
-    // --- END OF CUSTOM GROUPING ---
+    return Object.entries(grouped).map(([subCategory, requirements]) => ({ subCategory, requirements }));
+  }
+  // --- END OF CUSTOM GROUPING ---
 
-    const syllabus = {
-      "Red Belt": {
-        "Stances": [["Zenkutsu Dachi", "Forward Stance"],["Heisoku Dachi", "Feet Together Stance"],["Musubi Dachi", "Open Toe Stance"],["Heiko Dachi", "Parallel Stance"],["Yoi Dachi", "Ready Stance"]],
-        "Punches and Strikes": [["Chudan Zuki", "Middle FrontPunch"],["Jodan Zuki", "Upper Front Punch"],["Gedan Zuki", "Lower Front Punch"],["Ago Uchi", "Jaw Strike"],["Uraken Ganmen Uchi", "Back Fist to the Face"]],
-        "Blocks": [["Mae Gedan Barai", "Front Low Block"],["Age Uke", "Twist Upper Block"]],
-        "Kicks": [["Hiza Ganmen Geri", "Knee Kick to face"],["Kin Geri", "Groin Kick"],["Chudan Mae Geri", "Middle Front Kick"],["Jodan Mae Geri", "Upper Front Kick"]],
-        "Kata": [["Taikyoku Shodan", "First Cause - First Level"]],
-        "Basic Drills": [["Step Chudan Zuki in Zenketsu Dachi", "Stepping Forward with middle punch in forward stance"], ["Step Mae Geri, Chudan Zuki in Zenketsu Dachi", "Stepping forward with middle front kick, then middle punch"]],
-        "Fighting Drills": [["Kizami Zuki in Kamae", "Front hand jab in fighting stance"],["Chudan Gyaku Zuki in Kamae", "Middle reverse punch in fighting stance"],["Kizami Zuki, Chudan Gyaku Zuki in Kamae", "Front hand jab, then middle reverse punch in fighting stance"]],
-        "Application / Demonstration / Impact": [
-          { subCategory: "Gohon Kumite Jodan in Zenkatsu Dachi (5 Step Attack and Defense with Partner)", requirements: [["Attacker steps forward with upper punch, defender steps back in mirror stance with upper block & counter."]]}
-        ]
-      },
-      "Yellow Belt": {
-        "Stances": [["Kokutsu Dachi", "Back Stance"],["Neko Ashi Dachi", "Cat Stance"],["Sanchin Dachi", "Hourglass Stance"],["Kiba Dachi", "Horse Riding Stance"],["Shiko Dachi", "Sumo Stance"]],
-        "Punches and Strikes": [["Tettsui Uchi", "Hammerfist to the Forehead"],["Tetsui Komi Kame", "Hammerfist to the Temple"],["Tettsui Hizo Uchi", "Hammerfist to the Spleen"],["Shuto Uchi Komi", "Knife Hand Strike"]],
-        "Blocks": [["Chudan Uchi Uke", "Middle Inner Outer Block"],["Chudan Soto Uke", "Middle Outer Inner Block"],["Chudan Shuto Uke", "Middle Knife Hand Block"]],
-        "Kicks": [["Yoko Kensetsu Geri", "Side Knee Kick"],["Mae Kensetsu Geri", "Forward Knee Kick"],["Chudan Mawashi Geri", "Middle Roundhouse Kick"]],
-        "Kata": [["Heian Shodan", "Peaceful Mind First Level"]],
-        "Basic Drills": [["Step Chudan Gyaku Zuki in Zenkutsu Dachi", "Stepping forward with middle reverse punch in forward stance"],["Step Mae Geri, Chudan Gyaku Zuki in Zenkutsu Dachi", "Stepping forward with middle front kick, then middle reverse punch"]],
-        "Fighting Drills": [["Mawashi Geri, Gyaku Zuki in Kamae", "Roundhouse kick off the back leg, land forward and follow with reverse punch in fighting stance"]],
-        "Application / Demonstration / Impact": [
-          { subCategory: "Gohon Kumite Chudan in Zenkutsu Dachi (Five Step Attack & Defence with Partner)", requirements: [["Attacker steps forward with middle punch, defender steps back in mirror stance with middle block & counter."]]}
-        ]
-      },
-      "Orange Belt": {
-        "Stances": [["Kosa Dachi", "Crossing Stance"],["Han Kokutsu Dachi", "Half Back Stance"]],
-        "Punches and Strikes": [["Chudan Hijiate", "Elbow to the body"],["Jodan Hijiate", "Elbow to the Side of the Head"],["Ago Hijiate", "Elbow to the Jaw"]],
-        "Blocks": [["Moroto Uke", "Assisted Block"],["Kosa Uke", "Crossing Block"]],
-        "Kicks": [["Yoko Geri Keage", "Side Snap Kick"],["Yoko Geri Kekome", "Side Thrust Kick"]],
-        "Kata": [["Heian Nidan", "Peaceful Mind Second Level"]],
-        "Basic Drills": [["Chudan Mae Geri, Oi Zuki, Chudan Gyaku Zuki, Mae Gedan Barai in Zenkutsu Dachi", "Stepping forward with middle front kick, upper front punch, middle reverse punch, forward low block"]],
-        "Fighting Drills": [["Kizami Zuki, Heel Step Mawashi Geri, Gyaku Zuki in Kamae", "Front hand jab, leave it forward, heel step middle roundhouse kick, land forward and follow with middle reverse punch"]],
-        "Application / Demonstration / Impact": [
-          { subCategory: "Kihon Ippon Kumite in Zenkutsu Dachi (Basic One Step Sparring)",
-            requirements: [
-              ["Jodan Oi Zuki #1", "Attacker steps forward with upper punch whilst defender steps back, blocks and counters."],
-            ]
-          }
-        ]
-      },
-      "Green Belt": {
-        "Stances": [["Sōchin dachi", "Immovable Stance"]],
-        "Punches and Strikes": [["Tetta Zuki", "Vertical Fist"],["Yonhon Nukite", "Four Finger Spear Strike"],["Haito Uchi", "Ridgehand Strike"]],
-        "Blocks": [["Haito Uchi Uke", "Ridgehand Block"]],
-        "Kicks": [["Ura Mawashi Geri", "Hook Kick"],["Ushiro Geri", "Back Kick"],["Soto Keage", "Blocking Kick"]],
-        "Kata": [["Heian Sandan", "Peaceful Mind Third Level"]],
-        "Basic Drills": [["Chudan Uchi Uke, Kizami Zuki, Chudan Gyaku Zuki, Gedan Barai in Zenkutsu Dachi", "Middle inside out block, front hand jab, middle reverse punch and forward lower block in forward stance"]],
-        "Fighting Drills": [["Chudan Gyaku Zuki, Rear Leg Chudan Mawashi Geri, Chudan Gyaku Zuki in Kamae", "Middle reverse punch, leave it out, roundhouse kick off the back leg landing forward and follow with middle reverse punch"]],
-        "Application / Demonstration / Impact": [
-          { subCategory: "Kihon Ippon Kumite in Zenkutsu Dachi (Basic One Step Sparring)",
-            requirements: [
-              ["Jodan Oi Zuki #2", "Attacker steps forward with upper punch whilst defender steps back, blocks and counters with a different method."]
-            ]
-          }
-        ]
-      },
-      "Purple Belt": {
-        "Stances": [["Moto Dachi", "Foundational Stance"]],
-        "Punches and Strikes": [["Shotei Uchi", "Palm Strike"],["Chudan Hira Ken", "Middle Knuckle Strike"],["Jodan Hira Ken", "Upper Knuckle Strike"]],
-        "Blocks": [["Kake Uke", "Cross Over Hooking Block"]],
-        "Kicks": [["Ashi Barai", "Foot Sweep"]],
-        "Kata": [["Heian Yondan", "Peaceful Mind Fourth Level"]],
-        "Basic Drills": [["Chudan Soto Uke, Uraken, Chudan Gyaku Zuki, Gedan Barai in Zenkutsu Dachi", "Middle outer-inner block, back fist strike to the temple, middle reverse punch and forward lower block"]],
-        "Fighting Drills": [["Mae Geri, Mawashi Geri, Chudan Gyaku Zuki in Kamae", "Prepare for a Forward front kick, then pivot into a roundhouse kick landing forward and follow up with middle reverse punch"]],
-        "Application / Demonstration / Impact": [
-          { subCategory: "Kihon Ippon Kumite in Zenkutsu Dachi (Basic One Step Sparring)",
-            requirements: [
-              ["Jodan Oi Zuki #3", "Attacker steps forward with upper punch whilst defender steps back, blocks and counters with another method."]
-            ]
-          }
-        ]
-      },
-      "Blue Belt": {
-        "Stances": [["No Additonal Stances", ""]],
-        "Punches and Strikes": [["Age Zuki", "Rising Jaw Strike"], ["Chudan Shotei Uchi", "Middle Palm Strike"], ["Chudan Ura Zuki", "Middle Uppercut Punch"], ["Mawashi Zuki", "Roundhouse Punch"], ["Morote Zuki", "Double Fist Punch"]],
-        "Blocks": [["No Additonal Blocks", ""]],
-        "Kicks": [["No Additonal Kicks", ""]],
-        "Kata": [["Heian Godan", "Peaceful Mind Fifth Level"]],
-        "Basic Drills": [["Haito Uchi Uke, Shotei Uchi, Gyaku Zuki, Gedan Barai in Zenkutsu Dachi", "Inner outer ridgehand block, palm heel strike, middle reverse punch and lower block in forward stance"]],
-        "Fighting Drills": [["Chudan Gyaku Zuki, Mawashi Geri, Ashi Barai, Gyaku Zuki in Kamae", "Middle reverse punch, rear leg roundhouse kick, foot sweep and follow up with reverse punch in fighting stance"]],
-        "Application / Demonstration / Impact": [
-          { subCategory: "Jiyu Ippon Kumite (Freestyle One-Step Sparring)",
-            requirements: [
-              ["Jodan Oi Zuki #1", "Attacker steps forward with front punch, defender breaks line 45 degrees and counters."]
-            ]
-          }
-        ]
-      },
-      "Brown Belt": {
-        "Stances": [],
-        "Punches and Strikes": [["No Additional Strikes", ""]],
-        "Blocks": [],
-        "Kicks": [],
-        "Kata": [["Tekki Shodan", "Iron Horse First Level"]],
-        "Basic Drills": [["Sanbon Zuki #1", "Stepping forward with triple middle punch with a slight pause after the first punch and then delivering two quick punches. Then stepping back into back stance"]],
-        "Fighting Drills": [["Jodan Mawashi Geri, Gyaku Zuki in Kamae", "Keeping the same stance, lean back, upper roundhouse kick off the front leg, land forward and follow up with reverse punch"]],
-        "Application / Demonstration / Impact": [
-          { subCategory: "Jiyu Ippon Kumite (Freestyle One-Step Sparring)",
-            requirements: [
-              ["Jodan Oi Zuki #2", "Attacker steps forward with front punch, defender slides forward with a sweep and counters."]
-            ]
-          }
-        ]
-      },
-      "Brown/Black Stripe": {
-        "Stances": [],
-        "Punches and Strikes": [],
-        "Blocks": [],
-        "Kicks": [],
-        "Kata": [["Bassai Dai", "To Penetrate a Fortress"]],
-        "Basic Drills": [["Sanbon Zuki #2", "Stepping forward with triple middle punch with a slight pause after the first punch and then delivering two quick punches. Then stepping back into horse stance"]],
-        "Fighting Drills": [["Jodan Mawashi Geri, Jodan Ura Ushiro Mawashi Geri, Gyaku Zuki in Kamae", "Upper roundhouse kick off the back leg, spinning reverse roundhouse kick and follow up with reverse punch"]],
-        "Application / Demonstration / Impact": [
-          { subCategory: "Jiyu Ippon Kumite (Freestyle One-Step Sparring)",
-            requirements: [
-              ["Jodan Oi Zuki #3", "Attacker steps forward with front punch, defender breaks line 45-degrees and counters."]
-            ]
-          }
-        ]
-      },
-      "Black Belt": {
-        "Stances": [],
-        "Punches and Strikes": [],
-        "Blocks": [],
-        "Kicks": [],
-        "Kata": [["Jion", "Budhist Temple"], ["Demonstrate one section of bunkai from a Heian kata.", ""]],
-        "Basic Drills": [],
-        "Fighting Drills": [],
-        "Application / Demonstration / Impact": [
-          { subCategory: "Kihon Sanbon Kumite #1", requirements: [["Attacker steps forward with upper punch and the defender steps back upper block. Attacker steps forward with middle punch and the defender steps back middle block."]]}
-        ]
-      }
-    };
-
-    function getCombinedRequirements(belt) {
-      const beltOrder = [
-        "Red Belt",
-        "Yellow Belt",
-        "Orange Belt",
-        "Green Belt",
-        "Purple Belt",
-        "Blue Belt",
-        "Brown Belt",
-        "Brown/Black Stripe",
-        "Black Belt"
-      ];
-      let combined = {};
-      for (let category of categories) {
-        combined[category] = [];
-      }
-      for (let b of beltOrder) {
-        if (syllabus[b]) {
-          for (let category of categories) {
-            if (category === "Application / Demonstration / Impact") continue; // handled separately!
-            combined[category].push(...(syllabus[b][category] || []).map(item => ({ name: item[0], desc: item[1], current: b === belt })));
-          }
-        }
-        if (b === belt) break;
-      }
-      return combined;
+  function getCombinedRequirements(belt) {
+    const beltOrder = [
+      "Red Belt",
+      "Yellow Belt",
+      "Orange Belt",
+      "Green Belt",
+      "Purple Belt",
+      "Blue Belt",
+      "Brown Belt",
+      "Brown/Black Stripe",
+      "Black Belt"
+    ];
+    let combined = {};
+    for (let category of categories) {
+      combined[category] = [];
     }
-
-    function updateTables() {
-      const belt = document.getElementById("beltSelect").value;
-      const container = document.getElementById("requirementsContainer");
-      const color = beltColors[belt] || "black";
-      const combined = getCombinedRequirements(belt);
-      const appImpactBySub = getAppImpactBySub(belt);
-
-      container.innerHTML = "";
-      for (let category in combined) {
-        if (category === "Application / Demonstration / Impact") {
-          // Special rendering for subcategories!
-          const table = document.createElement("table");
-          table.style.borderColor = color;
-          let rows = "";
-          for (const sub of appImpactBySub) {
-            rows += `<tr><th colspan="2" class="subcat-title">${sub.subCategory}</th></tr>`;
-            for (const item of sub.requirements) {
-              rows += `<tr>
-                <td style="border-color:${color}; width:50%"><span class="${item.current ? 'drill-name' : ''}">${item.name}</span></td>
-                <td style="border-color:${color}; width:50%"><span class="drill-desc">${item.desc}</span></td>
-              </tr>`;
-            }
-          }
-          table.innerHTML = `
-            <thead>
-              <tr>
-                <th colspan="2" class="table-title" style="background-color:${color}; color: white;">${category}</th>
-              </tr>
-              <tr>
-                <th style="border-color:${color}; width: 50%">Traditional</th>
-                <th style="border-color:${color}; width: 50%">English</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${rows}
-            </tbody>
-          `;
-          container.appendChild(table);
-          continue;
+    for (let b of beltOrder) {
+      if (syllabus[b]) {
+        for (let category of categories) {
+          if (category === "Application / Demonstration / Impact") continue;
+          combined[category].push(...(syllabus[b][category] || []).map(item => ({ name: item[0], desc: item[1], current: b === belt })));
         }
+      }
+      if (b === belt) break;
+    }
+    return combined;
+  }
 
-        // Default rendering for other categories
+  function updateTables() {
+    const belt = document.getElementById("beltSelect").value;
+    const container = document.getElementById("requirementsContainer");
+    const color = beltColors[belt] || "black";
+    const combined = getCombinedRequirements(belt);
+    const appImpactBySub = getAppImpactBySub(belt);
+
+    container.innerHTML = "";
+    for (let category in combined) {
+      if (category === "Application / Demonstration / Impact") {
+        // Special rendering for subcategories!
         const table = document.createElement("table");
         table.style.borderColor = color;
+        let rows = "";
+        for (const sub of appImpactBySub) {
+          rows += `<tr><th colspan="2" class="subcat-title">${sub.subCategory}</th></tr>`;
+          for (const item of sub.requirements) {
+            rows += `<tr>
+              <td style="border-color:${color}; width:50%"><span class="${item.current ? 'drill-name' : ''}">${item.name}</span></td>
+              <td style="border-color:${color}; width:50%"><span class="drill-desc">${item.desc}</span></td>
+            </tr>`;
+          }
+        }
         table.innerHTML = `
           <thead>
             <tr>
@@ -398,14 +235,48 @@
             </tr>
           </thead>
           <tbody>
-            ${combined[category].map(item => `<tr><td style="border-color:${color}; width: 50%"><span class="${item.current ? 'drill-name' : ''}">${item.name}</span></td><td style="border-color:${color}; width: 50%"><span class="drill-desc">${item.desc}</span></td></tr>`).join("")}
+            ${rows}
           </tbody>
         `;
         container.appendChild(table);
+        continue;
       }
-    }
 
-    window.onload = updateTables;
-  </script>
+      // Default rendering for other categories
+      const table = document.createElement("table");
+      table.style.borderColor = color;
+      table.innerHTML = `
+        <thead>
+          <tr>
+            <th colspan="2" class="table-title" style="background-color:${color}; color: white;">${category}</th>
+          </tr>
+          <tr>
+            <th style="border-color:${color}; width: 50%">Traditional</th>
+            <th style="border-color:${color}; width: 50%">English</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${combined[category].map(item => `<tr><td style="border-color:${color}; width: 50%"><span class="${item.current ? 'drill-name' : ''}">${item.name}</span></td><td style="border-color:${color}; width: 50%"><span class="drill-desc">${item.desc}</span></td></tr>`).join("")}
+        </tbody>
+      `;
+      container.appendChild(table);
+    }
+  }
+
+  // Fetch syllabus.json from the server
+  async function loadSyllabusAndInit() {
+    try {
+      const response = await fetch('/api/syllabus');
+      syllabus = await response.json();
+      updateTables();
+    } catch (err) {
+      document.getElementById("requirementsContainer").innerHTML = "<p style='color:red;'>Failed to load syllabus.</p>";
+    }
+  }
+
+  window.onload = loadSyllabusAndInit;
+  // Also, update tables if belt menu changes
+  document.getElementById('beltSelect').addEventListener('change', updateTables);
+</script>
 </body>
 </html>
