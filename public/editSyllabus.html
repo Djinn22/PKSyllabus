@@ -20,7 +20,7 @@
     let syllabusData = {};
 
     async function fetchSyllabus() {
-      const res = await fetch('/syllabus');
+      const res = await fetch('/api/syllabus');
       syllabusData = await res.json();
       renderForm();
     }
