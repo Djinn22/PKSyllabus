@@ -1,227 +1,233 @@
 {
   "Red Belt": {
     "Stances": [
-      ["Zenkutsu Dachi", "Forward Stance"],
-      ["Heisoku Dachi", "Feet Together Stance"],
-      ["Musubi Dachi", "Open Toe Stance"],
-      ["Heiko Dachi", "Parallel Stance"],
-      ["Yoi Dachi", "Ready Stance"]
+      { "traditional": "Zenkutsu Dachi", "english": "Forward Stance" },
+      { "traditional": "Heisoku Dachi", "english": "Feet Together Stance" },
+      { "traditional": "Musubi Dachi", "english": "Open Toe Stance" },
+      { "traditional": "Heiko Dachi", "english": "Parallel Stance" },
+      { "traditional": "Yoi Dachi", "english": "Ready Stance" }
     ],
     "Punches and Strikes": [
-      ["Chudan Zuki", "Middle FrontPunch"],
-      ["Jodan Zuki", "Upper Front Punch"],
-      ["Gedan Zuki", "Lower Front Punch"],
-      ["Ago Uchi", "Jaw Strike"],
-      ["Uraken Ganmen Uchi", "Backfist to Face"]
+      { "traditional": "Chudan Zuki", "english": "Middle FrontPunch" },
+      { "traditional": "Jodan Zuki", "english": "Upper Front Punch" },
+      { "traditional": "Gedan Zuki", "english": "Lower Front Punch" },
+      { "traditional": "Ago Uchi", "english": "Jaw Strike" },
+      { "traditional": "Uraken Ganmen Uchi", "english": "Backfist to Face" }
     ],
     "Blocks": [
-      ["Mae Gedan Barai", "Front Low Block"],
-      ["Age Uke", "Twist Upper Block"]
+      { "traditional": "Mae Gedan Barai", "english": "Front Low Block" },
+      { "traditional": "Age Uke", "english": "Twist Upper Block" }
     ],
     "Kicks": [
-      ["Hiza Ganmen Geri", "Knee Kick to face"],
-      ["Kin Geri", "Groin Kick"],
-      ["Chudan Mae Geri", "Middle Front Kick"],
-      ["Jodan Mae Geri", "Upper Front Kick"]
+      { "traditional": "Hiza Ganmen Geri", "english": "Knee Kick to face" },
+      { "traditional": "Kin Geri", "english": "Groin Kick" },
+      { "traditional": "Chudan Mae Geri", "english": "Middle Front Kick" },
+      { "traditional": "Jodan Mae Geri", "english": "Upper Front Kick" }
     ],
     "Kata": [
-      ["Taikyoku Shodan", "First Cause - First Level"]
+      { "traditional": "Taikyoku Shodan", "english": "First Cause - First Level" }
     ],
     "Basic Drills": [
-      ["Step Chudan Zuki in Zenketsu Dachi", "Stepping Forward with middle punch in forward stance"],
-      ["Step Mae Geri, Chudan Zuki in Zenketsu Dachi", "Stepping forward with middle front kick, land forward and follow up with middle punch in forward stance"]
+      { "traditional": "Step Chudan Zuki in Zenketsu Dachi", "english": "Stepping Forward with middle punch in forward stance" },
+      { "traditional": "Step Mae Geri, Chudan Zuki in Zenketsu Dachi", "english": "Stepping forward with middle front kick, land forward and follow up with middle punch in forward stance" }
     ],
     "Fighting Drills": [
-      ["Kizami Zuki in Kamae", "Front hand jab in fighting stance"],
-      ["Chudan Gyaku Zuki in Kamae", "Middle reverse punch in fighting stance"],
-      ["Kizami Zuki, Chudan Gyaku Zuki in Kamae", "Front hand jab, followed by reverse punch in fighting stance"]
+      { "traditional": "Kizami Zuki in Kamae", "english": "Front hand jab in fighting stance" },
+      { "traditional": "Chudan Gyaku Zuki in Kamae", "english": "Middle reverse punch in fighting stance" },
+      { "traditional": "Kizami Zuki, Chudan Gyaku Zuki in Kamae", "english": "Front hand jab, followed by reverse punch in fighting stance" }
     ],
     "Application / Demonstration / Impact": [
       {
         "subCategory": "Gohon Kumite Jodan in Zenkatsu Dachi (5 Step Attack and Defense with Partner)",
+        "name": "",
         "requirements": [
-          ["Attacker steps forward with upper punch, defender steps back in mirror stance, blocks and counters."]
+          "Attacker steps forward with upper punch, defender steps back in mirror stance, blocks and counters."
         ]
       }
     ]
   },
   "Yellow Belt": {
     "Stances": [
-      ["Kokutsu Dachi", "Back Stance"],
-      ["Neko Ashi Dachi", "Cat Stance"],
-      ["Sanchin Dachi", "Hourglass Stance"],
-      ["Kiba Dachi", "Horse Riding Stance"],
-      ["Shiko Dachi", "Sumo Stance"]
+      { "traditional": "Kokutsu Dachi", "english": "Back Stance" },
+      { "traditional": "Neko Ashi Dachi", "english": "Cat Stance" },
+      { "traditional": "Sanchin Dachi", "english": "Hourglass Stance" },
+      { "traditional": "Kiba Dachi", "english": "Horse Riding Stance" },
+      { "traditional": "Shiko Dachi", "english": "Sumo Stance" }
     ],
     "Punches and Strikes": [
-      ["Tettsui Uchi", "Hammerfist to the Forehead"],
-      ["Tetsui Komi Kame", "Hammerfist to the Temple"],
-      ["Tettsui Hizo Uchi", "Hammerfist to the Spleen"],
-      ["Shuto Uchi Komi", "Knife-hand Strike"]
+      { "traditional": "Tettsui Uchi", "english": "Hammerfist to the Forehead" },
+      { "traditional": "Tetsui Komi Kame", "english": "Hammerfist to the Temple" },
+      { "traditional": "Tettsui Hizo Uchi", "english": "Hammerfist to the Spleen" },
+      { "traditional": "Shuto Uchi Komi", "english": "Knife-hand Strike" }
     ],
     "Blocks": [
-      ["Chudan Uchi Uke", "Middle Inner Outer Block"],
-      ["Chudan Soto Uke", "Middle Outer Inner Block"],
-      ["Chudan Shuto Uke", "Middle Knife Hand Block"]
+      { "traditional": "Chudan Uchi Uke", "english": "Middle Inner Outer Block" },
+      { "traditional": "Chudan Soto Uke", "english": "Middle Outer Inner Block" },
+      { "traditional": "Chudan Shuto Uke", "english": "Middle Knife Hand Block" }
     ],
     "Kicks": [
-      ["Yoko Kensetsu Geri", "Side Knee Kick"],
-      ["Mae Kensetsu Geri", "Forward Knee Kick"],
-      ["Chudan Mawashi Geri", "Middle Roundhouse Kick"]
+      { "traditional": "Yoko Kensetsu Geri", "english": "Side Knee Kick" },
+      { "traditional": "Mae Kensetsu Geri", "english": "Forward Knee Kick" },
+      { "traditional": "Chudan Mawashi Geri", "english": "Middle Roundhouse Kick" }
     ],
     "Kata": [
-      ["Heian Shodan", "Peaceful Mind First Level"]
+      { "traditional": "Heian Shodan", "english": "Peaceful Mind First Level" }
     ],
     "Basic Drills": [
-      ["Step Chudan Gyaku Zuki in Zenkutsu Dachi", "Stepping forward with middle reverse punch in forward stance"],
-      ["Step Mae Geri, Chudan Gyaku Zuki in Zenkutsu Dachi", "Stepping forward with middle front kick, land forward and follow up with middle reverse punch in forward stance"]
+      { "traditional": "Step Chudan Gyaku Zuki in Zenkutsu Dachi", "english": "Stepping forward with middle reverse punch in forward stance" },
+      { "traditional": "Step Mae Geri, Chudan Gyaku Zuki in Zenkutsu Dachi", "english": "Stepping forward with middle front kick, land forward and follow up with middle reverse punch in forward stance" }
     ],
     "Fighting Drills": [
-      ["Mawashi Geri, Gyaku Zuki in Kamae", "Roundhouse kick off the back leg, land forward and follow with reverse punch in fighting stance"]
+      { "traditional": "Mawashi Geri, Gyaku Zuki in Kamae", "english": "Roundhouse kick off the back leg, land forward and follow with reverse punch in fighting stance" }
     ],
     "Application / Demonstration / Impact": [
       {
         "subCategory": "Gohon Kumite Chudan in Zenkutsu Dachi (Five Step Attack & Defence with Partner)",
+        "name": "",
         "requirements": [
-          ["Attacker steps forward with middle punch, defender steps back in mirror stance, blocks and counters."]
+          "Attacker steps forward with middle punch, defender steps back in mirror stance, blocks and counters."
         ]
       }
     ]
   },
   "Orange Belt": {
     "Stances": [
-      ["Kosa Dachi", "Crossing Stance"],
-      ["Han Kokutsu Dachi", "Half Back Stance"]
+      { "traditional": "Kosa Dachi", "english": "Crossing Stance" },
+      { "traditional": "Han Kokutsu Dachi", "english": "Half Back Stance" }
     ],
     "Punches and Strikes": [
-      ["Chudan Hijiate", "Elbow to the body"],
-      ["Jodan Hijiate", "Elbow to the Side of the Head"],
-      ["Ago Hijiate", "Elbow to the Jaw"]
+      { "traditional": "Chudan Hijiate", "english": "Elbow to the body" },
+      { "traditional": "Jodan Hijiate", "english": "Elbow to the Side of the Head" },
+      { "traditional": "Ago Hijiate", "english": "Elbow to the Jaw" }
     ],
     "Blocks": [
-      ["Moroto Uke", "Assisted Block"],
-      ["Kosa Uke", "Crossing Block"]
+      { "traditional": "Moroto Uke", "english": "Assisted Block" },
+      { "traditional": "Kosa Uke", "english": "Crossing Block" }
     ],
     "Kicks": [
-      ["Yoko Geri Keage", "Side Snap Kick"],
-      ["Yoko Geri Kekome", "Side Thrust Kick"]
+      { "traditional": "Yoko Geri Keage", "english": "Side Snap Kick" },
+      { "traditional": "Yoko Geri Kekome", "english": "Side Thrust Kick" }
     ],
     "Kata": [
-      ["Heian Nidan", "Peaceful Mind Second Level"]
+      { "traditional": "Heian Nidan", "english": "Peaceful Mind Second Level" }
     ],
     "Basic Drills": [
-      ["Chudan Mae Geri, Oi Zuki, Chudan Gyaku Zuki, Mae Gedan Barai in Zenkutsu Dachi", "Stepping forward with middle front kick, upper front punch, middle reverse punch, forward low block in forward stance"]
+      { "traditional": "Chudan Mae Geri, Oi Zuki, Chudan Gyaku Zuki, Mae Gedan Barai in Zenkutsu Dachi", "english": "Stepping forward with middle front kick, upper front punch, middle reverse punch, forward low block in forward stance" }
     ],
     "Fighting Drills": [
-      ["Kizami Zuki, Heel Step Mawashi Geri, Gyaku Zuki in Kamae", "Front hand jab, leave it forward, heel step middle roundhouse kick, land forward and follow with middle reverse punch in fighting stance"]
+      { "traditional": "Kizami Zuki, Heel Step Mawashi Geri, Gyaku Zuki in Kamae", "english": "Front hand jab, leave it forward, heel step middle roundhouse kick, land forward and follow with middle reverse punch in fighting stance" }
     ],
     "Application / Demonstration / Impact": [
       {
         "subCategory": "Kihon Ippon Kumite in Zenkutsu Dachi (Basic One Step Sparring)",
+        "name": "Jodan Oi Zuki #1",
         "requirements": [
-          ["Jodan Oi Zuki #1", "Attacker steps forward with upper punch whilst defender steps back, blocks and counters."]
+          "Attacker steps forward with upper punch whilst defender steps back, blocks and counters."
         ]
       }
     ]
   },
   "Green Belt": {
     "Stances": [
-      ["Sōchin dachi", "Immovable Stance"]
+      { "traditional": "Sōchin dachi", "english": "Immovable Stance" }
     ],
     "Punches and Strikes": [
-      ["Tetta Zuki", "Vertical Fist"],
-      ["Yonhon Nukite", "Four Finger Spear Strike"],
-      ["Haito Uchi", "Ridgehand Strike"]
+      { "traditional": "Tetta Zuki", "english": "Vertical Fist" },
+      { "traditional": "Yonhon Nukite", "english": "Four Finger Spear Strike" },
+      { "traditional": "Haito Uchi", "english": "Ridgehand Strike" }
     ],
     "Blocks": [
-      ["Haito Uchi Uke", "Ridgehand Block"]
+      { "traditional": "Haito Uchi Uke", "english": "Ridgehand Block" }
     ],
     "Kicks": [
-      ["Ura Mawashi Geri", "Hook Kick"],
-      ["Ushiro Geri", "Back Kick"],
-      ["Soto Keage", "Blocking Kick"]
+      { "traditional": "Ura Mawashi Geri", "english": "Hook Kick" },
+      { "traditional": "Ushiro Geri", "english": "Back Kick" },
+      { "traditional": "Soto Keage", "english": "Blocking Kick" }
     ],
     "Kata": [
-      ["Heian Sandan", "Peaceful Mind Third Level"]
+      { "traditional": "Heian Sandan", "english": "Peaceful Mind Third Level" }
     ],
     "Basic Drills": [
-      ["Chudan Uchi Uke, Kizami Zuki, Chudan Gyaku Zuki, Gedan Barai in Zenkutsu Dachi", "Middle inside out block, front hand jab, middle reverse punch and forward lower block in forward stance"]
+      { "traditional": "Chudan Uchi Uke, Kizami Zuki, Chudan Gyaku Zuki, Gedan Barai in Zenkutsu Dachi", "english": "Middle inside out block, front hand jab, middle reverse punch and forward lower block in forward stance" }
     ],
     "Fighting Drills": [
-      ["Chudan Gyaku Zuki, Rear Leg Chudan Mawashi Geri, Chudan Gyaku Zuki in Kamae", "Middle reverse punch, leave it out, roundhouse kick off the back leg landing forward and follow up with middle reverse punch in fighting stance"]
+      { "traditional": "Chudan Gyaku Zuki, Rear Leg Chudan Mawashi Geri, Chudan Gyaku Zuki in Kamae", "english": "Middle reverse punch, leave it out, roundhouse kick off the back leg landing forward and follow up with middle reverse punch in fighting stance" }
     ],
     "Application / Demonstration / Impact": [
       {
         "subCategory": "Kihon Ippon Kumite in Zenkutsu Dachi (Basic One Step Sparring)",
+        "name": "Jodan Oi Zuki #2",
         "requirements": [
-          ["Jodan Oi Zuki #2", "Attacker steps forward with upper punch whilst defender steps back, blocks and counters with a different method."]
+          "Attacker steps forward with upper punch whilst defender steps back, blocks and counters with a different method."
         ]
       }
     ]
   },
   "Purple Belt": {
     "Stances": [
-      ["Moto Dachi", "Foundational Stance"]
+      { "traditional": "Moto Dachi", "english": "Foundational Stance" }
     ],
     "Punches and Strikes": [
-      ["Shotei Uchi", "Palm Strike"],
-      ["Chudan Hira Ken", "Middle Knuckle Strike"],
-      ["Jodan Hira Ken", "Upper Knuckle Strike"]
+      { "traditional": "Shotei Uchi", "english": "Palm Strike" },
+      { "traditional": "Chudan Hira Ken", "english": "Middle Knuckle Strike" },
+      { "traditional": "Jodan Hira Ken", "english": "Upper Knuckle Strike" }
     ],
     "Blocks": [
-      ["Kake Uke", "Cross Over Hooking Block"]
+      { "traditional": "Kake Uke", "english": "Cross Over Hooking Block" }
     ],
     "Kicks": [
-      ["Ashi Barai", "Foot Sweep"]
+      { "traditional": "Ashi Barai", "english": "Foot Sweep" }
     ],
     "Kata": [
-      ["Heian Yondan", "Peaceful Mind Fourth Level"]
+      { "traditional": "Heian Yondan", "english": "Peaceful Mind Fourth Level" }
     ],
     "Basic Drills": [
-      ["Chudan Soto Uke, Uraken, Chudan Gyaku Zuki, Gedan Barai in Zenkutsu Dachi", "Middle outer-inner block, back fist strike to the temple, middle reverse punch and forward lower block in forward stance"]
+      { "traditional": "Chudan Soto Uke, Uraken, Chudan Gyaku Zuki, Gedan Barai in Zenkutsu Dachi", "english": "Middle outer-inner block, back fist strike to the temple, middle reverse punch and forward lower block in forward stance" }
     ],
     "Fighting Drills": [
-      ["Mae Geri, Mawashi Geri, Chudan Gyaku Zuki in Kamae", "Prepare for a Forward front kick, then pivot into a roundhouse kick landing forward and follow up with middle reverse punch in fighting stance"]
+      { "traditional": "Mae Geri, Mawashi Geri, Chudan Gyaku Zuki in Kamae", "english": "Prepare for a Forward front kick, then pivot into a roundhouse kick landing forward and follow up with middle reverse punch in fighting stance" }
     ],
     "Application / Demonstration / Impact": [
       {
         "subCategory": "Kihon Ippon Kumite in Zenkutsu Dachi (Basic One Step Sparring)",
+        "name": "Jodan Oi Zuki #3",
         "requirements": [
-          ["Jodan Oi Zuki #3", "Attacker steps forward with upper punch whilst defender steps back, blocks and counters with another method."]
+          "Attacker steps forward with upper punch whilst defender steps back, blocks and counters with another method."
         ]
       }
     ]
   },
   "Blue Belt": {
     "Stances": [
-      ["No Additonal Stances", ""]
+      { "traditional": "No Additonal Stances", "english": "" }
     ],
     "Punches and Strikes": [
-      ["Age Zuki", "Rising Jaw Strike"],
-      ["Chudan Shotei Uchi", "Middle Palm Strike"],
-      ["Chudan Ura Zuki", "Middle Uppercut Punch"],
-      ["Mawashi Zuki", "Roundhouse Punch"]
+      { "traditional": "Age Zuki", "english": "Rising Jaw Strike" },
+      { "traditional": "Chudan Shotei Uchi", "english": "Middle Palm Strike" },
+      { "traditional": "Chudan Ura Zuki", "english": "Middle Uppercut Punch" },
+      { "traditional": "Mawashi Zuki", "english": "Roundhouse Punch" }
     ],
     "Blocks": [
-      ["No Additonal Blocks", ""]
+      { "traditional": "No Additonal Blocks", "english": "" }
     ],
     "Kicks": [
-      ["No Additonal Kicks", ""]
+      { "traditional": "No Additonal Kicks", "english": "" }
     ],
     "Kata": [
-      ["Heian Godan", "Peaceful Mind Fifth Level"]
+      { "traditional": "Heian Godan", "english": "Peaceful Mind Fifth Level" }
     ],
     "Basic Drills": [
-      ["Haito Uchi Uke, Shotei Uchi, Gyaku Zuki, Gedan Barai in Zenkutsu Dachi", "Inner outer ridgehand block, palm heel strike, middle reverse punch and lower block in forward stance"]
+      { "traditional": "Haito Uchi Uke, Shotei Uchi, Gyaku Zuki, Gedan Barai in Zenkutsu Dachi", "english": "Inner outer ridgehand block, palm heel strike, middle reverse punch and lower block in forward stance" }
     ],
     "Fighting Drills": [
-      ["Chudan Gyaku Zuki, Mawashi Geri, Ashi Barai, Gyaku Zuki in Kamae", "Middle reverse punch, rear leg roundhouse kick, foot sweep and follow up with reverse punch in fighting stance"]
+      { "traditional": "Chudan Gyaku Zuki, Mawashi Geri, Ashi Barai, Gyaku Zuki in Kamae", "english": "Middle reverse punch, rear leg roundhouse kick, foot sweep and follow up with reverse punch in fighting stance" }
     ],
     "Application / Demonstration / Impact": [
       {
         "subCategory": "Jiyu Ippon Kumite (Freestyle One-Step Sparring)",
+        "name": "Jodan Oi Zuki #1",
         "requirements": [
-          ["Jodan Oi Zuki #1", "Attacker steps forward with front punch, defender breaks line 45 degrees and counters."]
+          "Attacker steps forward with front punch, defender breaks line 45 degrees and counters."
         ]
       }
     ]
@@ -229,24 +235,25 @@
   "Brown Belt": {
     "Stances": [],
     "Punches and Strikes": [
-      ["No Additional Strikes", ""]
+      { "traditional": "No Additional Strikes", "english": "" }
     ],
     "Blocks": [],
     "Kicks": [],
     "Kata": [
-      ["Tekki Shodan", "Iron Horse First Level"]
+      { "traditional": "Tekki Shodan", "english": "Iron Horse First Level" }
     ],
     "Basic Drills": [
-      ["Sanbon Zuki #1", "Stepping forward with triple middle punch with a slight pause after the first punch and then delivering two quick punches. Then stepping back into back stance"]
+      { "traditional": "Sanbon Zuki #1", "english": "Stepping forward with triple middle punch with a slight pause after the first punch and then delivering two quick punches. Then stepping back into back stance" }
     ],
     "Fighting Drills": [
-      ["Jodan Mawashi Geri, Gyaku Zuki in Kamae", "Keeping the same stance, lean back, upper roundhouse kick off the front leg, land forward and follow up with reverse punch in fighting stance"]
+      { "traditional": "Jodan Mawashi Geri, Gyaku Zuki in Kamae", "english": "Keeping the same stance, lean back, upper roundhouse kick off the front leg, land forward and follow up with reverse punch in fighting stance" }
     ],
     "Application / Demonstration / Impact": [
       {
         "subCategory": "Jiyu Ippon Kumite (Freestyle One-Step Sparring)",
+        "name": "Jodan Oi Zuki #2",
         "requirements": [
-          ["Jodan Oi Zuki #2", "Attacker steps forward with front punch, defender slides forward with a sweep and counters."]
+          "Attacker steps forward with front punch, defender slides forward with a sweep and counters."
         ]
       }
     ]
@@ -257,19 +264,20 @@
     "Blocks": [],
     "Kicks": [],
     "Kata": [
-      ["Bassai Dai", "To Penetrate a Fortress"]
+      { "traditional": "Bassai Dai", "english": "To Penetrate a Fortress" }
     ],
     "Basic Drills": [
-      ["Sanbon Zuki #2", "Stepping forward with triple middle punch with a slight pause after the first punch and then delivering two quick punches. Then stepping back into horse riding stance"]
+      { "traditional": "Sanbon Zuki #2", "english": "Stepping forward with triple middle punch with a slight pause after the first punch and then delivering two quick punches. Then stepping back into horse riding stance" }
     ],
     "Fighting Drills": [
-      ["Jodan Mawashi Geri, Jodan Ura Ushiro Mawashi Geri, Gyaku Zuki in Kamae", "Upper roundhouse kick off the back leg, spinning reverse roundhouse kick and follow up with reverse punch in fighting stance"]
+      { "traditional": "Jodan Mawashi Geri, Jodan Ura Ushiro Mawashi Geri, Gyaku Zuki in Kamae", "english": "Upper roundhouse kick off the back leg, spinning reverse roundhouse kick and follow up with reverse punch in fighting stance" }
     ],
     "Application / Demonstration / Impact": [
       {
         "subCategory": "Jiyu Ippon Kumite (Freestyle One-Step Sparring)",
+        "name": "Jodan Oi Zuki #3",
         "requirements": [
-          ["Jodan Oi Zuki #3", "Attacker steps forward with front punch, defender breaks line 45-degrees and counters."]
+          "Attacker steps forward with front punch, defender breaks line 45-degrees and counters."
         ]
       }
     ]
@@ -280,16 +288,17 @@
     "Blocks": [],
     "Kicks": [],
     "Kata": [
-      ["Jion", "Budhist Temple"],
-      ["Demonstrate one section of bunkai from a Heian kata.", ""]
+      { "traditional": "Jion", "english": "Budhist Temple" },
+      { "traditional": "Demonstrate one section of bunkai from a Heian kata.", "english": "" }
     ],
     "Basic Drills": [],
     "Fighting Drills": [],
     "Application / Demonstration / Impact": [
       {
         "subCategory": "Kihon Sanbon Kumite #1",
+        "name": "",
         "requirements": [
-          ["Attacker steps forward with upper punch and the defender steps back upper block. Attacker steps forward with middle punch and the defender steps back inner block. Attacker steps forward with lower punch and the defender steps back with lower block."]
+          "Attacker steps forward with upper punch and the defender steps back upper block. Attacker steps forward with middle punch and the defender steps back inner block. Attacker steps forward with a front kick and the defender steps back downward block."
         ]
       }
     ]
