@@ -4,10 +4,14 @@
   <meta charset="UTF-8" />
   <title>Edit Syllabus</title>
   <style>
-    /* Basic styling for clarity */
     .belt-section { border: 1px solid #ccc; margin: 1em 0; padding: 1em; }
     .category-section { margin-left: 1em; }
-    .array-item { margin-bottom: 0.5em; }
+    .pair-table { width:100%; border-collapse:collapse; margin-bottom:1em; }
+    .pair-table th, .pair-table td { border: 1px solid #aaa; padding: 4px 8px;}
+    .app-block { margin:0.5em 0; border:1px dashed #888; border-radius:5px; padding:0.5em;}
+    .subcategory { margin-left:2em; background:#f8f8f8; padding:0.5em; border-radius:5px;}
+    .req-list { margin:0.3em 0 0.5em 2em; }
+    textarea { width:97%; min-height: 2em;}
   </style>
 </head>
 <body>
@@ -15,7 +19,6 @@
   <form id="syllabusForm"></form>
   <button type="button" onclick="saveSyllabus()">Save</button>
   <div id="message"></div>
-
   <script>
     let syllabusData = {};
 
@@ -26,161 +29,185 @@
     }
 
     function renderForm() {
-    const form = document.getElementById('syllabusForm');
-    form.innerHTML = '';
-    Object.entries(syllabusData).forEach(([beltColor, categories]) => {
-      const beltDiv = document.createElement('div');
-      beltDiv.className = 'belt-section';
-      beltDiv.innerHTML = `<h2>${beltColor}</h2>`;
-
-      Object.entries(categories).forEach(([category, items]) => {
-        const catDiv = document.createElement('div');
-        catDiv.className = 'category-section';
-        catDiv.innerHTML = `<h3>${category}</h3>`;
-
-        // If items is an array of strings, render as a single textarea
-        if (Array.isArray(items) && items.every(i => typeof i === "string")) {
-          const textarea = document.createElement('textarea');
-          textarea.name = `${beltColor}.${category}`;
-          textarea.rows = Math.max(2, items.length);
-          textarea.style.width = "98%";
-          textarea.value = items.join('\n');
-          catDiv.appendChild(textarea);
-
-          // Add controls to add/remove lines
-          const info = document.createElement('div');
-          info.innerHTML = '<small>One item per line</small>';
-          catDiv.appendChild(info);
-        } else if (Array.isArray(items) && items.some(i => typeof i === "object")) {
-          // If array contains objects (subcategories), render each object
-          items.forEach((item, idx) => {
-            if (typeof item === "object" && item !== null) {
-              const subDiv = document.createElement('div');
-              subDiv.className = 'array-item';
-              subDiv.style.border = "1px solid #eee";
-              subDiv.style.margin = "0.5em 0";
-              subDiv.style.padding = "0.5em";
-              subDiv.innerHTML = `<b>Subcategory ${idx + 1}</b>
-                <button type="button" onclick="removeSubObj('${beltColor}','${category}',${idx})">Remove</button>`;
-
-              Object.entries(item).forEach(([subkey, subval]) => {
-                // Support subcategory arrays of strings as textareas, or just a text input otherwise
-                if (Array.isArray(subval) && subval.every(v => typeof v === "string")) {
-                  const label = document.createElement('div');
-                  label.innerHTML = `<label>${subkey}:</label>`;
-                  const textarea = document.createElement('textarea');
-                  textarea.name = `${beltColor}.${category}.${idx}.${subkey}`;
-                  textarea.rows = Math.max(2, subval.length);
-                  textarea.style.width = "96%";
-                  textarea.value = subval.join('\n');
-                  label.appendChild(textarea);
-                  subDiv.appendChild(label);
-                } else {
-                  const label = document.createElement('div');
-                  label.innerHTML = `<label>${subkey}:</label>`;
-                  const input = document.createElement('input');
-                  input.type = "text";
-                  input.name = `${beltColor}.${category}.${idx}.${subkey}`;
-                  input.value = subval;
-                  label.appendChild(input);
-                  subDiv.appendChild(label);
-                }
-              });
-              catDiv.appendChild(subDiv);
-            }
-          });
-          // Add new subcategory (object) button
-          const addBtn = document.createElement('button');
-          addBtn.type = "button";
-          addBtn.textContent = "Add Subcategory";
-          addBtn.onclick = function() {
-            addSubObj(beltColor, category);
-          };
-          catDiv.appendChild(addBtn);
+      const form = document.getElementById('syllabusForm');
+      form.innerHTML = '';
+      for (const [belt, categories] of Object.entries(syllabusData)) {
+        const beltDiv = document.createElement('div');
+        beltDiv.className = 'belt-section';
+        beltDiv.innerHTML = `<h2>${belt}</h2>`;
+        for (const [category, items] of Object.entries(categories)) {
+          const catDiv = document.createElement('div');
+          catDiv.className = 'category-section';
+          catDiv.innerHTML = `<h3>${category}</h3>`;
+          if (["Punches", "Blocks", "Kicks", "Kata", "Basic Drills", "Fighting Drills"].includes(category)) {
+            catDiv.appendChild(renderPairTable(belt, category, items));
+          } else if (["Application", "Demonstration", "Impact"].includes(category)) {
+            catDiv.appendChild(renderAppSection(belt, category, items));
+          }
+          beltDiv.appendChild(catDiv);
         }
-        beltDiv.appendChild(catDiv);
-      });
-      form.appendChild(beltDiv);
-    });
-  }
-
-  // --- Helper for removing a sub-object ---
-  function removeSubObj(belt, category, idx) {
-    syllabusData[belt][category].splice(idx, 1);
-    renderForm();
-  }
-
-  // --- Helper for adding a blank sub-object. You may want to customize the default fields. ---
-  function addSubObj(belt, category) {
-    syllabusData[belt][category].push({});
-    renderForm();
-  }
-
-  // --- REPLACE saveSyllabus with this version ---
-  async function saveSyllabus() {
-    // Read all textareas and single inputs and update syllabusData accordingly
-    const inputs = document.querySelectorAll('#syllabusForm textarea, #syllabusForm input[type="text"]');
-    inputs.forEach(input => {
-      const path = input.name.split('.');
-      if (input.tagName === "TEXTAREA") {
-        const valueArr = input.value.split('\n').map(line => line.trim()).filter(line => line.length > 0);
-        if (path.length === 2) {
-          syllabusData[path[0]][path[1]] = valueArr;
-        } else if (path.length === 4) {
-          syllabusData[path[0]][path[1]][parseInt(path[2], 10)][path[3]] = valueArr;
-        }
-      } else {
-        // input text
-        if (path.length === 4) {
-          syllabusData[path[0]][path[1]][parseInt(path[2], 10)][path[3]] = input.value;
-        }
+        form.appendChild(beltDiv);
       }
-    });
-
-    const res = await fetch('/syllabus', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(syllabusData)
-    });
-    if (res.ok) {
-      document.getElementById('message').innerText = 'Syllabus saved!';
-    } else {
-      document.getElementById('message').innerText = 'Error saving syllabus!';
-    }
-  }
-
-  // Helper to set a value at a nested path
-  function setValueByPath(obj, path, value) {
-    let current = obj;
-    for (let i = 0; i < path.length - 1; i++) {
-      if (!(path[i] in current)) return;
-      current = current[path[i]];
-    }
-    current[path[path.length - 1]] = value;
-  }
-
-
-    function removeItem(belt, category, idx) {
-      syllabusData[belt][category].splice(idx, 1);
-      renderForm();
     }
 
-    function addItem(belt, category) {
-      const input = document.getElementById(`add-${belt}-${category}`);
-      if (input.value.trim() !== '') {
-        syllabusData[belt][category].push(input.value.trim());
-        input.value = '';
+    function renderPairTable(belt, category, items) {
+      const table = document.createElement('table');
+      table.className = 'pair-table';
+      table.innerHTML = `<tr><th>Traditional Name</th><th>English Name</th><th></th></tr>`;
+      items.forEach((pair, idx) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td><input type="text" name="${belt}.${category}.${idx}.traditional" value="${pair.traditional || ''}"></td>
+          <td><input type="text" name="${belt}.${category}.${idx}.english" value="${pair.english || ''}"></td>
+          <td><button type="button" onclick="removePair('${belt}','${category}',${idx})">Remove</button></td>
+        `;
+        table.appendChild(row);
+      });
+      // Add row
+      const addRow = document.createElement('tr');
+      addRow.innerHTML = `
+        <td><input type="text" id="add-${belt}-${category}-traditional"></td>
+        <td><input type="text" id="add-${belt}-${category}-english"></td>
+        <td><button type="button" onclick="addPair('${belt}','${category}')">Add</button></td>
+      `;
+      table.appendChild(addRow);
+      return table;
+    }
+
+    function addPair(belt, category) {
+      const trad = document.getElementById(`add-${belt}-${category}-traditional`).value.trim();
+      const eng = document.getElementById(`add-${belt}-${category}-english`).value.trim();
+      if (trad || eng) {
+        syllabusData[belt][category].push({traditional:trad, english:eng});
         renderForm();
       }
     }
+    function removePair(belt, category, idx) {
+      syllabusData[belt][category].splice(idx,1);
+      renderForm();
+    }
+
+    function renderAppSection(belt, category, items) {
+      // Group by subCategory (if exists)
+      const subMap = {};
+      const noSubCat = [];
+      items.forEach((item, idx) => {
+        if (item.subCategory) {
+          if (!subMap[item.subCategory]) subMap[item.subCategory] = [];
+          subMap[item.subCategory].push({...item, __idx:idx});
+        } else {
+          noSubCat.push({...item, __idx:idx});
+        }
+      });
+      const wrapper = document.createElement('div');
+      // Render subCategories
+      for (const [subCat, subItems] of Object.entries(subMap)) {
+        const subDiv = document.createElement('div');
+        subDiv.className = 'subcategory';
+        subDiv.innerHTML = `<b>${subCat}</b>`;
+        for (const item of subItems) {
+          subDiv.appendChild(renderAppBlock(belt, category, item, true));
+        }
+        // Add new under this subCategory
+        subDiv.appendChild(renderAppAddBlock(belt, category, subCat));
+        wrapper.appendChild(subDiv);
+      }
+      // Render those without subCategory
+      for (const item of noSubCat) {
+        wrapper.appendChild(renderAppBlock(belt, category, item, false));
+      }
+      wrapper.appendChild(renderAppAddBlock(belt, category, null));
+      return wrapper;
+    }
+
+    function renderAppBlock(belt, category, item, hasSubCat) {
+      const idx = item.__idx;
+      const block = document.createElement('div');
+      block.className = 'app-block';
+      let html = '';
+      if (hasSubCat) {
+        html += `<input type="hidden" name="${belt}.${category}.${idx}.subCategory" value="${item.subCategory}">`;
+      }
+      html += `<label>Name:<input type="text" name="${belt}.${category}.${idx}.name" value="${item.name||''}"></label><br>`;
+      html += `Requirements:<br>`;
+      html += `<textarea name="${belt}.${category}.${idx}.requirements">${(item.requirements||[]).join('\n')}</textarea><br>`;
+      html += `<button type="button" onclick="removeApp('${belt}','${category}',${idx})">Remove</button>`;
+      block.innerHTML = html;
+      return block;
+    }
+
+    function renderAppAddBlock(belt, category, subCat) {
+      // Render add-new block for Application/etc.
+      const block = document.createElement('div');
+      block.className = 'app-block';
+      let html = '';
+      if (subCat) {
+        html += `<input type="hidden" id="add-${belt}-${category}-${subCat}-subCategory" value="${subCat}">`;
+      } else {
+        html += `<input type="hidden" id="add-${belt}-${category}-subCategory" value="">`;
+      }
+      html += `<label>Name:<input type="text" id="add-${belt}-${category}-${subCat||'main'}-name"></label><br>`;
+      html += `Requirements:<br><textarea id="add-${belt}-${category}-${subCat||'main'}-requirements"></textarea><br>`;
+      html += `<button type="button" onclick="addApp('${belt}','${category}','${subCat||''}')">Add</button>`;
+      block.innerHTML = html;
+      return block;
+    }
+
+    function addApp(belt, category, subCat) {
+      const name = document.getElementById(`add-${belt}-${category}-${subCat||'main'}-name`).value.trim();
+      const reqs = document.getElementById(`add-${belt}-${category}-${subCat||'main'}-requirements`).value
+        .split('\n').map(s=>s.trim()).filter(Boolean);
+      let entry = {name, requirements: reqs};
+      if (subCat) entry.subCategory = subCat;
+      if (name) {
+        syllabusData[belt][category].push(entry);
+        renderForm();
+      }
+    }
+    function removeApp(belt, category, idx) {
+      syllabusData[belt][category].splice(idx,1);
+      renderForm();
+    }
 
     async function saveSyllabus() {
-      // Gather updated data from the form (in case user changed any inputs)
-      const inputs = document.querySelectorAll('#syllabusForm input[type="text"]');
-      inputs.forEach(input => {
-        const [belt, category, idx] = input.name.split('.');
-        if (typeof syllabusData[belt][category][idx] !== 'undefined') {
-          syllabusData[belt][category][idx] = input.value;
+      // Gather updated data from the form
+      // For pairs:
+      document.querySelectorAll('.pair-table').forEach(table => {
+        const [belt, category] = table.querySelector('input')?.name?.split('.') || [];
+        if (belt && category && syllabusData[belt] && syllabusData[belt][category]) {
+          syllabusData[belt][category] = [];
+          table.querySelectorAll('tr').forEach(row => {
+            const inputs = row.querySelectorAll('input[type="text"]');
+            if (inputs.length === 2) {
+              const traditional = inputs[0].value.trim();
+              const english = inputs[1].value.trim();
+              if (traditional || english) syllabusData[belt][category].push({traditional, english});
+            }
+          });
+        }
+      });
+
+      // For Application/Demonstration/Impact
+      document.querySelectorAll('.category-section').forEach(catDiv => {
+        const category = catDiv.querySelector('h3')?.textContent;
+        if (!category || !["Application", "Demonstration", "Impact"].includes(category)) return;
+        // Find belt
+        let parent = catDiv;
+        while (parent && !parent.classList.contains('belt-section')) parent = parent.parentElement;
+        const belt = parent?.querySelector('h2')?.textContent;
+        if (belt && syllabusData[belt] && syllabusData[belt][category]) {
+          syllabusData[belt][category] = [];
+          catDiv.querySelectorAll('.app-block').forEach(block => {
+            const subCategory = block.querySelector('input[type="hidden"]')?.value;
+            const name = block.querySelector('input[type="text"]')?.value.trim();
+            const reqs = block.querySelector('textarea')?.value.split('\n').map(s=>s.trim()).filter(Boolean) || [];
+            // Only save if name exists
+            if (name) {
+              const entry = {name, requirements: reqs};
+              if (subCategory) entry.subCategory = subCategory;
+              syllabusData[belt][category].push(entry);
+            }
+          });
         }
       });
 
@@ -196,7 +223,6 @@
       }
     }
 
-    // Initial load
     fetchSyllabus();
   </script>
 </body>
