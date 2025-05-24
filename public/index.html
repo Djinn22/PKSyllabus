@@ -1,282 +1,104 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Karate Belt Grading Requirements</title>
+  <meta charset="UTF-8">
+  <title>Syllabus Index</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f4f4f4;
-    }
-    header {
-      display: flex;
-      align-items: center;
-      padding: 1rem;
-      background-color: #fff;
-      border-bottom: 2px solid #ddd;
-    }
-    header img {
-      height: 50px;
-      margin-right: 1rem;
-    }
-    h1 {
-      margin: 0;
-    }
-    .container {
-      padding: 2rem;
-    }
-    select {
-      padding: 0.5rem;
-      font-size: 1rem;
-      margin-bottom: 1rem;
-    }
-    table {
-      width: 100%;
-      border-collapse: separate;
-      border-spacing: 0;
-      background-color: #fff;
-      margin-bottom: 2rem;
-      border: 2px solid;
-      border-radius: 10px;
-      overflow: hidden;
-    }
-    th, td {
-      border: 2px solid;
-      border-left: none;
-      border-right: none;
-      padding: 0.75rem;
-      text-align: left;
-      width: 50%;
-    }
-    .table-title {
-      text-align: center;
-      font-size: 1.5rem;
-      font-weight: bold;
-      padding: 1rem;
-      opacity: 0.5;
-    }
-    .subcat-title {
-      background: #ececec;
-      color: #222;
-      font-weight: bold;
-      text-align: left;
-      font-size: 1.15rem;
-      padding-left: 1rem;
-    }
-    th {
-      background-color: #eee;
-    }
-    footer {
-      background-color: red;
-      color: white;
-      text-align: center;
-      padding: 1rem;
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-    }
-    footer img {
-      height: 30px;
-      vertical-align: middle;
-    }
-    .drill-name {
-      font-weight: bold;
-    }
-    .drill-desc {
-      font-style: italic;
-    }
+    .belt { border:1px solid #ccc; margin:1em 0; padding:1em; }
+    .category { margin-left:1em; }
+    .subcategory { margin-left:2em; background:#f8f8f8; padding:0.5em; border-radius:5px; }
+    .pair-table { width: 100%; border-collapse: collapse; margin-bottom: 1em; }
+    .pair-table td, .pair-table th { border: 1px solid #aaa; padding: 4px 8px;}
+    .req-list { margin:0.3em 0 0.5em 2em; }
+    .app-block { margin:0.5em 0; border:1px dashed #888; border-radius:5px; padding:0.5em; }
   </style>
 </head>
 <body>
-  <header>
-    <img src="pkr_logo.webp" alt="Logo" />
-    <h1>Karate Grading Syllabus</h1>
-  </header>
-  <div class="container">
-    <label for="beltSelect">Select Belt:</label>
-    <select id="beltSelect" onchange="updateTables()">
-      <option value="Red Belt">Red Belt (8th Kyu)</option>
-      <option value="Yellow Belt">Yellow Belt (7th Kyu)</option>
-      <option value="Orange Belt">Orange Belt (6th Kyu)</option>
-      <option value="Green Belt">Green Belt (5th Kyu)</option>
-      <option value="Purple Belt">Purple Belt (4th Kyu)</option>
-      <option value="Blue Belt">Blue Belt (3rd Kyu)</option>
-      <option value="Brown Belt">Brown Belt (2nd Kyu)</option>
-      <option value="Brown/Black Stripe">Brown/Black Stripe (1st Kyu)</option>
-      <option value="Black Belt">Black Belt</option>
-    </select>
-
-    <div id="requirementsContainer"></div>
-  </div>
-  <footer>
-    <span>&copy; 2025 Peninsula Karate</span>
-    <img src="pkr_logo.webp" alt="Footer Logo" />
-  </footer>
-
+  <h1>Syllabus Index</h1>
+  <div id="syllabus"></div>
   <script>
-  const beltColors = {
-    "Red Belt": "red",
-    "Yellow Belt": "gold",
-    "Orange Belt": "orange",
-    "Green Belt": "green",
-    "Purple Belt": "purple",
-    "Blue Belt": "blue",
-    "Brown Belt": "saddlebrown",
-    "Brown/Black Stripe": "black",
-    "Black Belt": "black"
-  };
+    async function fetchSyllabus() {
+      const res = await fetch('/api/syllabus');
+      const syllabus = await res.json();
+      renderSyllabus(syllabus);
+    }
 
-  const categories = [
-    "Stances",
-    "Punches and Strikes",
-    "Blocks",
-    "Kicks",
-    "Kata",
-    "Basic Drills",
-    "Fighting Drills",
-    "Application / Demonstration / Impact"
-  ];
+    function renderSyllabus(syllabus) {
+      const root = document.getElementById('syllabus');
+      root.innerHTML = '';
+      for (const [belt, categories] of Object.entries(syllabus)) {
+        const beltDiv = document.createElement('div');
+        beltDiv.className = 'belt';
+        beltDiv.innerHTML = `<h2>${belt}</h2>`;
+        for (const [category, items] of Object.entries(categories)) {
+          const catDiv = document.createElement('div');
+          catDiv.className = 'category';
+          catDiv.innerHTML = `<h3>${category}</h3>`;
 
-  let syllabus = {};
-
-  // --- START OF CUSTOM GROUPING ---
-  function getAppImpactBySub(belt) {
-    const beltOrder = [
-      "Red Belt", "Yellow Belt", "Orange Belt", "Green Belt", "Purple Belt",
-      "Blue Belt", "Brown Belt", "Brown/Black Stripe", "Black Belt"
-    ];
-    const grouped = {};
-    for (let b of beltOrder) {
-      if (syllabus[b] && syllabus[b]["Application / Demonstration / Impact"]) {
-        const drills = syllabus[b]["Application / Demonstration / Impact"];
-        for (const entry of drills) {
-          if (entry.subCategory) {
-            const key = entry.subCategory;
-            if (!grouped[key]) grouped[key] = [];
-            for (const req of entry.requirements) {
-              grouped[key].push({
-                name: req[0], desc: req[1], current: b === belt
-              });
+          // Render name pairs for specific categories
+          if (["Punches", "Blocks", "Kicks", "Kata", "Basic Drills", "Fighting Drills"].includes(category)) {
+            const table = document.createElement('table');
+            table.className = 'pair-table';
+            table.innerHTML = `<tr><th>Traditional Name</th><th>English Name</th></tr>`;
+            for (const pair of items) {
+              const row = document.createElement('tr');
+              row.innerHTML = `<td>${pair.traditional || ''}</td><td>${pair.english || ''}</td>`;
+              table.appendChild(row);
             }
-          } else if (Array.isArray(entry)) {
-            if (!grouped.Other) grouped.Other = [];
-            grouped.Other.push({ name: entry[0], desc: entry[1], current: b === belt });
+            catDiv.appendChild(table);
           }
-        }
-      }
-      if (b === belt) break;
-    }
-    return Object.entries(grouped).map(([subCategory, requirements]) => ({ subCategory, requirements }));
-  }
-  // --- END OF CUSTOM GROUPING ---
-
-  function getCombinedRequirements(belt) {
-    const beltOrder = [
-      "Red Belt",
-      "Yellow Belt",
-      "Orange Belt",
-      "Green Belt",
-      "Purple Belt",
-      "Blue Belt",
-      "Brown Belt",
-      "Brown/Black Stripe",
-      "Black Belt"
-    ];
-    let combined = {};
-    for (let category of categories) {
-      combined[category] = [];
-    }
-    for (let b of beltOrder) {
-      if (syllabus[b]) {
-        for (let category of categories) {
-          if (category === "Application / Demonstration / Impact") continue;
-          combined[category].push(...(syllabus[b][category] || []).map(item => ({ name: item[0], desc: item[1], current: b === belt })));
-        }
-      }
-      if (b === belt) break;
-    }
-    return combined;
-  }
-
-  function updateTables() {
-    const belt = document.getElementById("beltSelect").value;
-    const container = document.getElementById("requirementsContainer");
-    const color = beltColors[belt] || "black";
-    const combined = getCombinedRequirements(belt);
-    const appImpactBySub = getAppImpactBySub(belt);
-
-    container.innerHTML = "";
-    for (let category in combined) {
-      if (category === "Application / Demonstration / Impact") {
-        // Special rendering for subcategories!
-        const table = document.createElement("table");
-        table.style.borderColor = color;
-        let rows = "";
-        for (const sub of appImpactBySub) {
-          rows += `<tr><th colspan="2" class="subcat-title">${sub.subCategory}</th></tr>`;
-          for (const item of sub.requirements) {
-            rows += `<tr>
-              <td style="border-color:${color}; width:50%"><span class="${item.current ? 'drill-name' : ''}">${item.name}</span></td>
-              <td style="border-color:${color}; width:50%"><span class="drill-desc">${item.desc}</span></td>
-            </tr>`;
+          // Render Application/Demonstration/Impact as grouped blocks
+          else if (["Application", "Demonstration", "Impact"].includes(category)) {
+            // Group by subCategory
+            const subMap = {};
+            const noSubCat = [];
+            for (const app of items) {
+              if (app.subCategory) {
+                if (!subMap[app.subCategory]) subMap[app.subCategory] = [];
+                subMap[app.subCategory].push(app);
+              } else {
+                noSubCat.push(app);
+              }
+            }
+            // Render with subCategory first
+            for (const [subCat, appItems] of Object.entries(subMap)) {
+              const subDiv = document.createElement('div');
+              subDiv.className = 'subcategory';
+              subDiv.innerHTML = `<b>${subCat}</b>`;
+              for (const app of appItems) {
+                subDiv.appendChild(renderAppBlock(app));
+              }
+              catDiv.appendChild(subDiv);
+            }
+            // Then render those without subCategory
+            for (const app of noSubCat) {
+              catDiv.appendChild(renderAppBlock(app));
+            }
           }
+          beltDiv.appendChild(catDiv);
         }
-        table.innerHTML = `
-          <thead>
-            <tr>
-              <th colspan="2" class="table-title" style="background-color:${color}; color: white;">${category}</th>
-            </tr>
-            <tr>
-              <th style="border-color:${color}; width: 50%">Traditional</th>
-              <th style="border-color:${color}; width: 50%">English</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${rows}
-          </tbody>
-        `;
-        container.appendChild(table);
-        continue;
+        root.appendChild(beltDiv);
       }
-
-      // Default rendering for other categories
-      const table = document.createElement("table");
-      table.style.borderColor = color;
-      table.innerHTML = `
-        <thead>
-          <tr>
-            <th colspan="2" class="table-title" style="background-color:${color}; color: white;">${category}</th>
-          </tr>
-          <tr>
-            <th style="border-color:${color}; width: 50%">Traditional</th>
-            <th style="border-color:${color}; width: 50%">English</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${combined[category].map(item => `<tr><td style="border-color:${color}; width: 50%"><span class="${item.current ? 'drill-name' : ''}">${item.name}</span></td><td style="border-color:${color}; width: 50%"><span class="drill-desc">${item.desc}</span></td></tr>`).join("")}
-        </tbody>
-      `;
-      container.appendChild(table);
     }
-  }
 
-  // Fetch syllabus.json from the server
-  async function loadSyllabusAndInit() {
-    try {
-      const response = await fetch('/api/syllabus');
-      syllabus = await response.json();
-      updateTables();
-    } catch (err) {
-      document.getElementById("requirementsContainer").innerHTML = "<p style='color:red;'>Failed to load syllabus.</p>";
+    function renderAppBlock(app) {
+      const block = document.createElement('div');
+      block.className = 'app-block';
+      block.innerHTML = `<b>${app.name || ''}</b>`;
+      if (app.requirements && app.requirements.length) {
+        const ul = document.createElement('ul');
+        ul.className = 'req-list';
+        for (const req of app.requirements) {
+          const li = document.createElement('li');
+          li.textContent = req;
+          ul.appendChild(li);
+        }
+        block.appendChild(ul);
+      }
+      return block;
     }
-  }
 
-  window.onload = loadSyllabusAndInit;
-  // Also, update tables if belt menu changes
-  document.getElementById('beltSelect').addEventListener('change', updateTables);
-</script>
+    fetchSyllabus();
+  </script>
 </body>
 </html>
