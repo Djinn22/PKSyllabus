@@ -26,41 +26,82 @@
     }
 
     function renderForm() {
-      const form = document.getElementById('syllabusForm');
-      form.innerHTML = '';
-      // Assuming syllabusData is an object: { [beltColor]: { [category]: [array of items] } }
-      Object.entries(syllabusData).forEach(([beltColor, categories]) => {
-        const beltDiv = document.createElement('div');
-        beltDiv.className = 'belt-section';
-        beltDiv.innerHTML = `<h2>${beltColor}</h2>`;
-
-        Object.entries(categories).forEach(([category, items]) => {
-          const catDiv = document.createElement('div');
-          catDiv.className = 'category-section';
-          catDiv.innerHTML = `<h3>${category}</h3>`;
-
-          items.forEach((item, idx) => {
-            const itemDiv = document.createElement('div');
-            itemDiv.className = 'array-item';
-            itemDiv.innerHTML = `
-              <input type="text" name="${beltColor}.${category}.${idx}" value="${item}" />
-              <button type="button" onclick="removeItem('${beltColor}','${category}',${idx})">Remove</button>
-            `;
-            catDiv.appendChild(itemDiv);
-          });
-          // Add new item input
-          const addDiv = document.createElement('div');
-          addDiv.innerHTML = `
-            <input type="text" id="add-${beltColor}-${category}" placeholder="Add new item" />
-            <button type="button" onclick="addItem('${beltColor}','${category}')">Add</button>
-          `;
-          catDiv.appendChild(addDiv);
-
-          beltDiv.appendChild(catDiv);
+    const form = document.getElementById('syllabusForm');
+    form.innerHTML = '';
+    Object.entries(syllabusData).forEach(([beltColor, categories]) => {
+      const beltDiv = document.createElement('div');
+      beltDiv.className = 'belt-section';
+      beltDiv.innerHTML = `<h2>${beltColor}</h2>`;
+      Object.entries(categories).forEach(([category, items]) => {
+        const catDiv = document.createElement('div');
+        catDiv.className = 'category-section';
+        catDiv.innerHTML = `<h3>${category}</h3>`;
+        items.forEach((item, idx) => {
+          catDiv.appendChild(renderItemInput([beltColor, category, idx], item));
         });
-        form.appendChild(beltDiv);
+        // Add new item input (string only for now)
+        const addDiv = document.createElement('div');
+        addDiv.innerHTML = `
+          <input type="text" id="add-${beltColor}-${category}" placeholder="Add new item" />
+          <button type="button" onclick="addItem('${beltColor}','${category}')">Add</button>
+        `;
+        catDiv.appendChild(addDiv);
+        beltDiv.appendChild(catDiv);
       });
+      form.appendChild(beltDiv);
+    });
+  }
+
+  function renderItemInput(path, item) {
+    const itemDiv = document.createElement('div');
+    itemDiv.className = 'array-item';
+    const name = path.join('.');
+    if (typeof item === 'object' && item !== null) {
+      // Render each property as a sub-input
+      Object.entries(item).forEach(([subKey, subValue]) => {
+        itemDiv.appendChild(renderItemInput([...path, subKey], subValue));
+      });
+    } else {
+      // Simple string input
+      itemDiv.innerHTML = `
+        <input type="text" name="${name}" value="${item}" />
+        <button type="button" onclick="removeItem('${path[0]}','${path[1]}',${path[2]})">Remove</button>
+      `;
     }
+    return itemDiv;
+  }
+
+  // Update saveSyllabus to handle nested objects
+  async function saveSyllabus() {
+    // Deep update of syllabusData from form inputs
+    const inputs = document.querySelectorAll('#syllabusForm input[type="text"]');
+    inputs.forEach(input => {
+      const path = input.name.split('.');
+      setValueByPath(syllabusData, path, input.value);
+    });
+
+    const res = await fetch('/syllabus', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(syllabusData)
+    });
+    if (res.ok) {
+      document.getElementById('message').innerText = 'Syllabus saved!';
+    } else {
+      document.getElementById('message').innerText = 'Error saving syllabus!';
+    }
+  }
+
+  // Helper to set a value at a nested path
+  function setValueByPath(obj, path, value) {
+    let current = obj;
+    for (let i = 0; i < path.length - 1; i++) {
+      if (!(path[i] in current)) return;
+      current = current[path[i]];
+    }
+    current[path[path.length - 1]] = value;
+  }
+
 
     function removeItem(belt, category, idx) {
       syllabusData[belt][category].splice(idx, 1);
