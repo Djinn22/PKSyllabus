@@ -1,35 +1,62 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin - Karate Syllabus</title>
   <script src="https://www.gstatic.com/firebasejs/10.5.2/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.5.2/firebase-firestore.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      padding: 2rem;
+    }
+    h1 {
+      text-align: center;
+    }
+    label, select, input {
+      display: block;
+      margin: 1rem 0;
+      width: 100%;
+      max-width: 400px;
+    }
+    .technique {
+      margin-bottom: 1rem;
+    }
+    .technique input {
+      margin-right: 0.5rem;
+      padding: 0.4rem;
+      width: 45%;
+    }
+    button {
+      margin-top: 1rem;
+      padding: 0.6rem 1rem;
+    }
+  </style>
 </head>
 <body>
-  <h1>Edit Karate Syllabus</h1>
+  <h1>Admin - Karate Syllabus</h1>
 
-  <label>Belt:
-    <select id="beltSelect"></select>
-  </label>
+  <label for="beltSelect">Select Belt:</label>
+  <select id="beltSelect"></select>
 
-  <label>Category:
-    <select id="categorySelect"></select>
-  </label>
+  <label for="categorySelect">Select Category:</label>
+  <select id="categorySelect"></select>
 
-  <div id="techniqueList"></div>
+  <div id="techniquesContainer"></div>
 
-  <button onclick="addTechnique()">Add New Technique</button>
-  <button onclick="saveChanges()">Save Changes</button>
+  <button onclick="addTechnique()">Add Technique</button>
+  <button onclick="saveTechniques()">Save Changes</button>
 
   <script>
-    // 🔥 Replace this with YOUR Firebase config
     const firebaseConfig = {
-      apiKey: "AIzaSyBP2QUZk25U1gdwWiRZpd4s3EjSX0kt6_0",
-      authDomain: "karate-syllabus-7c37c.firebaseapp.com",
-      projectId: "karate-syllabus-7c37c",
-      storageBucket: "karate-syllabus-7c37c.firebasestorage.app",
-      messagingSenderId: "701508561185",
-      appId: "1:701508561185:web:57c9383c14cd578be13660"
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_PROJECT_ID.appspot.com",
+      messagingSenderId: "YOUR_SENDER_ID",
+      appId: "YOUR_APP_ID"
     };
 
     firebase.initializeApp(firebaseConfig);
@@ -37,71 +64,84 @@
 
     const belts = ["Red Belt", "Yellow Belt", "Orange Belt", "Green Belt", "Purple Belt", "Blue Belt", "Brown Belt", "Brown/Black Stripe", "Black Belt"];
     const categories = ["Stances", "Punches and Strikes", "Blocks", "Kicks", "Kata", "Basic Drills", "Fighting Drills", "Application / Demonstration / Impact"];
-    let currentData = [];
 
-    const beltSelect = document.getElementById('beltSelect');
-    const categorySelect = document.getElementById('categorySelect');
-    const techniqueList = document.getElementById('techniqueList');
+    const beltSelect = document.getElementById("beltSelect");
+    const categorySelect = document.getElementById("categorySelect");
+    const container = document.getElementById("techniquesContainer");
+    let currentMap = {};
 
     belts.forEach(belt => {
-      let option = document.createElement('option');
+      const option = document.createElement("option");
       option.value = belt;
       option.textContent = belt;
       beltSelect.appendChild(option);
     });
 
-    categories.forEach(cat => {
-      let option = document.createElement('option');
-      option.value = cat;
-      option.textContent = cat;
+    categories.forEach(category => {
+      const option = document.createElement("option");
+      option.value = category;
+      option.textContent = category;
       categorySelect.appendChild(option);
     });
 
-    beltSelect.onchange = categorySelect.onchange = loadTechniques;
+    beltSelect.addEventListener("change", loadTechniques);
+    categorySelect.addEventListener("change", loadTechniques);
 
     function loadTechniques() {
       const belt = beltSelect.value;
       const category = categorySelect.value;
 
+      if (!belt || !category) return;
+
       db.collection("syllabus").doc(belt).get().then(doc => {
         const data = doc.data() || {};
-        currentData = data[category] || [];
+        currentMap = data[category] || {};
 
-        techniqueList.innerHTML = '';
-        currentData.forEach((item, index) => {
-          const div = document.createElement('div');
+        container.innerHTML = "";
+        Object.entries(currentMap).forEach(([name, desc], index) => {
+          const div = document.createElement("div");
+          div.className = "technique";
           div.innerHTML = `
-            <input value="${item[0]}" placeholder="Traditional name" onchange="updateItem(${index}, 0, this.value)">
-            <input value="${item[1]}" placeholder="Description" onchange="updateItem(${index}, 1, this.value)">
-            <button onclick="removeItem(${index})">Delete</button>
+            <input placeholder="Technique" value="${name}" onchange="updateKey(${index}, this.value)">
+            <input placeholder="Description" value="${desc}" onchange="updateValue('${name}', this.value)">
+            <button onclick="removeTechnique('${name}')">Delete</button>
           `;
-          techniqueList.appendChild(div);
+          container.appendChild(div);
         });
       });
     }
 
-    function updateItem(index, field, value) {
-      currentData[index][field] = value;
+    function updateKey(index, newKey) {
+      const entries = Object.entries(currentMap);
+      const oldKey = entries[index][0];
+      const value = entries[index][1];
+      delete currentMap[oldKey];
+      currentMap[newKey] = value;
+      loadTechniques();
+    }
+
+    function updateValue(key, newValue) {
+      currentMap[key] = newValue;
+    }
+
+    function removeTechnique(key) {
+      delete currentMap[key];
+      loadTechniques();
     }
 
     function addTechnique() {
-      currentData.push(["", ""]);
+      currentMap["New Technique"] = "Description here";
       loadTechniques();
     }
 
-    function removeItem(index) {
-      currentData.splice(index, 1);
-      loadTechniques();
-    }
-
-    function saveChanges() {
+    function saveTechniques() {
       const belt = beltSelect.value;
       const category = categorySelect.value;
 
       db.collection("syllabus").doc(belt).set({
-        [category]: currentData
+        [category]: currentMap
       }, { merge: true }).then(() => {
-        alert('Saved successfully!');
+        alert("Changes saved!");
       });
     }
   </script>
