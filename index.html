@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Karate Belt Grading Requirements</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Karate Grading Syllabus</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -37,17 +37,17 @@
       display: block;
     }
     .collapsible {
-      background-color: #eee;
       cursor: pointer;
       padding: 1rem;
       border: none;
       text-align: left;
-      outline: none;
       font-size: 1.1rem;
       width: 100%;
+      color: white;
+      transition: background-color 0.3s;
     }
-    .collapsible.active, .collapsible:hover {
-      background-color: #ccc;
+    .collapsible:hover {
+      opacity: 0.8;
     }
     .content {
       padding: 0;
@@ -57,42 +57,23 @@
     }
     table {
       width: 100%;
-      border-collapse: separate;
-      border-spacing: 0;
-      background-color: #fff;
+      border-collapse: collapse;
       margin-bottom: 2rem;
-      border: 2px solid;
-      border-radius: 10px;
-      overflow-x: auto;
-      display: block;
     }
-    th, td {
-      border: 2px solid;
-      border-left: none;
-      border-right: none;
+    td {
       padding: 0.75rem;
-      text-align: left;
       width: 50%;
+      text-align: left;
+      vertical-align: top;
     }
-    .table-title {
-      text-align: center;
-      font-size: 1.5rem;
-      font-weight: bold;
-      padding: 1rem;
-      opacity: 0.5;
-    }
-    th {
-      background-color: #eee;
+    .highlight {
+      background-color: rgba(255, 255, 0, 0.2);
     }
     .drill-name {
       font-weight: bold;
     }
     .drill-desc {
       font-style: italic;
-    }
-    .highlight {
-      background-color: rgba(255, 255, 0, 0.2);
-      transition: background-color 0.5s ease;
     }
     footer {
       background-color: red;
@@ -111,7 +92,7 @@
 </head>
 <body>
   <header>
-    <img src="pkr_logo.webp" alt="Logo" />
+    <img src="pkr_logo.webp" alt="Logo">
     <h1>Karate Grading Syllabus</h1>
   </header>
   <div class="container">
@@ -127,39 +108,39 @@
       <option value="Brown/Black Stripe">Brown/Black Stripe (1st Kyu)</option>
       <option value="Black Belt">Black Belt</option>
     </select>
-
-    <input type="text" id="searchInput" placeholder="Search techniques..." oninput="updateTables()"/>
-
+    <input type="text" id="searchInput" placeholder="Search techniques..." oninput="updateTables()">
     <div id="requirementsContainer"></div>
   </div>
   <footer>
     <span>&copy; 2025 Peninsula Karate</span>
-    <img src="pkr_logo.webp" alt="Footer Logo" />
+    <img src="pkr_logo.webp" alt="Footer Logo">
   </footer>
-
   <script>
     const beltColors = {
-      "Red Belt": "red",
-      "Yellow Belt": "gold",
-      "Orange Belt": "orange",
-      "Green Belt": "green",
-      "Purple Belt": "purple",
-      "Blue Belt": "blue",
-      "Brown Belt": "saddlebrown",
-      "Brown/Black Stripe": "black",
-      "Black Belt": "black"
+      "Red Belt": "rgba(255,0,0,0.2)",
+      "Yellow Belt": "rgba(255,215,0,0.2)",
+      "Orange Belt": "rgba(255,165,0,0.2)",
+      "Green Belt": "rgba(0,128,0,0.2)",
+      "Purple Belt": "rgba(128,0,128,0.2)",
+      "Blue Belt": "rgba(0,0,255,0.2)",
+      "Brown Belt": "rgba(139,69,19,0.2)",
+      "Brown/Black Stripe": "rgba(0,0,0,0.2)",
+      "Black Belt": "rgba(0,0,0,0.2)"
     };
 
-    const categories = [
-      "Stances",
-      "Punches and Strikes",
-      "Blocks",
-      "Kicks",
-      "Kata",
-      "Basic Drills",
-      "Fighting Drills",
-      "Application / Demonstration / Impact"
-    ];
+    const beltHoverColors = {
+      "Red Belt": "rgba(255,0,0,0.6)",
+      "Yellow Belt": "rgba(255,215,0,0.6)",
+      "Orange Belt": "rgba(255,165,0,0.6)",
+      "Green Belt": "rgba(0,128,0,0.6)",
+      "Purple Belt": "rgba(128,0,128,0.6)",
+      "Blue Belt": "rgba(0,0,255,0.6)",
+      "Brown Belt": "rgba(139,69,19,0.6)",
+      "Brown/Black Stripe": "rgba(0,0,0,0.6)",
+      "Black Belt": "rgba(0,0,0,0.6)"
+    };
+
+    const categories = ["Stances", "Punches and Strikes", "Blocks", "Kicks", "Kata", "Basic Drills", "Fighting Drills", "Application / Demonstration / Impact"];
 
     const syllabus = {
       "Red Belt": {
@@ -274,64 +255,52 @@
       return combined;
     }
 
+
     function updateTables() {
       const belt = document.getElementById("beltSelect").value;
       const searchTerm = document.getElementById("searchInput").value.toLowerCase();
       const container = document.getElementById("requirementsContainer");
-      const color = beltColors[belt] || "black";
+      const color = beltColors[belt];
+      const hoverColor = beltHoverColors[belt];
       const combined = getCombinedRequirements(belt);
-
       container.innerHTML = "";
+
       for (let category in combined) {
         const filtered = combined[category].filter(item =>
           item.name.toLowerCase().includes(searchTerm) || item.desc.toLowerCase().includes(searchTerm)
         );
-
-        if (filtered.length === 0) continue;
+        if (!filtered.length) continue;
 
         const collapsible = document.createElement("button");
         collapsible.className = "collapsible";
-        collapsible.innerText = category;
+        collapsible.textContent = `${category} (Expand+)`;
+        collapsible.style.backgroundColor = color;
+        collapsible.onmouseover = () => collapsible.style.backgroundColor = hoverColor;
+        collapsible.onmouseout = () => collapsible.style.backgroundColor = color;
 
         const content = document.createElement("div");
         content.className = "content";
-
         const table = document.createElement("table");
-        table.style.borderColor = color;
-        table.innerHTML = `
-          <thead>
-            <tr>
-              <th colspan="2" class="table-title" style="background-color:${color}; color: white;">${category}</th>
-            </tr>
-            <tr>
-              <th style="border-color:${color}">Traditional</th>
-              <th style="border-color:${color}">English</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${filtered.map(item =>
-              `<tr>
-                <td style="border-color:${color}"><span class="${item.current ? 'drill-name highlight' : ''}">${item.name}</span></td>
-                <td style="border-color:${color}"><span class="${item.current ? 'drill-desc highlight' : ''}">${item.desc}</span></td>
-              </tr>`
-            ).join('')}
-          </tbody>
-        `;
+
+        filtered.forEach(item => {
+          const row = document.createElement("tr");
+          row.innerHTML = `<td class="${item.current ? 'drill-name highlight' : ''}">${item.name}</td><td class="${item.current ? 'drill-desc highlight' : ''}">${item.desc}</td>`;
+          table.appendChild(row);
+        });
+
         content.appendChild(table);
         container.appendChild(collapsible);
         container.appendChild(content);
-      }
 
-      // Collapsible logic
-      const coll = document.getElementsByClassName("collapsible");
-      for (let i = 0; i < coll.length; i++) {
-        coll[i].addEventListener("click", function () {
+        collapsible.addEventListener("click", function () {
           this.classList.toggle("active");
-          const content = this.nextElementSibling;
-          if (content.style.maxHeight) {
+          const isOpen = content.style.maxHeight;
+          if (isOpen) {
             content.style.maxHeight = null;
+            this.textContent = `${category} (Expand+)`;
           } else {
             content.style.maxHeight = content.scrollHeight + "px";
+            this.textContent = `${category} (Minimise-)`;
           }
         });
       }
