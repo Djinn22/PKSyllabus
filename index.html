@@ -3,7 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Karate Grading Syllabus</title>
+  <title>Karate Grading Syllabus - Admin</title>
+  <script src="https://www.gstatic.com/firebasejs/10.5.2/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.5.2/firebase-firestore.js"></script>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -36,44 +38,17 @@
       max-width: 400px;
       display: block;
     }
-    .collapsible {
-      cursor: pointer;
-      padding: 1rem;
-      border: none;
-      text-align: left;
-      font-size: 1.1rem;
-      width: 100%;
-      color: white;
-      transition: background-color 0.3s;
+    .technique {
+      margin-bottom: 0.5rem;
     }
-    .collapsible:hover {
-      opacity: 0.8;
+    .technique input {
+      margin-right: 0.5rem;
+      padding: 0.5rem;
+      width: 45%;
     }
-    .content {
-      padding: 0;
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.3s ease-out;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-bottom: 2rem;
-    }
-    td {
-      padding: 0.75rem;
-      width: 50%;
-      text-align: left;
-      vertical-align: top;
-    }
-    .highlight {
-      background-color: rgba(255, 255, 0, 0.2);
-    }
-    .drill-name {
-      font-weight: bold;
-    }
-    .drill-desc {
-      font-style: italic;
+    button {
+      padding: 0.5rem 1rem;
+      margin: 0.5rem 0.5rem 1rem 0;
     }
     footer {
       background-color: red;
@@ -93,220 +68,107 @@
 <body>
   <header>
     <img src="pkr_logo.webp" alt="Logo">
-    <h1>Karate Grading Syllabus</h1>
+    <h1>Karate Grading Syllabus - Admin</h1>
   </header>
   <div class="container">
-    <label for="beltSelect">Select Belt:</label>
-    <select id="beltSelect" onchange="updateTables()">
-      <option value="Red Belt">Red Belt (8th Kyu)</option>
-      <option value="Yellow Belt">Yellow Belt (7th Kyu)</option>
-      <option value="Orange Belt">Orange Belt (6th Kyu)</option>
-      <option value="Green Belt">Green Belt (5th Kyu)</option>
-      <option value="Purple Belt">Purple Belt (4th Kyu)</option>
-      <option value="Blue Belt">Blue Belt (3rd Kyu)</option>
-      <option value="Brown Belt">Brown Belt (2nd Kyu)</option>
-      <option value="Brown/Black Stripe">Brown/Black Stripe (1st Kyu)</option>
-      <option value="Black Belt">Black Belt</option>
-    </select>
-    <input type="text" id="searchInput" placeholder="Search techniques..." oninput="updateTables()">
-    <div id="requirementsContainer"></div>
+    <label>Belt:
+      <select id="beltSelect"></select>
+    </label>
+    <label>Category:
+      <select id="categorySelect"></select>
+    </label>
+    <div id="techniqueList"></div>
+    <button onclick="addTechnique()">Add New Technique</button>
+    <button onclick="saveChanges()">Save Changes</button>
   </div>
   <footer>
     <span>&copy; 2025 Peninsula Karate</span>
     <img src="pkr_logo.webp" alt="Footer Logo">
   </footer>
   <script>
-    const beltColors = {
-      "Red Belt": "rgba(255,0,0,0.2)",
-      "Yellow Belt": "rgba(255,215,0,0.2)",
-      "Orange Belt": "rgba(255,165,0,0.2)",
-      "Green Belt": "rgba(0,128,0,0.2)",
-      "Purple Belt": "rgba(128,0,128,0.2)",
-      "Blue Belt": "rgba(0,0,255,0.2)",
-      "Brown Belt": "rgba(139,69,19,0.2)",
-      "Brown/Black Stripe": "rgba(0,0,0,0.2)",
-      "Black Belt": "rgba(0,0,0,0.2)"
+    // 🔥 Replace with your actual Firebase config
+    const firebaseConfig = {
+      apiKey: "AIzaSyBP2QUZk25U1gdwWiRZpd4s3EjSX0kt6_0",
+      authDomain: "karate-syllabus-7c37c.firebaseapp.com",
+      projectId: "karate-syllabus-7c37c",
+      storageBucket: "karate-syllabus-7c37c.firebasestorage.app",
+      messagingSenderId: "701508561185",
+      appId: "1:701508561185:web:57c9383c14cd578be13660"
     };
 
-    const beltHoverColors = {
-      "Red Belt": "rgba(255,0,0,0.6)",
-      "Yellow Belt": "rgba(255,215,0,0.6)",
-      "Orange Belt": "rgba(255,165,0,0.6)",
-      "Green Belt": "rgba(0,128,0,0.6)",
-      "Purple Belt": "rgba(128,0,128,0.6)",
-      "Blue Belt": "rgba(0,0,255,0.6)",
-      "Brown Belt": "rgba(139,69,19,0.6)",
-      "Brown/Black Stripe": "rgba(0,0,0,0.6)",
-      "Black Belt": "rgba(0,0,0,0.6)"
-    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
 
+    const belts = ["Red Belt", "Yellow Belt", "Orange Belt", "Green Belt", "Purple Belt", "Blue Belt", "Brown Belt", "Brown/Black Stripe", "Black Belt"];
     const categories = ["Stances", "Punches and Strikes", "Blocks", "Kicks", "Kata", "Basic Drills", "Fighting Drills", "Application / Demonstration / Impact"];
 
-    const syllabus = {
-      "Red Belt": {
-        "Stances": [["Zenkutsu Dachi", "Forward Stance"],["Heisoku Dachi", "Feet Together Stance"],["Musubi Dachi", "Open Toe Stance"],["Heiko Dachi", "Parallel Stance"],["Yoi Dachi", "Ready Stance"],["Han Zenkutsu Dachi", "Half Forward Stance"],["Kamae", "Fighting Stance"]],
-        "Punches and Strikes": [["Chudan Zuki", "Middle FrontPunch"],["Jodan Zuki", "Upper Front Punch"],["Gedan Zuki", "Lower Front Punch"],["Ago Uchi", "Jaw Strike"],["Uraken Ganmen Uchi", "Back Fist Strike"],["Yoko Uraken Ganmen Uchi", "Side Back Fist Strike"],["Uraken Hizo Uchi", "Back Fist to Spleen"],],
-        "Blocks": [["Mae Gedan Barai", "Front Low Block"],["Age Uke", "Twist Upper Block"]],
-        "Kicks": [["Hiza Ganmen Geri", "Knee Kick to face"],["Kin Geri", "Groin Kick"],["Chudan Mae Geri", "Middle Front Kick"],["Jodan Mae Geri", "Upper Front Kick"]],
-        "Kata": [["Taikyoku Shodan", "First Cause - First Level"]],
-        "Basic Drills": [["Step Chudan Zuki in Zenketsu Dachi", "Stepping Forward with middle punch in forward stance"], ["Step Mae Geri, Chudan Zuki in Zenketsu Dachi", "Stepping forward with middle front kick off the back leg and middle front punch in forward stance."]],
-        "Fighting Drills": [["Kizami Zuki in Mamae", "Front hand jab in fighting stance"],["Chudan Gyaku Zuki in Kamae", "Middle reverse punch in fighting stance"],["Kizami Zuki, Chudan Gyaku Zuki in Kamae", "Front hand jab followed by middle reverse punch in fighting stance"],],
-        "Application / Demonstration / Impact": [["Gohon Kumite Jodan in Zenkatsu Dachi (5 Step Attack and Defense with Partner)", "Attacker steps forward with upper punch, defender steps back in mirror stance with upper block. On the 5th attack, defender counters with middle reverse punch. PLUS - Any kicks, punches or strikes with Partner using a kick shield or focus mitts"]]
-      },
-      "Yellow Belt": {
-        "Stances": [["Kokutsu Dachi", "Back Stance"],["Neko Ashi Dachi", "Cat Stance"],["Sanchin Dachi", "Hourglass Stance"],["Kiba Dachi", "Horse Riding Stance"],["Shiko Dachi", "Sumo Stance"]],
-        "Punches and Strikes": [["Tettsui Uchi", "Hammerfist to the Forehead"],["Tetsui Komi Kame", "Hammerfist to the Temple"],["Tettsui Hizo Uchi", "Hammerfist to the Spleen"],["Shuto Uchi Komi", "Knife Hand Strike to the Solar Plexus"],["Shuto Yoko Ganmen Uchi", "Knife Hand Strike to the Temple"],["Shuto Hizo Uchi", "Knife Hand Strike to the Spleen"]],
-        "Blocks": [["Chudan Uchi Uke", "Middle Inner Outer Block"],["Chudan Soto Uke", "Middle Outer Inner Block"],["Chudan Shuto Uke", "Middle Knife Hand Block"]],
-        "Kicks": [["Yoko Kensetsu Geri", "Side Knee Kick"],["Mae Kensetsu Geri", "Forward Knee Kick"],["Chudan Mawashi Geri", "Middle Roundhouse Kick"]],
-        "Kata": [["Heian Shodan", "Peaceful Mind First Level"]],
-        "Basic Drills": [["Step Chudan Gyaku Zuki in Zenkutsu Dachi", "Stepping forward with middle reverse punch in forward stance"],["Step Mae Geri, Chudan Gyaku Zuki in Zenkutsu Dachi", "Stepping forward with middle front kick off the back leg and middle reverse punch in forward stance"]],
-        "Fighting Drills": [["Mawashi Geri, Gyaku Zuki in Kamae", "Roundhouse kick off the back leg, land forward and follow with reverse punch in fighting stance"]],
-        "Application / Demonstration / Impact": [["Gohon Kumite Chudan in Zenkutsu Dachi (Five Step Attack & Defence with Partner)", "Attacker steps forward with middle punch, defender steps back in mirror stance with middle outer inner block. On the 5th attack, defender counters with middle reverse punch. PLUS - Any kicks, punches or strikes with Partner using a kick shield or focus mitts"]]
-      },
-      "Orange Belt": {
-        "Stances": [["Kosa Dachi", "Crossing Stance"],["Han Kokutsu Dachi", "Half Back Stance"]],
-        "Punches and Strikes": [["Chudan Hijiate", "Elbow to the body"],["Jodan Hijiate", "Elbow to the Side of the Head"],["Ago Hijiate", "Elbow to the Jaw"]],
-        "Blocks": [["Moroto Uke", "Assisted Block"],["Kosa Uke", "Crossing Block"]],
-        "Kicks": [["Yoko Geri Keage", "Side Snap Kick"],["Yoko Geri Kekome", "Side Thrust Kick"]],
-        "Kata": [["Heian Nidan", "Peaceful Mind Second Level"]],
-        "Basic Drills": [["Chudan Mae Geri, Oi Zuki, Chudan Gyaku Zuki, Mae Gedan Barai in Zenkutsu Dachi", "Stepping forward with middle front kick, upper front punch, middle reverse punch, forward lower block in forward stance"]],
-        "Fighting Drills": [["Kizami Zuki, Heel Step Mawashi Geri, Gyaku Zuki in Kamae", "Front hand jab, leave it forward, heel step middle roundhouse kick, land forward and follow with middle reverse punch"]],
-        "Application / Demonstration / Impact": [["Kihon Ippon Kumite in Zenkutsu Dachi (Basic One Step Sparring)", ""], ["Jodan Oi Zuki #1", "Attacker steps forward with upper punch whilst defender steps back in mirror stance with upper block and counters with reverse punch."], ["Chudan Zuki #1", "Attacker steps forward with middle punch whilst defender steps back in mirror stance with middle outer-inner block and counters with reverse punch."],["Mae Geri #1", "Attacker steps forward with middle front kick whilst defender steps back in mirror stance with forward lower block and counters with reverse punch."],["Any kicks, punches or strikes with partner using kick shield or focus mitts.", ""]]
-      },
-      "Green Belt": {
-        "Stances": [["Sōchin dachi", "Immovable Stance"]],
-        "Punches and Strikes": [["Tetta Zuki", "Vertical Fist"],["Yonhon Nukite", "Four Finger Spear Strike"],["Haito Uchi", "Ridgehand Strike"]],
-        "Blocks": [["Haito Uchi Uke", "Ridgehand Block"]],
-        "Kicks": [["Ura Mawashi Geri", "Hook Kick"],["Ushiro Geri", "Back Kick"],["Soto Keage", "Blocking Kick"]],
-        "Kata": [["Heian Sandan", "Peaceful Mind Third Level"]],
-        "Basic Drills": [["Chudan Uchi Uke, Kizami Zuki, Chudan Gyaku Zuki, Gedan Barai in Zenkutsu Dachi", "Middle inside out block, front hand jab, middle reverse punch and forward lower block in forward stance"]],
-        "Fighting Drills": [["Chudan Gyaku Zuki, Rear Leg Chudan Mawashi Geri, Chudan Gyaku Zuki in Kamae", "Middle reverse punch, leave it out, roundhouse kick off the back leg landing forward and follow up with middle reverse punch."]],
-        "Application / Demonstration / Impact": [["Kihon Ippon Kumite in Zenkutsu Dachi (Basic One Step Sparring)", ""], ["Jodan Oi Zuki #2", "Attacker steps forward with upper punch whilst defender steps back on a 45 degree angle into back stance with knife hand block simultaneously preparing other hand. Defender counters with knife hand strike to the side of the head changing stance into forward stance."], ["Chudan Zuki #2", "Attacker steps forward with middle punch whilst defender steps back on a 45 degree angle into back stance with middle outer-inner block.  The defender withdraws blocking hand and slides into horse stance and counters with elbow strike."], ["Mae Geri #2", "Attacker steps forward with middle front kick whilst defender steps back in mirror stance with reverse lower block and counters with a front hand jab and reverse punch."], ["Any kicks, punches or strikes with partner using kick shield or focus mitts.", ""]]
-      },
-      "Purple Belt": {
-        "Stances": [["Moto Dachi", "Foundational Stance"]],
-        "Punches and Strikes": [["Shotei Uchi", "Palm Strike"],["Chudan Hira Ken", "Middle Knuckle Strike"],["Jodan Hira Ken", "Upper Knuckle Strike"]],
-        "Blocks": [["Kake Uke", "Cross Over Hooking Block"]],
-        "Kicks": [["Ashi Barai", "Foot Sweep"]],
-        "Kata": [["Heian Yondan", "Peaceful Mind Fourth Level"]],
-        "Basic Drills": [["Chudan Soto Uke, Uraken, Chudan Gyaku Zuki, Gedan Barai in Zenkutsu Dachi", "Middle outer-inner block, back fist strike to the temple, middle reverse punch and forward lower block in forward stance"]],
-        "Fighting Drills": [["Mae Geri, Mawashi Geri, Chudan Gyaku Zuki in Kamae", "Prepare for a Forward front kick, then pivot into a roundhouse kick landing forward and follow up with middle reverse punch in fighting stance."]],
-        "Application / Demonstration / Impact": [["Kihon Ippon Kumite in Zenkutsu Dachi (Basic One Step Sparring)", ""],["Jodan Oi Zuki #3", "Attacker steps forward with upper punch whilst defender slides the left foot diagonally withdrawing the right foot at the same time into feet together stance. Defender blocks side upper block and counters with a side snap kick lands forward in horse stance and follows up with elbow strike."],["Chudan Zuki #3", "Attacker steps forward with middle punch whilst defender steps back in mirror stance with middle inner-outer block. The defender withdraws blocking hand and counters with front hand jab followed by reverse punch."],["Mae Geri #3", "Attacker steps forward with middle front kick whilst defender steps back in mirror stance with reverse low x-block and counters with a cross hand throat strike."], ["Any kicks, punches or strikes with partner using kick shield or focus mitts.", ""]]
-      },
-      "Blue Belt": {
-        "Stances": [["No Additonal Stances", ""]],
-        "Punches and Strikes": [["Age Zuki", "Rising Jaw Strike"], ["Chudan Shotei Uchi", "Middle Palm Strike"], ["Chudan Ura Zuki", "Middle Uppercut Punch"], ["Mawashi Zuki", "Roundhouse Punch"], ["Moroto Zuki", "Double Punch"], ["Yama Zuki", "Mountain Punch or U Punch"]],
-        "Blocks": [["No Additonal Blocks", ""]],
-        "Kicks": [["No Additonal Kicks", ""]],
-        "Kata": [["Heian Godan", "Peaceful Mind Fifth Level"]],
-        "Basic Drills": [["Haito Uchi Uke, Shotei Uchi, Gyaku Zuki, Gedan Barai in Zenkutsu Dachi", "Inner outer ridgehand block, palm heel strike, middle reverse punch and lower block in forward stance."]],
-        "Fighting Drills": [["Chudan Gyaku Zuki, Mawashi Geri, Ashi Barai, Gyaku Zuki in Kamae", "Middle reverse punch, rear leg roundhouse kick, foot sweep and follow up with reverse punch in fighting stance."]],
-        "Application / Demonstration / Impact": [["Jiyu Ippon Kumite (Freestyle One-Step Sparring)", ""],["Jodan Oi Zuki #1", "Attacker steps forward with front punch, defender breaks line 45 degrees to the right with knife hand block and counters with a reverse punch."], ["Chudan Zuki #1", "Attacker steps forward middle punch, keeping same stance the defender shifts 45 deg to the outside of the opponent with middle outer-inner block and counters with reverse punch."], ["Mae Geri #1", "Attacker steps forward with middle front kick, the defender breaks line to the right with forward lower block and counters with reverse punch."],["Mawashi Geri #1", "Attacker kicks upper roundhouse and the defender steps perpendicular to the right and blocks with verticle arm block and counters middle reverse punch."],["Any kicks, punches or strikes with partner using kick shield or focus mitts.", ""]]
-      },
-      "Brown Belt": {
-        "Stances": [],
-        "Punches and Strikes": [["No Additional Strikes", ""]],
-        "Blocks": [],
-        "Kicks": [],
-        "Kata": [["Tekki Shodan", "Iron Horse First Level"]],
-        "Basic Drills": [["Sambon Zuki #1:","Stepping forward with triple middle punch with a slight pause after the first punch and then delivering two quick punches. Then stepping back into back stance with knife hand block, step across into forward stance with reverse punch and forward lower block"]],
-        "Fighting Drills": [["Jodan Mawashi Geri, Gyaku Zuki in Kamae:","Keeping the same stance, lean back, upper roundhouse kick off the front leg, land forward and follow up with reverse punch"]],
-        "Application / Demonstration / Impact": [["Jiyu Ippon Kumite (Freestyle One-Step Sparring)", ""],["Jodan Oi Zuki #2:","Attacker steps forward with front punch, defender slides forward with a sweeping front hand block and counters middle reverse upper cut"],["Chudan Zuki #2:","Attacker steps forward with middle punch the defender steps back reverse low knife hand block and counters with back fist to the side of the face"], ["Mae Geri #2:","Attacker steps forward with middle front kick, the defender steps 45 degrees to the left and blocks with a forward lower block. Covering with a reverse knife hand and pulling the blocking hand back to the hip, the defender then counters with a straight punch and pulls the punching hand back to the hip."],["Mawashi Geri #2","Attacker kicks upper roundhouse kick, the defender steps forward and then counters with upper lunge punch. Pulling the front hand back, the defender steps out with the back foot and strikes again knife hand strike to the head or neck"]]
-      },
-      "Brown/Black Stripe": {
-        "Stances": [],
-        "Punches and Strikes": [],
-        "Blocks": [],
-        "Kicks": [],
-        "Kata": [["Bassai Dai", "To Penetrate a Fortress"]],
-        "Basic Drills": [["Sanbon Zuki #2", "Stepping forward with triple middle punch with a slight pause after the first punch and then delivering two quick punches. Then stepping back into horse stance with forward lower block, step across into forward stance with reverse punch and forward lower block."]],
-        "Fighting Drills": [["Jodan Mawashi Geri, Jodan Ura Ushiro Mawashi Geri, Gyaku Zuki in Kamae", "Upper roundhouse kick off the back leg, spinning reverse roundhouse kick and follow up with reverse punch in fighting stance."]],
-        "Application / Demonstration / Impact": [["Jiyu Ippon Kumite (Freestyle One-Step Sparring)", ""], ["Jodan Oi Zuki #3:","Attacker steps forward with front punch, defender breaks line 45-degrees to the left with front foot whilst blocking upper block in forward stance. The defender counters with a short roundhouse kick followed by a reverse punch and retracts by sliding back."], ["Chudan Zuki #3","Attacker steps forward with middle punch and the defender draws the front foot directly out to the side to face perpendicular to the attacker. Without blocking, the defender attacks middle reverse punch"],["Mae Geri #3:","Attacker steps forward with middle front kick the defender slides forward meeting the kick with a low x-block (left hand above the right). The defender sweeps the kicking leg past using the right arm and twists to the right and counters with knife hand strike to the throat."],["Mawashi Geri #3:","Attacker kicks upper roundhouse kick, the defender withdraws the front foot into crossing stance, blocks with parallel block and counters with roundhouse kick."], ["Any kicks, punches or strikes with partner using kick shield or focus mitts.", ""]]
-      },
-      "Black Belt": {
-        "Stances": [],
-        "Punches and Strikes": [],
-        "Blocks": [],
-        "Kicks": [],
-        "Kata": [["Jion", "Budhist Temple"], ["Demonstrate one section of bunkai from a Heian kata.", ""]],   
-        "Basic Drills": [],
-        "Fighting Drills": [],
-        "Application / Demonstration / Impact": [["Kihon Sanbon Kumite #1", "Attacker steps forward with upper punch and the defender steps back upper block. Attacker steps forward with middle punch and the defender steps back middle outer-inner block. Attacker steps forward with middle front kick and the defender steps back forward lower block and counters with reverse punch."], ["Kihon Sanbon Kumite #2:", "Attacker steps forward with upper punch and the defender steps back upper block. Attacker steps forward with middle punch and the defender steps back middle inner-outer block. Attacker steps forward with middle front kick and the defender steps back reverse forward lower block and counters with front hand jab followed by reverse punch."], ["All previous Kihon Ippon Kumite & all previous Jiyu Ippon Kumite", ""], ["Any kicks, punches or strikes with partner using kick shield or focus mitts.", ""], ["Free Kumite", "Demonstrates good form throughout the bout with vigourous application.Demonstrates a good sporting attitude. Demonstrates good timing and correct distances. Zanshin, Maintains awareness of the opponent and surroundings"]]
-      }
-    };
+    const beltSelect = document.getElementById('beltSelect');
+    const categorySelect = document.getElementById('categorySelect');
+    const techniqueList = document.getElementById('techniqueList');
+    let currentData = [];
 
-    function getCombinedRequirements(belt) {
-      const beltOrder = [
-        "Red Belt", "Yellow Belt", "Orange Belt", "Green Belt",
-        "Purple Belt", "Blue Belt", "Brown Belt", "Brown/Black Stripe", "Black Belt"
-      ];
-      let combined = {};
-      for (let category of categories) {
-        combined[category] = [];
-      }
-      for (let b of beltOrder) {
-        if (syllabus[b]) {
-          for (let category of categories) {
-            combined[category].push(...(syllabus[b][category] || []).map(item => ({ name: item[0], desc: item[1], current: b === belt })));
-          }
-        }
-        if (b === belt) break;
-      }
-      return combined;
+    belts.forEach(belt => {
+      let opt = document.createElement('option');
+      opt.value = belt;
+      opt.textContent = belt;
+      beltSelect.appendChild(opt);
+    });
+
+    categories.forEach(cat => {
+      let opt = document.createElement('option');
+      opt.value = cat;
+      opt.textContent = cat;
+      categorySelect.appendChild(opt);
+    });
+
+    beltSelect.onchange = categorySelect.onchange = loadTechniques;
+
+    function loadTechniques() {
+      const belt = beltSelect.value;
+      const category = categorySelect.value;
+
+      db.collection("syllabus").doc(belt).get().then(doc => {
+        const data = doc.data() || {};
+        currentData = data[category] || [];
+
+        techniqueList.innerHTML = '';
+        currentData.forEach((item, index) => {
+          const div = document.createElement('div');
+          div.className = 'technique';
+          div.innerHTML = `
+            <input value="${item[0]}" placeholder="Traditional" onchange="updateItem(${index}, 0, this.value)">
+            <input value="${item[1]}" placeholder="Description" onchange="updateItem(${index}, 1, this.value)">
+            <button onclick="removeItem(${index})">Delete</button>
+          `;
+          techniqueList.appendChild(div);
+        });
+      });
     }
 
-
-    function updateTables() {
-      const belt = document.getElementById("beltSelect").value;
-      const searchTerm = document.getElementById("searchInput").value.toLowerCase();
-      const container = document.getElementById("requirementsContainer");
-      const color = beltColors[belt];
-      const hoverColor = beltHoverColors[belt];
-      const combined = getCombinedRequirements(belt);
-      container.innerHTML = "";
-
-      for (let category in combined) {
-        const filtered = combined[category].filter(item =>
-          item.name.toLowerCase().includes(searchTerm) || item.desc.toLowerCase().includes(searchTerm)
-        );
-        if (!filtered.length) continue;
-
-        const collapsible = document.createElement("button");
-        collapsible.className = "collapsible";
-        collapsible.textContent = `${category} (Expand+)`;
-        collapsible.style.backgroundColor = color;
-        collapsible.onmouseover = () => collapsible.style.backgroundColor = hoverColor;
-        collapsible.onmouseout = () => collapsible.style.backgroundColor = color;
-
-        const content = document.createElement("div");
-        content.className = "content";
-        const table = document.createElement("table");
-
-        filtered.forEach(item => {
-          const row = document.createElement("tr");
-          row.innerHTML = `<td class="${item.current ? 'drill-name highlight' : ''}">${item.name}</td><td class="${item.current ? 'drill-desc highlight' : ''}">${item.desc}</td>`;
-          table.appendChild(row);
-        });
-
-        content.appendChild(table);
-        container.appendChild(collapsible);
-        container.appendChild(content);
-
-        collapsible.addEventListener("click", function () {
-          this.classList.toggle("active");
-          const isOpen = content.style.maxHeight;
-          if (isOpen) {
-            content.style.maxHeight = null;
-            this.textContent = `${category} (Expand+)`;
-          } else {
-            content.style.maxHeight = content.scrollHeight + "px";
-            this.textContent = `${category} (Minimise-)`;
-          }
-        });
-      }
+    function updateItem(index, field, value) {
+      currentData[index][field] = value;
     }
 
-    window.onload = updateTables;
+    function addTechnique() {
+      currentData.push(["", ""]);
+      loadTechniques();
+    }
+
+    function removeItem(index) {
+      currentData.splice(index, 1);
+      loadTechniques();
+    }
+
+    function saveChanges() {
+      const belt = beltSelect.value;
+      const category = categorySelect.value;
+
+      db.collection("syllabus").doc(belt).set({
+        [category]: currentData
+      }, { merge: true }).then(() => {
+        alert('Saved successfully!');
+      });
+    }
   </script>
 </body>
 </html>
