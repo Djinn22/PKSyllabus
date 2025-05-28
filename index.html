@@ -120,4 +120,135 @@
       <option value="Red Belt">Red Belt (8th Kyu)</option>
       <option value="Yellow Belt">Yellow Belt (7th Kyu)</option>
       <option value="Orange Belt">Orange Belt (6th Kyu)</option>
-      <option value="Green Belt">Green Be
+      <option value="Green Belt">Green Belt (5th Kyu)</option>
+      <option value="Purple Belt">Purple Belt (4th Kyu)</option>
+      <option value="Blue Belt">Blue Belt (3rd Kyu)</option>
+      <option value="Brown Belt">Brown Belt (2nd Kyu)</option>
+      <option value="Brown/Black Stripe">Brown/Black Stripe (1st Kyu)</option>
+      <option value="Black Belt">Black Belt</option>
+    </select>
+
+    <input type="text" id="searchInput" placeholder="Search techniques..." oninput="updateTables()"/>
+
+    <div id="requirementsContainer"></div>
+  </div>
+  <footer>
+    <span>&copy; 2025 Peninsula Karate</span>
+    <img src="pkr_logo.webp" alt="Footer Logo" />
+  </footer>
+
+  <script>
+    const beltColors = {
+      "Red Belt": "red",
+      "Yellow Belt": "gold",
+      "Orange Belt": "orange",
+      "Green Belt": "green",
+      "Purple Belt": "purple",
+      "Blue Belt": "blue",
+      "Brown Belt": "saddlebrown",
+      "Brown/Black Stripe": "black",
+      "Black Belt": "black"
+    };
+
+    const categories = [
+      "Stances",
+      "Punches and Strikes",
+      "Blocks",
+      "Kicks",
+      "Kata",
+      "Basic Drills",
+      "Fighting Drills",
+      "Application / Demonstration / Impact"
+    ];
+
+    // [Insert your syllabus data here — unchanged from your original]
+
+    // --- Shortened for this example (see your full code above) ---
+
+    function getCombinedRequirements(belt) {
+      const beltOrder = [
+        "Red Belt", "Yellow Belt", "Orange Belt", "Green Belt",
+        "Purple Belt", "Blue Belt", "Brown Belt", "Brown/Black Stripe", "Black Belt"
+      ];
+      let combined = {};
+      for (let category of categories) {
+        combined[category] = [];
+      }
+      for (let b of beltOrder) {
+        if (syllabus[b]) {
+          for (let category of categories) {
+            combined[category].push(...(syllabus[b][category] || []).map(item => ({ name: item[0], desc: item[1], current: b === belt })));
+          }
+        }
+        if (b === belt) break;
+      }
+      return combined;
+    }
+
+    function updateTables() {
+      const belt = document.getElementById("beltSelect").value;
+      const searchTerm = document.getElementById("searchInput").value.toLowerCase();
+      const container = document.getElementById("requirementsContainer");
+      const color = beltColors[belt] || "black";
+      const combined = getCombinedRequirements(belt);
+
+      container.innerHTML = "";
+      for (let category in combined) {
+        const filtered = combined[category].filter(item =>
+          item.name.toLowerCase().includes(searchTerm) || item.desc.toLowerCase().includes(searchTerm)
+        );
+
+        if (filtered.length === 0) continue;
+
+        const collapsible = document.createElement("button");
+        collapsible.className = "collapsible";
+        collapsible.innerText = category;
+
+        const content = document.createElement("div");
+        content.className = "content";
+
+        const table = document.createElement("table");
+        table.style.borderColor = color;
+        table.innerHTML = `
+          <thead>
+            <tr>
+              <th colspan="2" class="table-title" style="background-color:${color}; color: white;">${category}</th>
+            </tr>
+            <tr>
+              <th style="border-color:${color}">Traditional</th>
+              <th style="border-color:${color}">English</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${filtered.map(item =>
+              `<tr>
+                <td style="border-color:${color}"><span class="${item.current ? 'drill-name highlight' : ''}">${item.name}</span></td>
+                <td style="border-color:${color}"><span class="${item.current ? 'drill-desc highlight' : ''}">${item.desc}</span></td>
+              </tr>`
+            ).join('')}
+          </tbody>
+        `;
+        content.appendChild(table);
+        container.appendChild(collapsible);
+        container.appendChild(content);
+      }
+
+      // Collapsible logic
+      const coll = document.getElementsByClassName("collapsible");
+      for (let i = 0; i < coll.length; i++) {
+        coll[i].addEventListener("click", function () {
+          this.classList.toggle("active");
+          const content = this.nextElementSibling;
+          if (content.style.maxHeight) {
+            content.style.maxHeight = null;
+          } else {
+            content.style.maxHeight = content.scrollHeight + "px";
+          }
+        });
+      }
+    }
+
+    window.onload = updateTables;
+  </script>
+</body>
+</html>
