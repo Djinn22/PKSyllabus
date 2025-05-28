@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin - Karate Syllabus</title>
+  <script src="https://www.gstatic.com/firebasejs/10.5.2/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.5.2/firebase-firestore.js"></script>
+</head>
+<body>
+  <h1>Edit Karate Syllabus</h1>
+
+  <label>Belt:
+    <select id="beltSelect"></select>
+  </label>
+
+  <label>Category:
+    <select id="categorySelect"></select>
+  </label>
+
+  <div id="techniqueList"></div>
+
+  <button onclick="addTechnique()">Add New Technique</button>
+  <button onclick="saveChanges()">Save Changes</button>
+
+  <script>
+    // 🔥 Replace this with YOUR Firebase config
+    const firebaseConfig = {
+      apiKey: "AIzaSyBP2QUZk25U1gdwWiRZpd4s3EjSX0kt6_0",
+      authDomain: "karate-syllabus-7c37c.firebaseapp.com",
+      projectId: "karate-syllabus-7c37c",
+      storageBucket: "karate-syllabus-7c37c.firebasestorage.app",
+      messagingSenderId: "701508561185",
+      appId: "1:701508561185:web:57c9383c14cd578be13660"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    const belts = ["Red Belt", "Yellow Belt", "Orange Belt", "Green Belt", "Purple Belt", "Blue Belt", "Brown Belt", "Brown/Black Stripe", "Black Belt"];
+    const categories = ["Stances", "Punches and Strikes", "Blocks", "Kicks", "Kata", "Basic Drills", "Fighting Drills", "Application / Demonstration / Impact"];
+    let currentData = [];
+
+    const beltSelect = document.getElementById('beltSelect');
+    const categorySelect = document.getElementById('categorySelect');
+    const techniqueList = document.getElementById('techniqueList');
+
+    belts.forEach(belt => {
+      let option = document.createElement('option');
+      option.value = belt;
+      option.textContent = belt;
+      beltSelect.appendChild(option);
+    });
+
+    categories.forEach(cat => {
+      let option = document.createElement('option');
+      option.value = cat;
+      option.textContent = cat;
+      categorySelect.appendChild(option);
+    });
+
+    beltSelect.onchange = categorySelect.onchange = loadTechniques;
+
+    function loadTechniques() {
+      const belt = beltSelect.value;
+      const category = categorySelect.value;
+
+      db.collection("syllabus").doc(belt).get().then(doc => {
+        const data = doc.data() || {};
+        currentData = data[category] || [];
+
+        techniqueList.innerHTML = '';
+        currentData.forEach((item, index) => {
+          const div = document.createElement('div');
+          div.innerHTML = `
+            <input value="${item[0]}" placeholder="Traditional name" onchange="updateItem(${index}, 0, this.value)">
+            <input value="${item[1]}" placeholder="Description" onchange="updateItem(${index}, 1, this.value)">
+            <button onclick="removeItem(${index})">Delete</button>
+          `;
+          techniqueList.appendChild(div);
+        });
+      });
+    }
+
+    function updateItem(index, field, value) {
+      currentData[index][field] = value;
+    }
+
+    function addTechnique() {
+      currentData.push(["", ""]);
+      loadTechniques();
+    }
+
+    function removeItem(index) {
+      currentData.splice(index, 1);
+      loadTechniques();
+    }
+
+    function saveChanges() {
+      const belt = beltSelect.value;
+      const category = categorySelect.value;
+
+      db.collection("syllabus").doc(belt).set({
+        [category]: currentData
+      }, { merge: true }).then(() => {
+        alert('Saved successfully!');
+      });
+    }
+  </script>
+</body>
+</html>
