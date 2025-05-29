@@ -289,6 +289,18 @@
         const collapsible = document.createElement("button");
         collapsible.className = "collapsible";
         collapsible.innerText = category;
+        collapsible.style.backgroundColor = color;
+        collapsible.style.color = 'white';
+        collapsible.style.fontSize = '1.5rem';
+        collapsible.style.fontWeight = 'bold';
+        collapsible.style.padding = '1rem';
+        collapsible.style.textAlign = 'center';
+        collapsible.style.opacity = '1';
+        collapsible.style.border = `2px solid ${color}`;
+        collapsible.style.marginBottom = '1rem';
+        collapsible.style.borderRadius = '6px';
+        collapsible.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.1)';
+
 
         const content = document.createElement("div");
         content.className = "content";
