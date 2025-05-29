@@ -308,15 +308,6 @@
         const table = document.createElement("table");
         table.style.borderColor = color;
         table.innerHTML = `
-          <thead>
-            <tr>
-              <th colspan="2" class="table-title" style="background-color:${color}; color: white;">${category}</th>
-            </tr>
-            <tr>
-              <th style="border-color:${color}">Traditional</th>
-              <th style="border-color:${color}">English</th>
-            </tr>
-          </thead>
           <tbody>
             ${filtered.map(item =>
               `<tr>
