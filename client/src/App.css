@@ -1,0 +1,36 @@
+/* Additional App-specific styles */
+.App {
+  text-align: left;
+}
+
+.expand-icon {
+  transition: transform 0.2s ease;
+}
+
+.expand-icon.expanded {
+  transform: rotate(90deg);
+}
+
+.belt-count {
+  font-size: 14px;
+  color: #6c757d;
+  font-weight: normal;
+}
+
+.validation-error {
+  color: #dc3545;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.add-row {
+  background-color: #f8f9fa;
+}
+
+.subcategory-header {
+  font-weight: 600;
+  color: #495057;
+  margin-bottom: 10px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #dee2e6;
+}

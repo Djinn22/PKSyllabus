@@ -1,0 +1,45 @@
+{"adminUsername":"admin","environment":"development","level":"info","logLevel":"info","message":"PKSyllabus server started successfully","port":3000,"service":"pksyllabus","timestamp":"2025-08-07T12:22:17.612Z"}
+{"adminUsername":"admin","environment":"development","level":"info","logLevel":"info","message":"PKSyllabus server started successfully","port":3010,"service":"pksyllabus","timestamp":"2025-08-07T12:23:23.992Z"}
+{"adminUsername":"admin","environment":"development","level":"info","logLevel":"info","message":"PKSyllabus server started successfully","port":3010,"service":"pksyllabus","timestamp":"2025-08-07T12:27:09.374Z"}
+{"ip":"::1","level":"info","message":"Fetching syllabus data","service":"pksyllabus","timestamp":"2025-08-07T12:27:12.955Z","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15"}
+{"belts":9,"level":"info","message":"Syllabus data retrieved successfully","service":"pksyllabus","timestamp":"2025-08-07T12:27:12.957Z"}
+{"adminUsername":"admin","environment":"development","level":"info","logLevel":"info","message":"PKSyllabus server started successfully","port":3010,"service":"pksyllabus","timestamp":"2025-08-07T12:41:37.459Z"}
+{"ip":"::1","level":"info","message":"Fetching syllabus data","service":"pksyllabus","timestamp":"2025-08-07T12:41:40.916Z","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15"}
+{"ip":"::1","level":"info","message":"Fetching syllabus data","service":"pksyllabus","timestamp":"2025-08-07T12:41:40.917Z","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15"}
+{"belts":9,"level":"info","message":"Syllabus data retrieved successfully","service":"pksyllabus","timestamp":"2025-08-07T12:41:40.918Z"}
+{"belts":9,"level":"info","message":"Syllabus data retrieved successfully","service":"pksyllabus","timestamp":"2025-08-07T12:41:40.920Z"}
+{"ip":"::1","level":"info","message":"Fetching syllabus data","service":"pksyllabus","timestamp":"2025-08-07T12:45:24.724Z","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15"}
+{"ip":"::1","level":"info","message":"Fetching syllabus data","service":"pksyllabus","timestamp":"2025-08-07T12:45:24.725Z","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15"}
+{"belts":9,"level":"info","message":"Syllabus data retrieved successfully","service":"pksyllabus","timestamp":"2025-08-07T12:45:24.725Z"}
+{"belts":9,"level":"info","message":"Syllabus data retrieved successfully","service":"pksyllabus","timestamp":"2025-08-07T12:45:24.726Z"}
+{"adminUsername":"admin","environment":"development","level":"info","logLevel":"info","message":"PKSyllabus server started successfully","port":3010,"service":"pksyllabus","timestamp":"2025-08-07T12:45:46.979Z"}
+{"ip":"::1","level":"info","message":"Fetching syllabus data","service":"pksyllabus","timestamp":"2025-08-07T12:45:49.910Z","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15"}
+{"ip":"::1","level":"info","message":"Fetching syllabus data","service":"pksyllabus","timestamp":"2025-08-07T12:45:49.910Z","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15"}
+{"belts":9,"level":"info","message":"Syllabus data retrieved successfully","service":"pksyllabus","timestamp":"2025-08-07T12:45:49.911Z"}
+{"belts":9,"level":"info","message":"Syllabus data retrieved successfully","service":"pksyllabus","timestamp":"2025-08-07T12:45:49.914Z"}
+{"adminUsername":"admin","environment":"development","level":"info","logLevel":"info","message":"PKSyllabus server started successfully","port":3010,"service":"pksyllabus","timestamp":"2025-08-07T12:48:27.239Z"}
+{"ip":"::1","level":"info","message":"Fetching syllabus data","service":"pksyllabus","timestamp":"2025-08-07T12:49:18.238Z","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"}
+{"belts":9,"level":"info","message":"Syllabus data retrieved successfully","service":"pksyllabus","timestamp":"2025-08-07T12:49:18.239Z"}
+{"ip":"::1","level":"info","message":"Fetching syllabus data","service":"pksyllabus","timestamp":"2025-08-07T12:50:41.864Z","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"}
+{"belts":9,"level":"info","message":"Syllabus data retrieved successfully","service":"pksyllabus","timestamp":"2025-08-07T12:50:41.866Z"}
+{"ip":"::1","level":"info","message":"Fetching syllabus data","service":"pksyllabus","timestamp":"2025-08-07T12:50:53.269Z","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"}
+{"belts":9,"level":"info","message":"Syllabus data retrieved successfully","service":"pksyllabus","timestamp":"2025-08-07T12:50:53.270Z"}
+{"adminUsername":"admin","environment":"development","level":"info","logLevel":"info","message":"PKSyllabus server started successfully","port":3010,"service":"pksyllabus","timestamp":"2025-08-07T12:52:33.545Z"}
+{"ip":"::1","level":"info","message":"Fetching syllabus data","service":"pksyllabus","timestamp":"2025-08-07T12:52:55.759Z","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"}
+{"belts":9,"level":"info","message":"Syllabus data retrieved successfully","service":"pksyllabus","timestamp":"2025-08-07T12:52:55.761Z"}
+{"ip":"::1","level":"info","message":"Fetching syllabus data","service":"pksyllabus","timestamp":"2025-08-07T13:07:14.997Z","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"}
+{"belts":9,"level":"info","message":"Syllabus data retrieved successfully","service":"pksyllabus","timestamp":"2025-08-07T13:07:14.997Z"}
+{"ip":"::1","level":"info","message":"Fetching syllabus data","service":"pksyllabus","timestamp":"2025-08-07T13:07:29.509Z","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"}
+{"belts":9,"level":"info","message":"Syllabus data retrieved successfully","service":"pksyllabus","timestamp":"2025-08-07T13:07:29.510Z"}
+{"ip":"::1","level":"info","message":"Fetching syllabus data","service":"pksyllabus","timestamp":"2025-08-07T13:07:42.566Z","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"}
+{"belts":9,"level":"info","message":"Syllabus data retrieved successfully","service":"pksyllabus","timestamp":"2025-08-07T13:07:42.567Z"}
+{"ip":"::1","level":"info","message":"Fetching syllabus data","service":"pksyllabus","timestamp":"2025-08-07T13:07:48.080Z","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"}
+{"belts":9,"level":"info","message":"Syllabus data retrieved successfully","service":"pksyllabus","timestamp":"2025-08-07T13:07:48.080Z"}
+{"ip":"::1","level":"info","message":"Fetching syllabus data","service":"pksyllabus","timestamp":"2025-08-07T13:08:21.240Z","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15"}
+{"ip":"::1","level":"info","message":"Fetching syllabus data","service":"pksyllabus","timestamp":"2025-08-07T13:08:21.240Z","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15"}
+{"belts":9,"level":"info","message":"Syllabus data retrieved successfully","service":"pksyllabus","timestamp":"2025-08-07T13:08:21.240Z"}
+{"belts":9,"level":"info","message":"Syllabus data retrieved successfully","service":"pksyllabus","timestamp":"2025-08-07T13:08:21.241Z"}
+{"ip":"::1","level":"info","message":"Fetching syllabus data","service":"pksyllabus","timestamp":"2025-08-07T13:10:27.708Z","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15"}
+{"ip":"::1","level":"info","message":"Fetching syllabus data","service":"pksyllabus","timestamp":"2025-08-07T13:10:27.708Z","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15"}
+{"belts":9,"level":"info","message":"Syllabus data retrieved successfully","service":"pksyllabus","timestamp":"2025-08-07T13:10:27.709Z"}
+{"belts":9,"level":"info","message":"Syllabus data retrieved successfully","service":"pksyllabus","timestamp":"2025-08-07T13:10:27.709Z"}
