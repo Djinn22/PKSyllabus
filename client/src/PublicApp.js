@@ -50,42 +50,118 @@ function PublicApp() {
 
   // Create cumulative syllabus where each belt includes all previous techniques
   const createCumulativeSyllabus = (syllabusData) => {
+    console.log('Creating cumulative syllabus with data:', Object.keys(syllabusData || {}));
     const cumulative = {};
-    let previousBeltsData = {};
+    const allItemsByCategory = new Map(); // Track items by category across all belts
     
-    beltOrder.forEach((belt, index) => {
-      if (!syllabusData[belt]) return;
-      
-      // Start with a copy of previous belts' data
-      const currentBeltData = JSON.parse(JSON.stringify(previousBeltsData));
-      
-      // Add current belt's data with isCurrentBelt flag
-      Object.entries(syllabusData[belt]).forEach(([category, items]) => {
-        if (!currentBeltData[category]) {
-          currentBeltData[category] = [];
-        }
+    try {
+      // First pass: collect all unique items by category across all belts
+      beltOrder.forEach(belt => {
+        if (!syllabusData || !syllabusData[belt]) return;
         
-        // Mark current belt's items with isCurrentBelt: true
-        const currentItems = items.map(item => ({
-          ...item,
-          isCurrentBelt: true
-        }));
-        
-        // Add current belt's items to the beginning of the category
-        currentBeltData[category] = [
-          ...currentItems,
-          ...(currentBeltData[category] || [])
-        ];
+        Object.entries(syllabusData[belt]).forEach(([category, items]) => {
+          if (!Array.isArray(items)) return;
+          
+          // Initialize category if it doesn't exist
+          if (!allItemsByCategory.has(category)) {
+            allItemsByCategory.set(category, new Map());
+          }
+          const categoryItems = allItemsByCategory.get(category);
+          
+          // Add items from this belt to the category
+          items.forEach(item => {
+            if (!item) return;
+            
+            const safeItem = {
+              ...item,
+              traditional: item.traditional || '',
+              english: item.english || '',
+              isCurrentBelt: false, // Will be set to true for the belt it first appears in
+              _originBelt: belt
+            };
+            
+            const itemKey = `${safeItem.traditional}_${safeItem.english}`.toLowerCase();
+            
+            // Only add if we haven't seen this item in this category before
+            if (!categoryItems.has(itemKey)) {
+              categoryItems.set(itemKey, {
+                ...safeItem,
+                _firstSeenBelt: belt // Track where this item first appeared
+              });
+            }
+          });
+        });
       });
       
-      // Save the cumulative data for this belt
-      cumulative[belt] = currentBeltData;
+      // Second pass: build cumulative syllabus for each belt
+      const processedBelts = new Set();
       
-      // Update previous belts data for next iteration
-      previousBeltsData = { ...currentBeltData };
-    });
-    
-    return cumulative;
+      beltOrder.forEach(belt => {
+        if (!syllabusData || !syllabusData[belt]) return;
+        
+        console.log(`\n=== Processing belt: ${belt} ===`);
+        const currentBeltData = {};
+        
+        // Get all categories from all belts up to this one
+        const allCategories = new Set();
+        beltOrder.slice(0, beltOrder.indexOf(belt) + 1).forEach(b => {
+          if (syllabusData[b]) {
+            Object.keys(syllabusData[b]).forEach(cat => allCategories.add(cat));
+          }
+        });
+        
+        // Process each category that exists up to this belt
+        allCategories.forEach(category => {
+          if (!allItemsByCategory.has(category)) return;
+          
+          const categoryItems = [];
+          const categoryMap = allItemsByCategory.get(category);
+          
+          // Add all items from this category that were first seen in this or previous belts
+          categoryMap.forEach((item, key) => {
+            if (beltOrder.indexOf(item._firstSeenBelt) <= beltOrder.indexOf(belt)) {
+              categoryItems.push({
+                ...item,
+                isCurrentBelt: item._firstSeenBelt === belt
+              });
+            }
+          });
+          
+          if (categoryItems.length > 0) {
+            currentBeltData[category] = categoryItems;
+          }
+        });
+        
+        // Save the complete data for this belt
+        cumulative[belt] = currentBeltData;
+        processedBelts.add(belt);
+        
+        // Debug logging
+        const itemCount = Object.values(currentBeltData).reduce(
+          (total, items) => total + (items?.length || 0), 0
+        );
+        
+        console.log(`Belt ${belt} has ${itemCount} items across ${Object.keys(currentBeltData).length} categories`);
+      });
+      
+      console.log('\n=== Cumulative syllabus creation complete ===', {
+        belts: Array.from(processedBelts),
+        categories: Array.from(allItemsByCategory.keys()),
+        totalItems: Array.from(allItemsByCategory.values()).reduce(
+          (total, catMap) => total + catMap.size, 0
+        )
+      });
+      
+      return cumulative;
+      
+    } catch (error) {
+      console.error('Error in createCumulativeSyllabus:', error);
+      console.error('Error details:', {
+        message: error.message,
+        stack: error.stack
+      });
+      return cumulative;
+    }
   };
 
   const fetchSyllabus = async () => {
@@ -216,18 +292,22 @@ function PublicApp() {
         </div>
       ) : (
         <div className="syllabus-content">
-          {Object.entries(syllabus).map(([belt, categories]) => (
-            <PublicBeltSection 
-              key={belt}
-              belt={belt} 
-              categories={categories}
-              cumulativeCategories={cumulativeSyllabus[belt] || {}}
-              isExpanded={expandedBelts[belt]}
-              onToggleExpand={() => toggleBeltExpand(belt)}
-              searchTerm={searchTerm}
-              isVisible={selectedBelt === 'all' || selectedBelt === belt}
-            />
-          ))}
+          {beltOrder.map((belt) => {
+            if (!syllabus[belt]) return null;
+            
+            return (
+              <PublicBeltSection 
+                key={belt}
+                belt={belt} 
+                categories={syllabus[belt]}
+                cumulativeCategories={cumulativeSyllabus[belt] || {}}
+                isExpanded={expandedBelts[belt]}
+                onToggleExpand={() => toggleBeltExpand(belt)}
+                searchTerm={searchTerm}
+                isVisible={selectedBelt === 'all' || selectedBelt === belt}
+              />
+            );
+          })}
         </div>
       )}
 

@@ -130,7 +130,24 @@ app.get('/api/syllabus', (req, res) => {
     }
     try {
       const syllabusData = JSON.parse(data);
-      logger.info('Syllabus data retrieved successfully', { belts: Object.keys(syllabusData).length });
+      
+      // Add isCurrentBelt flag to all items
+      Object.entries(syllabusData).forEach(([belt, categories]) => {
+        Object.entries(categories).forEach(([category, items]) => {
+          if (Array.isArray(items)) {
+            syllabusData[belt][category] = items.map(item => ({
+              ...item,
+              isCurrentBelt: true
+            }));
+          }
+        });
+      });
+      
+      logger.info('Syllabus data retrieved successfully', { 
+        belts: Object.keys(syllabusData).length,
+        withIsCurrentFlag: true 
+      });
+      
       res.json(syllabusData);
     } catch (parseErr) {
       logger.error('Error parsing syllabus.json', { error: parseErr.message, file: SYLLABUS_FILE });

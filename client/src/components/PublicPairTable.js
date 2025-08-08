@@ -1,47 +1,63 @@
 import React from 'react';
 
 const PublicPairTable = ({ items, searchTerm, currentBelt }) => {
-  const highlightText = (text, searchTerm) => {
-    if (!searchTerm || !text) return text;
+  const highlightText = (text, term) => {
+    if (!text) return '';
+    if (!term) return text;
     
-    const regex = new RegExp(`(${searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
-    const parts = text.split(regex);
-    
-    return parts.map((part, index) => 
-      regex.test(part) ? (
-        <span key={index} className="highlight">{part}</span>
-      ) : part
-    );
+    try {
+      const regex = new RegExp(`(${term})`, 'gi');
+      return text.split(regex).map((part, i) => 
+        regex.test(part) ? <mark key={i}>{part}</mark> : part
+      );
+    } catch (e) {
+      console.warn('Error in highlightText:', e);
+      return text;
+    }
   };
 
   if (!items || items.length === 0) {
-    return (
-      <div className="public-app-block">
-        <p>No items available for this category.</p>
-      </div>
-    );
+    return <div className="no-items">No items to display</div>;
+  }
+
+  // Debug: Log the first few items to check their structure
+  if (items.length > 0) {
+    console.group('PublicPairTable items');
+    items.slice(0, 3).forEach((item, i) => {
+      console.log(`Item ${i}:`, {
+        traditional: item.traditional,
+        english: item.english,
+        isCurrentBelt: item.isCurrentBelt,
+        originBelt: item._originBelt || 'unknown'
+      });
+    });
+    console.groupEnd();
   }
 
   return (
-    <table className="public-pair-table">
-      <thead>
-        <tr>
-          <th>Traditional Name</th>
-          <th>English Name</th>
-        </tr>
-      </thead>
+    <table className="public-pair-table" style={{ width: '100%', borderCollapse: 'collapse' }}>
       <tbody>
         {items.map((item, index) => {
-          // If isCurrentBelt is true, show in bold, otherwise regular weight
-          const textWeight = item.isCurrentBelt ? 'bold' : 'normal';
+          // Default to true if isCurrentBelt is not set
+          const isCurrent = item.isCurrentBelt !== false; // Default to true if not set
           
           return (
-            <tr key={index} style={{ fontWeight: textWeight }}>
-              <td>
-                {highlightText(item.traditional || '', searchTerm)}
+            <tr 
+              key={`${item.traditional}-${item.english}-${index}`}
+              style={{ 
+                fontWeight: isCurrent ? 'bold' : 'normal',
+                backgroundColor: isCurrent ? 'rgba(0, 0, 0, 0.02)' : 'transparent',
+                borderBottom: '1px solid #eee',
+                transition: 'background-color 0.2s'
+              }}
+              title={`From: ${item._originBelt || 'Previous belt'}`}
+              className={isCurrent ? 'current-belt-item' : 'previous-belt-item'}
+            >
+              <td style={{ padding: '8px', borderBottom: '1px solid #eee' }}>
+                {item.traditional ? highlightText(item.traditional, searchTerm) : '-'}
               </td>
-              <td>
-                {highlightText(item.english || '', searchTerm)}
+              <td style={{ padding: '8px', borderBottom: '1px solid #eee' }}>
+                {item.english ? highlightText(item.english, searchTerm) : '-'}
               </td>
             </tr>
           );
