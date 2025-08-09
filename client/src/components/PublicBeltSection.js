@@ -32,17 +32,17 @@ const PublicBeltSection = ({ belt, categories, cumulativeCategories, isExpanded,
         hover: 'linear-gradient(135deg, #a569bd 0%, #8e44ad 100%)'
       },
       'Brown Belt': {
-        background: 'linear-gradient(135deg, #b7950b 0%, #a0522d 100%)',
-        hover: 'linear-gradient(135deg, #a68a0a 0%, #8b4513 100%)'
+        background: '#8B4513', // Solid brown color
+        hover: '#7a3b0f' // Slightly darker brown on hover
       },
       'Black Belt': {
         background: 'linear-gradient(135deg, #566573 0%, #2c3e50 100%)',
         hover: 'linear-gradient(135deg, #4a5a6b 0%, #273746 100%)'
       },
       'Brown/Black Stripe': {
-        background: 'linear-gradient(135deg, #b7950b 0%, #a0522d 100%)',
-        hover: 'linear-gradient(135deg, #a68a0a 0%, #8b4513 100%)',
-        isStriped: true
+        background: 'linear-gradient(to bottom, #8B4513 0%, #8B4513 37.5%, #000000 37.5%, #000000 62.5%, #8B4513 62.5%, #8B4513 100%)',
+        hover: 'linear-gradient(to bottom, #7a3b0f 0%, #7a3b0f 37.5%, #000000 37.5%, #000000 62.5%, #7a3b0f 62.5%, #7a3b0f 100%)',
+        textColor: '#ffffff' // Ensure text is readable on the black stripe
       },
       'White Belt': {
         background: 'linear-gradient(135deg, #d5d8dc 0%, #aeb6bf 100%)',
@@ -74,43 +74,8 @@ const PublicBeltSection = ({ belt, categories, cumulativeCategories, isExpanded,
 
   const beltColor = getBeltColor(belt);
   
-  // Debug logging
-  console.log('Belt:', belt, 'Color:', beltColor);
-
   // Use cumulative categories if available, otherwise fall back to regular categories
   const categoriesToDisplay = cumulativeCategories || categories;
-  
-  // Debug log to see what we're working with
-  console.group(`Rendering belt: ${belt}`);
-  
-  // Special debug for the first belt
-  if (belt === 'Red Belt') {
-    console.log('=== DEBUGGING FIRST BELT ===');
-    console.log('Raw categories data:', categories);
-    console.log('Raw cumulative categories data:', cumulativeCategories);
-    console.log('Categories to display:', categoriesToDisplay);
-    
-    // Log the structure of the first category if it exists
-    const firstCategory = Object.keys(categoriesToDisplay || {})[0];
-    if (firstCategory) {
-      console.log(`First category (${firstCategory}) data:`, categoriesToDisplay[firstCategory]);
-      console.log('First category items:', Array.isArray(categoriesToDisplay[firstCategory]) 
-        ? categoriesToDisplay[firstCategory].map((item, i) => ({
-            index: i,
-            traditional: item?.traditional,
-            english: item?.english,
-            isCurrentBelt: item?.isCurrentBelt,
-            originBelt: item?._originBelt
-          })) 
-        : 'Not an array');
-    }
-    console.log('===========================');
-  }
-  
-  console.log('Has cumulative data:', !!(cumulativeCategories && Object.keys(cumulativeCategories).length > 0));
-  console.log('Original categories:', Object.keys(categories || {}));
-  console.log('Cumulative categories:', Object.keys(cumulativeCategories || {}));
-  console.log('Categories to display:', Object.keys(categoriesToDisplay || {}));
   
   // Process categories for display
   const filteredCategories = [];
@@ -118,11 +83,9 @@ const PublicBeltSection = ({ belt, categories, cumulativeCategories, isExpanded,
   try {
     // Get all unique categories from both sources
     const allCategories = new Set([
-      ...Object.keys(categoriesToDisplay || {}),
-      ...Object.keys(categories || {})
+      ...Object.keys(categories || {}),
+      ...Object.keys(cumulativeCategories || {})
     ]);
-    
-    console.log('All unique categories:', Array.from(allCategories));
     
     // Process each category
     allCategories.forEach(category => {
@@ -164,32 +127,16 @@ const PublicBeltSection = ({ belt, categories, cumulativeCategories, isExpanded,
             items: processedCategoryItems,
             hasCurrentBeltItems: processedCategoryItems.some(item => item.isCurrentBelt)
           };
-          
-          console.log(`Category '${category}' has ${processedCategoryItems.length} items`, {
-            hasCurrentBeltItems: categoryData.hasCurrentBeltItems,
-            sampleItem: processedCategoryItems[0] || 'No items'
-          });
-          
           filteredCategories.push(categoryData);
         }
       } catch (error) {
-        console.error(`Error processing category ${category}:`, error);
+        // Removed console.error statement
       }
     });
     
     // Maintain original category order (don't sort alphabetically)
-    
-    // Debug log for the belt section
-    console.groupEnd();
-    console.log(`\n=== Belt ${belt} Summary ===`);
-    console.log('Total categories:', filteredCategories.length);
-    console.log('Categories with items:', filteredCategories.map(c => `${c.name} (${c.items.length})`));
-    console.log('Categories with current belt items:', 
-      filteredCategories.filter(cat => cat.hasCurrentBeltItems).length);
-    console.log('===========================');
-    
   } catch (error) {
-    console.error(`Error processing categories for belt ${belt}:`, error);
+    // Removed console.error statement
   }
 
   return (
@@ -226,8 +173,8 @@ const PublicBeltSection = ({ belt, categories, cumulativeCategories, isExpanded,
           justifyContent: 'space-between',
           alignItems: 'center',
           padding: '1.25rem 1.5rem',
-          color: '#fff',
-          textShadow: '1px 1px 2px rgba(0,0,0,0.5)'
+          color: beltColor.textColor || '#fff',
+          textShadow: beltColor.textColor === '#000000' ? '0 0 3px rgba(255,255,255,0.7)' : '1px 1px 2px rgba(0,0,0,0.5)'
         }}>
           <h2 style={{ 
             margin: 0, 

@@ -20,19 +20,7 @@ const PublicPairTable = ({ items, searchTerm, currentBelt }) => {
     return <div className="no-items">No items to display</div>;
   }
 
-  // Debug: Log the first few items to check their structure
-  if (items.length > 0) {
-    console.group('PublicPairTable items');
-    items.slice(0, 3).forEach((item, i) => {
-      console.log(`Item ${i}:`, {
-        traditional: item.traditional,
-        english: item.english,
-        isCurrentBelt: item.isCurrentBelt,
-        originBelt: item._originBelt || 'unknown'
-      });
-    });
-    console.groupEnd();
-  }
+  // Debug logging removed for production
 
   return (
     <table className="public-pair-table" style={{ width: '100%', borderCollapse: 'collapse' }}>

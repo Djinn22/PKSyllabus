@@ -1,0 +1,166 @@
+{
+  "Red Belt": {
+    "Stances": [
+      { "traditional": "Heisoku Dachi", "english": "Feet Together Stance" },
+      { "traditional": "Musubi Dachi", "english": "Open Toe Stance" },
+      { "traditional": "Yoi Dachi", "english": "Ready Stance" }
+    ],
+    "Punches and Strikes": [
+      { "traditional": "Chudan Zuki", "english": "Middle Front Punch" },
+      { "traditional": "Jodan Zuki", "english": "Upper Front Punch" }
+    ],
+    "Blocks": [
+      { "traditional": "Gedan Barai", "english": "Downward Block" },
+      { "traditional": "Age Uke", "english": "Rising Block" }
+    ],
+    "Kicks": [
+      { "traditional": "Mae Geri", "english": "Front Kick" }
+    ],
+    "Kata": [
+      { "traditional": "Taikyoku Shodan", "english": "First Cause - First Level" }
+    ]
+  },
+  "Yellow Belt": {
+    "Stances": [
+      { "traditional": "Zenkutsu Dachi", "english": "Forward Stance" },
+      { "traditional": "Heiko Dachi", "english": "Parallel Stance" }
+    ],
+    "Punches and Strikes": [
+      { "traditional": "Gedan Zuki", "english": "Lower Front Punch" },
+      { "traditional": "Ago Uchi", "english": "Jaw Strike" }
+    ],
+    "Blocks": [
+      { "traditional": "Soto Uke", "english": "Outside Block" },
+      { "traditional": "Uchi Uke", "english": "Inside Block" }
+    ],
+    "Kicks": [
+      { "traditional": "Mawashi Geri", "english": "Roundhouse Kick" },
+      { "traditional": "Yoko Geri", "english": "Side Kick" }
+    ],
+    "Kata": [
+      { "traditional": "Taikyoku Nidan", "english": "First Cause - Second Level" }
+    ]
+  },
+  "Orange Belt": {
+    "Stances": [
+      { "traditional": "Kiba Dachi", "english": "Horse Stance" },
+      { "traditional": "Kokutsu Dachi", "english": "Back Stance" }
+    ],
+    "Punches and Strikes": [
+      { "traditional": "Gyaku Zuki", "english": "Reverse Punch" },
+      { "traditional": "Kizami Zuki", "english": "Jab" }
+    ],
+    "Blocks": [
+      { "traditional": "Shuto Uke", "english": "Knife Hand Block" },
+      { "traditional": "Gedan Barai", "english": "Downward Block" }
+    ],
+    "Kicks": [
+      { "traditional": "Mae Geri Keage", "english": "Front Snap Kick" },
+      { "traditional": "Mawashi Geri", "english": "Roundhouse Kick" }
+    ],
+    "Kata": [
+      { "traditional": "Heian Shodan", "english": "Peaceful Mind - First Level" }
+    ]
+  },
+  "Green Belt": {
+    "Stances": [
+      { "traditional": "Neko Ashi Dachi", "english": "Cat Stance" },
+      { "traditional": "Sanchin Dachi", "english": "Hourglass Stance" }
+    ],
+    "Punches and Strikes": [
+      { "traditional": "Oi Zuki", "english": "Lunge Punch" },
+      { "traditional": "Kizami Zuki", "english": "Jab" }
+    ],
+    "Blocks": [
+      { "traditional": "Morote Uke", "english": "Augmented Block" },
+      { "traditional": "Shuto Uke", "english": "Knife Hand Block" }
+    ],
+    "Kicks": [
+      { "traditional": "Yoko Geri Keage", "english": "Side Snap Kick" },
+      { "traditional": "Ushiro Geri", "english": "Back Kick" }
+    ],
+    "Kata": [
+      { "traditional": "Heian Nidan", "english": "Peaceful Mind - Second Level" }
+    ]
+  },
+  "Purple Belt": {
+    "Stances": [
+      { "traditional": "Kosa Dachi", "english": "Cross Stance" },
+      { "traditional": "Fudo Dachi", "english": "Rooted Stance" }
+    ],
+    "Punches and Strikes": [
+      { "traditional": "Uraken Uchi", "english": "Backfist Strike" },
+      { "traditional": "Tetsui Uchi", "english": "Hammer Fist Strike" }
+    ],
+    "Blocks": [
+      { "traditional": "Juji Uke", "english": "X Block" },
+      { "traditional": "Osae Uke", "english": "Pressing Block" }
+    ],
+    "Kicks": [
+      { "traditional": "Mawashi Geri", "english": "Roundhouse Kick" },
+      { "traditional": "Ushiro Mawashi Geri", "english": "Spinning Hook Kick" }
+    ],
+    "Kata": [
+      { "traditional": "Heian Sandan", "english": "Peaceful Mind - Third Level" }
+    ]
+  },
+  "Blue Belt": {
+    "Stances": [
+      { "traditional": "Sochin Dachi", "english": "Sturdy Stance" },
+      { "traditional": "Hangetsu Dachi", "english": "Half Moon Stance" }
+    ],
+    "Punches and Strikes": [
+      { "traditional": "Shuto Uchi", "english": "Knife Hand Strike" },
+      { "traditional": "Haishu Uchi", "english": "Back Hand Strike" }
+    ],
+    "Blocks": [
+      { "traditional": "Kake Uke", "english": "Hooking Block" },
+      { "traditional": "Nagashi Uke", "english": "Sweeping Block" }
+    ],
+    "Kicks": [
+      { "traditional": "Mikazuki Geri", "english": "Crescent Kick" },
+      { "traditional": "Ura Mawashi Geri", "english": "Hook Kick" }
+    ],
+    "Kata": [
+      { "traditional": "Heian Yondan", "english": "Peaceful Mind - Fourth Level" }
+    ]
+  },
+  "Brown Belt": {
+    "Stances": [
+      { "traditional": "Tsuru Ashi Dachi", "english": "Crane Stance" },
+      { "traditional": "Sagi Ashi Dachi", "english": "Heron Stance" }
+    ],
+    "Punches and Strikes": [
+      { "traditional": "Nukite", "english": "Spear Hand" },
+      { "traditional": "Haito Uchi", "english": "Ridge Hand Strike" }
+    ],
+    "Blocks": [
+      { "traditional": "Kosa Uke", "english": "Cross Block" },
+      { "traditional": "Mawashi Uke", "english": "Circular Block" }
+    ],
+    "Kicks": [
+      { "traditional": "Tobi Geri", "english": "Jumping Kick" },
+      { "traditional": "Ushiro Geri Kekomi", "english": "Thrusting Back Kick" }
+    ],
+    "Kata": [
+      { "traditional": "Heian Godan", "english": "Peaceful Mind - Fifth Level" }
+    ]
+  },
+  "Brown/Black Stripe": {
+    "Stances": [
+      { "traditional": "Review All Stances", "english": "" }
+    ],
+    "Punches and Strikes": [
+      { "traditional": "Review All Strikes", "english": "" }
+    ],
+    "Blocks": [
+      { "traditional": "Review All Blocks", "english": "" }
+    ],
+    "Kicks": [
+      { "traditional": "Review All Kicks", "english": "" }
+    ],
+    "Kata": [
+      { "traditional": "Review All Katas", "english": "" }
+    ]
+  }
+}

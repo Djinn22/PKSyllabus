@@ -3,11 +3,11 @@ import PublicPairTable from './PublicPairTable';
 import PublicApplicationSection from './PublicApplicationSection';
 
 const PublicCategorySection = ({ category, items = [], searchTerm = '', currentBelt = '' }) => {
-  // Normalize category name by removing any extra spaces or slashes
-  const normalizedCategory = category.replace(/\s*\/\s*/g, ' / ').trim();
+  // Ensure category is a string and normalize it by removing any extra spaces or slashes
+  const normalizedCategory = (typeof category === 'string' ? category : '').replace(/\s*\/\s*/g, ' / ').trim();
   
   // Split the category into individual category names if it's a combined category
-  const categoryNames = normalizedCategory.split(' / ').map(cat => cat.trim());
+  const categoryNames = normalizedCategory ? normalizedCategory.split(' / ').map(cat => cat.trim()) : [];
   
   // Check if any of the categories in the combined name are pair categories
   const isPairCategory = [
@@ -23,13 +23,7 @@ const PublicCategorySection = ({ category, items = [], searchTerm = '', currentB
   // If it's a combined category, we'll need to process items differently
   const isCombinedCategory = categoryNames.length > 1;
 
-  // Debug: Log category and items
-  useEffect(() => {
-    console.group(`Category: ${category} (${currentBelt})`);
-    console.log('Items count:', items.length);
-    console.log('Items with isCurrentBelt:', items.filter(i => i?.isCurrentBelt).length);
-    console.groupEnd();
-  }, [category, items, currentBelt]);
+  // Removed debug logging for production
 
   // Process items to ensure consistent structure
   const processedItems = (items || [])
@@ -46,22 +40,6 @@ const PublicCategorySection = ({ category, items = [], searchTerm = '', currentB
       
       return processedItem;
     });
-
-  // Debug: Log first few processed items
-  useEffect(() => {
-    if (processedItems.length > 0) {
-      console.group(`Processed Items (${category}):`);
-      processedItems.slice(0, 3).forEach((item, i) => {
-        console.log(`Item ${i}:`, {
-          traditional: item.traditional,
-          english: item.english,
-          isCurrentBelt: item.isCurrentBelt,
-          originBelt: item._originBelt
-        });
-      });
-      console.groupEnd();
-    }
-  }, [category, processedItems]);
 
   // Process items for combined categories
   const processCombinedCategoryItems = (items, categoryName) => {

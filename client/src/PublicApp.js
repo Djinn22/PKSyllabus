@@ -29,7 +29,7 @@ function PublicApp() {
       });
       setExpandedBelts(initialExpandedState);
     }
-  }, [syllabus]);
+  }, [syllabus, expandedBelts]);
 
   // Belt progression order for cumulative display
   const beltOrder = [
@@ -46,11 +46,11 @@ function PublicApp() {
 
   useEffect(() => {
     fetchSyllabus();
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // fetchSyllabus is stable and doesn't need to be in deps
 
   // Create cumulative syllabus where each belt includes all previous techniques
   const createCumulativeSyllabus = (syllabusData) => {
-    console.log('Creating cumulative syllabus with data:', Object.keys(syllabusData || {}));
     const cumulative = {};
     const allItemsByCategory = new Map(); // Track items by category across all belts
     
@@ -99,7 +99,6 @@ function PublicApp() {
       beltOrder.forEach(belt => {
         if (!syllabusData || !syllabusData[belt]) return;
         
-        console.log(`\n=== Processing belt: ${belt} ===`);
         const currentBeltData = {};
         
         // Get all categories from all belts up to this one
@@ -136,21 +135,13 @@ function PublicApp() {
         cumulative[belt] = currentBeltData;
         processedBelts.add(belt);
         
-        // Debug logging
+        // Item count calculation kept for potential future use
         const itemCount = Object.values(currentBeltData).reduce(
           (total, items) => total + (items?.length || 0), 0
         );
-        
-        console.log(`Belt ${belt} has ${itemCount} items across ${Object.keys(currentBeltData).length} categories`);
       });
       
-      console.log('\n=== Cumulative syllabus creation complete ===', {
-        belts: Array.from(processedBelts),
-        categories: Array.from(allItemsByCategory.keys()),
-        totalItems: Array.from(allItemsByCategory.values()).reduce(
-          (total, catMap) => total + catMap.size, 0
-        )
-      });
+      // Debug logging removed for production
       
       return cumulative;
       
@@ -167,8 +158,14 @@ function PublicApp() {
   const fetchSyllabus = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('/api/syllabus');
+      const response = await axios.get('/api/syllabus/senior');
       const syllabusData = response.data;
+      
+      // Ensure the syllabus data has the expected structure
+      if (!syllabusData || typeof syllabusData !== 'object') {
+        throw new Error('Invalid syllabus data format');
+      }
+      
       setSyllabus(syllabusData);
       
       // Create and set cumulative syllabus data
@@ -176,7 +173,7 @@ function PublicApp() {
       setCumulativeSyllabus(cumulative);
     } catch (error) {
       console.error('Error fetching syllabus:', error);
-      setError('Error loading syllabus data');
+      setError(`Error loading syllabus data: ${error.message}`);
     } finally {
       setLoading(false);
     }
@@ -246,15 +243,6 @@ function PublicApp() {
 
   return (
     <div className="public-container">
-      <header className="public-header">
-        <div className="header-content">
-          <img src="/pkr_logo.webp" alt="PKR Logo" className="logo" />
-          <div className="header-text">
-            <h1>Karate Belt Grading Requirements</h1>
-            <p>Progressive Shotokan Syllabus</p>
-          </div>
-        </div>
-      </header>
 
       <div className="controls">
         <div className="search-section">
