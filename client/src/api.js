@@ -1,8 +1,12 @@
 import axios from 'axios';
 
 // Create an axios instance with default config
+// In production (Netlify), use same-origin so Netlify redirects can proxy /api to backend
+// In development, default to local backend
 const api = axios.create({
-  baseURL: process.env.REACT_APP_API_URL || 'http://localhost:3010',
+  baseURL: process.env.REACT_APP_API_URL !== undefined
+    ? process.env.REACT_APP_API_URL
+    : (process.env.NODE_ENV === 'production' ? '' : 'http://localhost:3010'),
   withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
@@ -28,7 +32,8 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
+    const status = error.response?.status;
+    if (status === 401 || status === 403) {
       // Handle unauthorized access
       localStorage.removeItem('token');
       window.location.href = '/login';

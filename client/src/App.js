@@ -11,7 +11,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import './App.css';
 
 function AppContent() {
-  const { user } = useAuth();
+  const { user, shouldReauth } = useAuth();
   
   return (
     <div className="app" style={{ position: 'relative' }}>
@@ -32,10 +32,8 @@ function AppContent() {
           <Route path="/senior" element={<PublicApp syllabusType="senior" />} />
           <Route path="/junior" element={<JuniorSyllabus />} />
           
-          {/* Public routes */}
-          <Route path="/login" element={
-            user ? <Navigate to="/admin" replace /> : <Login />
-          } />
+          {/* Login should always require password entry; do not auto-redirect */}
+          <Route path="/login" element={<Login />} />
           
           {/* Protected routes */}
           <Route path="/admin" element={

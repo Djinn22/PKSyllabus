@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import api from '../api';
 import './Login.css';
 
-function Login({ onLogin }) {
+function Login() {
+  const { login } = useAuth();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -21,8 +23,8 @@ function Login({ onLogin }) {
       // Store the token in localStorage
       localStorage.setItem('token', response.data.token);
       
-      // Call the onLogin callback with user data
-      onLogin(response.data.user);
+      // Update auth context with user data and token
+      login(response.data.user, response.data.token);
       
       // Redirect to admin dashboard
       navigate('/admin');

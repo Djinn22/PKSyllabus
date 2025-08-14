@@ -38,7 +38,9 @@ const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret_key_here';
 const JWT_EXPIRES_IN = '7d'; // Token expires in 7 days
 
 // Authentication configuration
-const USERS_FILE = path.join(__dirname, 'users.json');
+// Use a configurable data directory for environments with persistent volumes (e.g., Render)
+const DATA_DIR = process.env.DATA_DIR || __dirname;
+const USERS_FILE = path.join(DATA_DIR, 'users.json');
 
 // Load users from file
 const loadUsers = async () => {
@@ -177,30 +179,59 @@ const syllabusSchema = Joi.object().pattern(
   beltSchema
 );
 
-// Backup functionality
-const createBackup = (callback) => {
+// Backup functionality (Promise-based)
+const createBackup = async (customName = '') => {
   const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-  const backupDir = path.join(__dirname, 'backups');
-  const backupFile = path.join(backupDir, `syllabus-backup-${timestamp}.json`);
-  
-  // Ensure backup directory exists
+  const backupDir = path.join(DATA_DIR, 'backups');
+  const safeName = customName && typeof customName === 'string'
+    ? customName.replace(/[^a-zA-Z0-9-_]/g, '') + '-'
+    : '';
+  const backupFile = path.join(backupDir, `${safeName}syllabus-backup-${timestamp}.json`);
+
   if (!fs.existsSync(backupDir)) {
     fs.mkdirSync(backupDir, { recursive: true });
     logger.info('Created backup directory', { dir: backupDir });
   }
-  
-  // Copy current syllabus to backup
-  fs.copyFile(SYLLABUS_FILE, backupFile, (err) => {
-    if (err) {
-      logger.error('Failed to create backup', { error: err.message, backupFile });
-      return callback(err);
-    }
-    logger.info('Backup created successfully', { backupFile });
-    callback(null, backupFile);
-  });
+
+  await fsp.copyFile(SYLLABUS_FILE, backupFile);
+  return backupFile;
 };
 
-const SYLLABUS_FILE = path.join(__dirname, 'syllabus.json');
+const JUNIOR_SYLLABUS_FILE = path.join(DATA_DIR, 'syllabus-junior.json');
+const SENIOR_SYLLABUS_FILE = path.join(DATA_DIR, 'syllabus-senior.json');
+const SYLLABUS_FILE = SENIOR_SYLLABUS_FILE; // Default to senior syllabus
+
+// Ensure DATA_DIR exists and seed required files if missing (for first boot on Render)
+const ensureDataFiles = async () => {
+  try {
+    if (!fs.existsSync(DATA_DIR)) {
+      fs.mkdirSync(DATA_DIR, { recursive: true });
+    }
+    const defaults = [
+      { src: path.join(__dirname, 'users.json'), dst: USERS_FILE, template: '{"users":[]}' },
+      { src: path.join(__dirname, 'syllabus-junior.json'), dst: JUNIOR_SYLLABUS_FILE, template: '{}' },
+      { src: path.join(__dirname, 'syllabus-senior.json'), dst: SENIOR_SYLLABUS_FILE, template: '{}' },
+    ];
+    for (const f of defaults) {
+      if (!fs.existsSync(f.dst)) {
+        if (fs.existsSync(f.src)) {
+          fs.copyFileSync(f.src, f.dst);
+        } else {
+          fs.writeFileSync(f.dst, f.template, 'utf8');
+        }
+      }
+    }
+    const backupsDir = path.join(DATA_DIR, 'backups');
+    if (!fs.existsSync(backupsDir)) {
+      fs.mkdirSync(backupsDir, { recursive: true });
+    }
+  } catch (e) {
+    logger.error('ensureDataFiles failed', { error: e.message, DATA_DIR });
+  }
+};
+
+// Kick off seeding (non-blocking)
+ensureDataFiles();
 
 // Authentication Routes
 app.post('/api/auth/login', async (req, res) => {
@@ -250,15 +281,16 @@ app.get('/api/auth/me', authenticateJWT, (req, res) => {
 });
 
 // User Management Routes
-app.get('/api/admin/users', authenticateJWT, requireAdmin, (req, res) => {
+app.get('/api/admin/users', authenticateJWT, requireAdmin, async (req, res) => {
   try {
-    const users = loadUsers().map(user => ({
+    const users = await loadUsers();
+    const userList = users.map(user => ({
       id: user.id,
       username: user.username,
       isAdmin: user.isAdmin,
       createdAt: user.createdAt
     }));
-    res.json(users);
+    res.json(userList);
   } catch (error) {
     logger.error('Error fetching users', { error: error.message });
     res.status(500).json({ error: 'Failed to fetch users' });
@@ -273,7 +305,7 @@ app.post('/api/admin/users', authenticateJWT, requireAdmin, async (req, res) => 
       return res.status(400).json({ error: 'Username and password are required' });
     }
     
-    const users = loadUsers();
+    const users = await loadUsers();
     
     if (users.some(u => u.username === username)) {
       return res.status(400).json({ error: 'Username already exists' });
@@ -306,7 +338,7 @@ app.post('/api/admin/users', authenticateJWT, requireAdmin, async (req, res) => 
   }
 });
 
-app.delete('/api/admin/users/:id', authenticateJWT, requireAdmin, (req, res) => {
+app.delete('/api/admin/users/:id', authenticateJWT, requireAdmin, async (req, res) => {
   try {
     const userId = parseInt(req.params.id);
     
@@ -314,7 +346,7 @@ app.delete('/api/admin/users/:id', authenticateJWT, requireAdmin, (req, res) => 
       return res.status(400).json({ error: 'Cannot delete your own account' });
     }
     
-    let users = loadUsers();
+    let users = await loadUsers();
     const initialLength = users.length;
     
     users = users.filter(user => user.id !== userId);
@@ -323,7 +355,7 @@ app.delete('/api/admin/users/:id', authenticateJWT, requireAdmin, (req, res) => 
       return res.status(404).json({ error: 'User not found' });
     }
     
-    saveUsers(users);
+    await saveUsers(users);
     logger.info('User deleted', { userId, deletedBy: req.user.username });
     
     res.json({ success: true });
@@ -334,99 +366,155 @@ app.delete('/api/admin/users/:id', authenticateJWT, requireAdmin, (req, res) => 
   }
 });
 
-// GET syllabus.json
-app.get('/api/syllabus', (req, res) => {
-  logger.info('Fetching syllabus data', { ip: req.ip, userAgent: req.get('User-Agent') });
+// Backup Routes (RESTful plural)
+app.get('/api/backups', authenticateJWT, requireAdmin, async (req, res) => {
+  try {
+    const backupDir = path.join(__dirname, 'backups');
+    if (!fs.existsSync(backupDir)) {
+      fs.mkdirSync(backupDir, { recursive: true });
+    }
+    const files = fs.readdirSync(backupDir)
+      .filter(file => file.endsWith('.json'))
+      .sort((a, b) => fs.statSync(path.join(backupDir, b)).birthtime - fs.statSync(path.join(backupDir, a)).birthtime);
+    // Return filenames only
+    res.json({ backups: files });
+  } catch (error) {
+    logger.error('Error listing backups', { error: error.message });
+    res.status(500).json({ error: 'Failed to list backups' });
+  }
+});
+
+app.post('/api/backups', authenticateJWT, requireAdmin, async (req, res) => {
+  try {
+    const name = (req.body && req.body.name) || '';
+    const backupPath = await createBackup(name);
+    logger.info('Backup created', { backupPath, user: req.user.username });
+    res.status(201).json({ message: 'Backup created', filename: path.basename(backupPath) });
+  } catch (error) {
+    logger.error('Error creating backup', { error: error.message });
+    res.status(500).json({ error: 'Failed to create backup' });
+  }
+});
+
+app.post('/api/backups/:filename/restore', authenticateJWT, requireAdmin, async (req, res) => {
+  try {
+    const { filename } = req.params;
+    const { type } = req.body || {};
+    const backupDir = path.join(__dirname, 'backups');
+    const source = path.join(backupDir, filename);
+    if (!fs.existsSync(source)) {
+      return res.status(404).json({ error: 'Backup not found' });
+    }
+    const target = (type === 'junior') ? path.join(DATA_DIR, 'syllabus-junior.json') : path.join(DATA_DIR, 'syllabus-senior.json');
+    await fsp.copyFile(source, target);
+    logger.info('Backup restored', { filename, target, user: req.user.username });
+    res.json({ message: 'Backup restored' });
+  } catch (error) {
+    logger.error('Error restoring backup', { error: error.message });
+    res.status(500).json({ error: 'Failed to restore backup' });
+  }
+});
+
+app.delete('/api/backups/:filename', authenticateJWT, requireAdmin, async (req, res) => {
+  try {
+    const { filename } = req.params;
+    const backupDir = path.join(__dirname, 'backups');
+    const target = path.join(backupDir, filename);
+    if (!fs.existsSync(target)) {
+      return res.status(404).json({ error: 'Backup not found' });
+    }
+    await fsp.unlink(target);
+    logger.info('Backup deleted', { filename, user: req.user.username });
+    res.json({ message: 'Backup deleted' });
+  } catch (error) {
+    logger.error('Error deleting backup', { error: error.message });
+    res.status(500).json({ error: 'Failed to delete backup' });
+  }
+});
+
+// GET syllabus data - supports both /api/syllabus?type=junior and /api/syllabus/junior
+app.get(['/api/syllabus', '/api/syllabus/:type'], (req, res) => {
+  // Determine syllabus type from query param or route param
+  let type = 'senior';
+  if (req.query.type === 'junior' || req.params.type === 'junior') {
+    type = 'junior';
+  }
+  const filePath = type === 'junior' ? JUNIOR_SYLLABUS_FILE : SENIOR_SYLLABUS_FILE;
   
-  fs.readFile(SYLLABUS_FILE, 'utf8', (err, data) => {
+  logger.info(`Fetching ${type} syllabus data`, { ip: req.ip, userAgent: req.get('User-Agent') });
+  
+  fs.readFile(filePath, 'utf8', (err, data) => {
     if (err) {
-      logger.error('Error reading syllabus.json', { error: err.message, file: SYLLABUS_FILE });
-      return res.status(500).json({ error: 'Unable to read syllabus file.' });
+      logger.error(`Error reading ${type} syllabus file`, { error: err.message, file: filePath });
+      return res.status(500).json({ error: `Unable to read ${type} syllabus file.` });
     }
     try {
       const syllabusData = JSON.parse(data);
-      logger.info('Syllabus data retrieved successfully', { belts: Object.keys(syllabusData).length });
+      logger.info(`${type} syllabus data retrieved successfully`, { belts: Object.keys(syllabusData).length });
       res.json(syllabusData);
     } catch (parseErr) {
-      logger.error('Error parsing syllabus.json', { error: parseErr.message, file: SYLLABUS_FILE });
+      logger.error(`Error parsing ${type} syllabus file`, { error: parseErr.message, file: filePath });
       res.status(500).json({ error: 'Syllabus file is not valid JSON.' });
     }
   });
 });
 
-// POST syllabus.json (overwrite with new content) - Protected with authentication
-app.post('/api/syllabus', requireAuth, (req, res) => {
+// POST syllabus data (overwrite with new content) - Protected with JWT admin
+app.post('/api/syllabus', authenticateJWT, requireAdmin, async (req, res) => {
   const json = req.body;
-  const user = basicAuth(req);
+  const type = req.query.type === 'junior' ? 'junior' : 'senior';
+  const filePath = type === 'junior' ? JUNIOR_SYLLABUS_FILE : SENIOR_SYLLABUS_FILE;
   
-  logger.info('Syllabus update request received', { 
-    user: user?.name, 
+  logger.info(`${type} syllabus update request received`, { 
     ip: req.ip, 
     userAgent: req.get('User-Agent'),
-    dataSize: JSON.stringify(json).length 
+    user: req.user.username,
+    belts: Object.keys(json).length
   });
-  
-  // Basic input validation
-  if (!json || typeof json !== 'object') {
-    logger.warn('Invalid JSON body received', { user: user?.name, ip: req.ip });
-    return res.status(400).json({ error: 'Invalid JSON body.' });
-  }
-  
+
   // Validate syllabus structure
   const { error, value } = syllabusSchema.validate(json, { allowUnknown: true });
+  
   if (error) {
-    logger.warn('Syllabus validation failed', { 
-      user: user?.name, 
-      ip: req.ip, 
-      validationError: error.details 
+    logger.warn(`${type} syllabus validation failed`, { 
+      error: error.details[0].message,
+      path: error.details[0].path,
+      user: req.user.username
     });
     return res.status(400).json({ 
-      error: 'Invalid syllabus structure', 
-      details: error.details.map(d => d.message) 
+      error: `Invalid ${type} syllabus structure`, 
+      details: error.details[0].message 
     });
   }
   
-  logger.info('Syllabus validation passed', { 
-    user: user?.name, 
-    belts: Object.keys(json).length 
+  logger.info(`${type} syllabus validation passed`, { 
+    belts: Object.keys(value).length,
+    user: req.user.username 
   });
-  
-  // Create backup before overwriting
-  createBackup((backupErr, backupFile) => {
-    if (backupErr) {
-      logger.error('Backup creation failed', { 
-        user: user?.name, 
-        error: backupErr.message 
-      });
-      return res.status(500).json({ error: 'Unable to create backup before saving.' });
-    }
-    
-    // Write the validated data
-    fs.writeFile(SYLLABUS_FILE, JSON.stringify(value, null, 2), 'utf8', (err) => {
-      if (err) {
-        logger.error('Error writing syllabus.json', { 
-          user: user?.name, 
-          error: err.message, 
-          file: SYLLABUS_FILE,
-          backupFile 
-        });
-        return res.status(500).json({ error: 'Unable to write syllabus file.' });
-      }
-      
-      logger.info('Syllabus updated successfully', { 
-        user: user?.name, 
-        file: SYLLABUS_FILE,
-        backupFile,
-        belts: Object.keys(value).length 
-      });
-      
-      res.json({ 
-        success: true, 
-        message: 'Syllabus updated successfully',
-        backup: path.basename(backupFile)
-      });
+
+  try {
+    // Create backup before saving
+    const backupPath = await createBackup();
+    logger.info('Backup created before update', { backupPath, user: req.user.username });
+
+    // Save the updated syllabus
+    await fsp.writeFile(filePath, JSON.stringify(value, null, 2), 'utf8');
+
+    logger.info(`${type} syllabus updated successfully`, { 
+      belts: Object.keys(value).length, 
+      file: filePath,
+      user: req.user.username
     });
-  });
+
+    res.json({ 
+      success: true, 
+      message: `${type} syllabus updated successfully`,
+      backup: path.basename(backupPath)
+    });
+  } catch (err) {
+    logger.error(`Error updating ${type} syllabus`, { error: err.message, file: filePath, user: req.user.username });
+    return res.status(500).json({ error: `Unable to update ${type} syllabus file.` });
+  }
 });
 
 // Optional: Handle 404s for unknown API routes

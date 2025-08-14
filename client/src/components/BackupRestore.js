@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../api';
 import './BackupRestore.css';
 
 function BackupRestore() {
@@ -17,13 +17,8 @@ function BackupRestore() {
     const fetchBackups = async () => {
       try {
         setLoading(true);
-        const response = await axios.get('/api/backups', {
-          auth: {
-            username: 'admin',
-            password: 'karate123'
-          }
-        });
-        setBackups(response.data);
+        const response = await api.get('/api/backups');
+        setBackups(response.data.backups || []);
         setError(null);
       } catch (err) {
         console.error('Error fetching backups:', err);
@@ -46,31 +41,14 @@ function BackupRestore() {
       setIsCreatingBackup(true);
       setMessage({ text: '', type: '' });
       
-      const response = await axios.post(
-        '/api/backups',
-        { name: backupName },
-        {
-          auth: {
-            username: 'admin',
-            password: 'karate123'
-          },
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        }
-      );
+      const response = await api.post('/api/backups', { name: backupName });
       
       setMessage({ text: response.data.message || 'Backup created successfully!', type: 'success' });
       setBackupName('');
       
       // Refresh backups list
-      const updatedBackups = await axios.get('/api/backups', {
-        auth: {
-          username: 'admin',
-          password: 'karate123'
-        }
-      });
-      setBackups(updatedBackups.data);
+      const updatedBackups = await api.get('/api/backups');
+      setBackups(updatedBackups.data.backups || []);
     } catch (err) {
       console.error('Error creating backup:', err);
       setMessage({ 
@@ -98,18 +76,9 @@ function BackupRestore() {
       setIsRestoring(true);
       setMessage({ text: '', type: '' });
       
-      const response = await axios.post(
+      const response = await api.post(
         `/api/backups/${encodeURIComponent(selectedBackup)}/restore`,
-        { type: 'senior' }, // Default to senior syllabus, can be made configurable
-        {
-          auth: {
-            username: 'admin',
-            password: 'karate123'
-          },
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        }
+        { type: 'senior' } // Default to senior syllabus, can be made configurable
       );
       
       setMessage({ 
@@ -140,12 +109,7 @@ function BackupRestore() {
     try {
       setMessage({ text: '', type: '' });
       
-      const response = await axios.delete(`/api/backups/${encodeURIComponent(filename)}`, {
-        auth: {
-          username: 'admin',
-          password: 'karate123'
-        }
-      });
+      const response = await api.delete(`/api/backups/${encodeURIComponent(filename)}`);
       
       setMessage({ 
         text: response.data.message || 'Backup deleted successfully!', 
@@ -153,13 +117,8 @@ function BackupRestore() {
       });
       
       // Refresh backups list
-      const updatedBackups = await axios.get('/api/backups', {
-        auth: {
-          username: 'admin',
-          password: 'karate123'
-        }
-      });
-      setBackups(updatedBackups.data);
+      const updatedBackups = await api.get('/api/backups');
+      setBackups(updatedBackups.data.backups || []);
       setSelectedBackup(''); // Reset selected backup
     } catch (err) {
       console.error('Error deleting backup:', err);

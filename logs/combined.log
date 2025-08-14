@@ -420,3 +420,131 @@
 {"isAdmin":true,"level":"info","message":"User logged in successfully","service":"pksyllabus","timestamp":"2025-08-09T01:49:11.250Z","username":"admin"}
 {"environment":"development","level":"info","logLevel":"info","message":"PKSyllabus server started successfully","port":3010,"service":"pksyllabus","timestamp":"2025-08-09T02:30:47.094Z"}
 {"error":"users.find is not a function","level":"error","message":"Login error","service":"pksyllabus","timestamp":"2025-08-09T02:31:46.681Z"}
+{"environment":"development","level":"info","logLevel":"info","message":"PKSyllabus server started successfully","port":3010,"service":"pksyllabus","timestamp":"2025-08-09T02:34:00.608Z"}
+{"level":"info","message":"User logged in successfully","service":"pksyllabus","timestamp":"2025-08-09T02:34:14.359Z","username":"admin"}
+{"level":"info","message":"User logged in successfully","service":"pksyllabus","timestamp":"2025-08-09T02:35:55.941Z","username":"admin"}
+{"environment":"development","level":"info","logLevel":"info","message":"PKSyllabus server started successfully","port":3010,"service":"pksyllabus","timestamp":"2025-08-09T07:59:05.500Z"}
+{"ip":"::1","level":"info","message":"Fetching senior syllabus data","service":"pksyllabus","timestamp":"2025-08-09T08:00:27.723Z","userAgent":"curl/8.7.1"}
+{"belts":9,"level":"info","message":"senior syllabus data retrieved successfully","service":"pksyllabus","timestamp":"2025-08-09T08:00:27.724Z"}
+{"ip":"::1","level":"info","message":"Fetching junior syllabus data","service":"pksyllabus","timestamp":"2025-08-09T08:03:14.311Z","userAgent":"curl/8.7.1"}
+{"belts":8,"level":"info","message":"junior syllabus data retrieved successfully","service":"pksyllabus","timestamp":"2025-08-09T08:03:14.311Z"}
+{"environment":"development","level":"info","logLevel":"info","message":"PKSyllabus server started successfully","port":3010,"service":"pksyllabus","timestamp":"2025-08-09T08:15:34.186Z"}
+{"ip":"::1","level":"info","message":"Fetching junior syllabus data","service":"pksyllabus","timestamp":"2025-08-09T08:16:22.311Z","userAgent":"curl/8.7.1"}
+{"belts":8,"level":"info","message":"junior syllabus data retrieved successfully","service":"pksyllabus","timestamp":"2025-08-09T08:16:22.322Z"}
+{"ip":"::1","level":"info","message":"Fetching senior syllabus data","service":"pksyllabus","timestamp":"2025-08-09T08:16:31.910Z","userAgent":"curl/8.7.1"}
+{"belts":9,"level":"info","message":"senior syllabus data retrieved successfully","service":"pksyllabus","timestamp":"2025-08-09T08:16:31.911Z"}
+{"ip":"::1","level":"info","message":"Fetching senior syllabus data","service":"pksyllabus","timestamp":"2025-08-09T08:17:20.617Z","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"}
+{"belts":9,"level":"info","message":"senior syllabus data retrieved successfully","service":"pksyllabus","timestamp":"2025-08-09T08:17:20.617Z"}
+{"ip":"::1","level":"info","message":"Fetching senior syllabus data","service":"pksyllabus","timestamp":"2025-08-09T08:17:20.626Z","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"}
+{"belts":9,"level":"info","message":"senior syllabus data retrieved successfully","service":"pksyllabus","timestamp":"2025-08-09T08:17:20.627Z"}
+{"level":"info","message":"User logged in successfully","service":"pksyllabus","timestamp":"2025-08-09T08:17:39.164Z","username":"admin"}
+{"ip":"::1","level":"info","message":"Fetching senior syllabus data","service":"pksyllabus","timestamp":"2025-08-09T08:22:59.503Z","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"}
+{"belts":9,"level":"info","message":"senior syllabus data retrieved successfully","service":"pksyllabus","timestamp":"2025-08-09T08:22:59.504Z"}
+{"ip":"::1","level":"info","message":"Fetching senior syllabus data","service":"pksyllabus","timestamp":"2025-08-09T08:22:59.510Z","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"}
+{"belts":9,"level":"info","message":"senior syllabus data retrieved successfully","service":"pksyllabus","timestamp":"2025-08-09T08:22:59.510Z"}
+{"ip":"::1","level":"info","message":"Fetching junior syllabus data","service":"pksyllabus","timestamp":"2025-08-09T08:23:01.602Z","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"}
+{"belts":8,"level":"info","message":"junior syllabus data retrieved successfully","service":"pksyllabus","timestamp":"2025-08-09T08:23:01.603Z"}
+{"ip":"::1","level":"info","message":"Fetching junior syllabus data","service":"pksyllabus","timestamp":"2025-08-09T08:23:01.607Z","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"}
+{"belts":8,"level":"info","message":"junior syllabus data retrieved successfully","service":"pksyllabus","timestamp":"2025-08-09T08:23:01.607Z"}
+{"ip":"::1","level":"info","message":"Fetching senior syllabus data","service":"pksyllabus","timestamp":"2025-08-09T08:23:14.584Z","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"}
+{"belts":9,"level":"info","message":"senior syllabus data retrieved successfully","service":"pksyllabus","timestamp":"2025-08-09T08:23:14.585Z"}
+{"ip":"::1","level":"info","message":"Fetching senior syllabus data","service":"pksyllabus","timestamp":"2025-08-09T08:23:14.589Z","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"}
+{"belts":9,"level":"info","message":"senior syllabus data retrieved successfully","service":"pksyllabus","timestamp":"2025-08-09T08:23:14.590Z"}
+{"level":"info","message":"User logged in successfully","service":"pksyllabus","timestamp":"2025-08-09T08:24:41.497Z","username":"admin"}
+{"error":"loadUsers(...).map is not a function","level":"error","message":"Error fetching users","service":"pksyllabus","timestamp":"2025-08-09T08:29:25.873Z"}
+{"error":"loadUsers(...).map is not a function","level":"error","message":"Error fetching users","service":"pksyllabus","timestamp":"2025-08-09T08:29:25.876Z"}
+{"level":"info","message":"User logged in successfully","service":"pksyllabus","timestamp":"2025-08-09T08:30:02.459Z","username":"admin"}
+{"error":"jwt malformed","level":"warn","message":"Invalid JWT token","service":"pksyllabus","timestamp":"2025-08-09T08:30:02.592Z"}
+{"error":"jwt malformed","level":"warn","message":"Invalid JWT token","service":"pksyllabus","timestamp":"2025-08-09T08:30:02.594Z"}
+{"error":"jwt malformed","level":"warn","message":"Invalid JWT token","service":"pksyllabus","timestamp":"2025-08-09T08:34:16.886Z"}
+{"error":"jwt malformed","level":"warn","message":"Invalid JWT token","service":"pksyllabus","timestamp":"2025-08-09T08:34:16.890Z"}
+{"level":"info","message":"User logged in successfully","service":"pksyllabus","timestamp":"2025-08-09T08:34:27.208Z","username":"admin"}
+{"error":"jwt malformed","level":"warn","message":"Invalid JWT token","service":"pksyllabus","timestamp":"2025-08-09T08:34:27.348Z"}
+{"error":"jwt malformed","level":"warn","message":"Invalid JWT token","service":"pksyllabus","timestamp":"2025-08-09T08:34:27.349Z"}
+{"level":"info","message":"User logged in successfully","service":"pksyllabus","timestamp":"2025-08-09T08:37:55.889Z","username":"admin"}
+{"error":"jwt malformed","level":"warn","message":"Invalid JWT token","service":"pksyllabus","timestamp":"2025-08-09T08:38:41.007Z"}
+{"error":"jwt malformed","level":"warn","message":"Invalid JWT token","service":"pksyllabus","timestamp":"2025-08-09T08:38:41.013Z"}
+{"ip":"::1","level":"info","message":"Fetching senior syllabus data","service":"pksyllabus","timestamp":"2025-08-09T08:38:41.016Z","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"}
+{"belts":9,"level":"info","message":"senior syllabus data retrieved successfully","service":"pksyllabus","timestamp":"2025-08-09T08:38:41.021Z"}
+{"error":"loadUsers(...).map is not a function","level":"error","message":"Error fetching users","service":"pksyllabus","timestamp":"2025-08-09T08:38:41.054Z"}
+{"ip":"::1","level":"info","message":"Fetching senior syllabus data","service":"pksyllabus","timestamp":"2025-08-09T08:38:41.056Z","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"}
+{"error":"loadUsers(...).map is not a function","level":"error","message":"Error fetching users","service":"pksyllabus","timestamp":"2025-08-09T08:38:41.057Z"}
+{"belts":9,"level":"info","message":"senior syllabus data retrieved successfully","service":"pksyllabus","timestamp":"2025-08-09T08:38:41.060Z"}
+{"level":"info","message":"User logged in successfully","service":"pksyllabus","timestamp":"2025-08-09T08:39:08.678Z","username":"admin"}
+{"error":"jwt malformed","level":"warn","message":"Invalid JWT token","service":"pksyllabus","timestamp":"2025-08-09T08:39:08.816Z"}
+{"error":"jwt malformed","level":"warn","message":"Invalid JWT token","service":"pksyllabus","timestamp":"2025-08-09T08:39:08.818Z"}
+{"error":"jwt malformed","level":"warn","message":"Invalid JWT token","service":"pksyllabus","timestamp":"2025-08-09T08:39:33.567Z"}
+{"error":"jwt malformed","level":"warn","message":"Invalid JWT token","service":"pksyllabus","timestamp":"2025-08-09T08:39:33.574Z"}
+{"level":"info","message":"User logged in successfully","service":"pksyllabus","timestamp":"2025-08-09T08:39:44.726Z","username":"admin"}
+{"error":"jwt malformed","level":"warn","message":"Invalid JWT token","service":"pksyllabus","timestamp":"2025-08-09T08:39:44.862Z"}
+{"error":"jwt malformed","level":"warn","message":"Invalid JWT token","service":"pksyllabus","timestamp":"2025-08-09T08:39:44.864Z"}
+{"error":"loadUsers(...).map is not a function","level":"error","message":"Error fetching users","service":"pksyllabus","timestamp":"2025-08-09T08:40:42.317Z"}
+{"error":"jwt malformed","level":"warn","message":"Invalid JWT token","service":"pksyllabus","timestamp":"2025-08-09T08:40:42.321Z"}
+{"error":"loadUsers(...).map is not a function","level":"error","message":"Error fetching users","service":"pksyllabus","timestamp":"2025-08-09T08:40:42.326Z"}
+{"ip":"::1","level":"info","message":"Fetching senior syllabus data","service":"pksyllabus","timestamp":"2025-08-09T08:40:42.328Z","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"}
+{"error":"jwt malformed","level":"warn","message":"Invalid JWT token","service":"pksyllabus","timestamp":"2025-08-09T08:40:42.329Z"}
+{"error":"jwt malformed","level":"warn","message":"Invalid JWT token","service":"pksyllabus","timestamp":"2025-08-09T08:40:42.329Z"}
+{"error":"jwt malformed","level":"warn","message":"Invalid JWT token","service":"pksyllabus","timestamp":"2025-08-09T08:40:42.335Z"}
+{"belts":9,"level":"info","message":"senior syllabus data retrieved successfully","service":"pksyllabus","timestamp":"2025-08-09T08:40:42.339Z"}
+{"ip":"::1","level":"info","message":"Fetching senior syllabus data","service":"pksyllabus","timestamp":"2025-08-09T08:40:42.369Z","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"}
+{"belts":9,"level":"info","message":"senior syllabus data retrieved successfully","service":"pksyllabus","timestamp":"2025-08-09T08:40:42.370Z"}
+{"level":"info","message":"User logged in successfully","service":"pksyllabus","timestamp":"2025-08-09T08:43:39.963Z","username":"admin"}
+{"error":"loadUsers(...).map is not a function","level":"error","message":"Error fetching users","service":"pksyllabus","timestamp":"2025-08-09T08:43:40.103Z"}
+{"error":"loadUsers(...).map is not a function","level":"error","message":"Error fetching users","service":"pksyllabus","timestamp":"2025-08-09T08:43:40.107Z"}
+{"error":"loadUsers(...).map is not a function","level":"error","message":"Error fetching users","service":"pksyllabus","timestamp":"2025-08-14T08:16:50.947Z"}
+{"error":"loadUsers(...).map is not a function","level":"error","message":"Error fetching users","service":"pksyllabus","timestamp":"2025-08-14T08:16:50.949Z"}
+{"error":"loadUsers(...).map is not a function","level":"error","message":"Error fetching users","service":"pksyllabus","timestamp":"2025-08-14T08:20:43.151Z"}
+{"error":"loadUsers(...).map is not a function","level":"error","message":"Error fetching users","service":"pksyllabus","timestamp":"2025-08-14T08:20:43.153Z"}
+{"ip":"::1","level":"info","message":"Fetching senior syllabus data","service":"pksyllabus","timestamp":"2025-08-14T08:21:28.926Z","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"}
+{"belts":9,"level":"info","message":"senior syllabus data retrieved successfully","service":"pksyllabus","timestamp":"2025-08-14T08:21:28.926Z"}
+{"ip":"::1","level":"info","message":"Fetching senior syllabus data","service":"pksyllabus","timestamp":"2025-08-14T08:21:28.931Z","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"}
+{"belts":9,"level":"info","message":"senior syllabus data retrieved successfully","service":"pksyllabus","timestamp":"2025-08-14T08:21:28.931Z"}
+{"error":"loadUsers(...).map is not a function","level":"error","message":"Error fetching users","service":"pksyllabus","timestamp":"2025-08-14T08:21:40.179Z"}
+{"error":"loadUsers(...).map is not a function","level":"error","message":"Error fetching users","service":"pksyllabus","timestamp":"2025-08-14T08:21:40.181Z"}
+{"ip":"::1","level":"info","message":"Fetching senior syllabus data","service":"pksyllabus","timestamp":"2025-08-14T08:22:39.616Z","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"}
+{"belts":9,"level":"info","message":"senior syllabus data retrieved successfully","service":"pksyllabus","timestamp":"2025-08-14T08:22:39.617Z"}
+{"ip":"::1","level":"info","message":"Fetching junior syllabus data","service":"pksyllabus","timestamp":"2025-08-14T08:22:41.739Z","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"}
+{"belts":8,"level":"info","message":"junior syllabus data retrieved successfully","service":"pksyllabus","timestamp":"2025-08-14T08:22:41.741Z"}
+{"environment":"development","level":"info","logLevel":"info","message":"PKSyllabus server started successfully","port":3010,"service":"pksyllabus","timestamp":"2025-08-14T08:25:19.321Z"}
+{"ip":"::1","level":"info","message":"Fetching senior syllabus data","service":"pksyllabus","timestamp":"2025-08-14T08:25:33.136Z","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"}
+{"belts":9,"level":"info","message":"senior syllabus data retrieved successfully","service":"pksyllabus","timestamp":"2025-08-14T08:25:33.138Z"}
+{"ip":"::1","level":"info","message":"Fetching senior syllabus data","service":"pksyllabus","timestamp":"2025-08-14T08:25:33.141Z","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"}
+{"belts":9,"level":"info","message":"senior syllabus data retrieved successfully","service":"pksyllabus","timestamp":"2025-08-14T08:25:33.142Z"}
+{"backupPath":"/Users/lloydhird/development/PKSyllabus/backups/Test-syllabus-backup-2025-08-14T08-25-45-843Z.json","level":"info","message":"Backup created","service":"pksyllabus","timestamp":"2025-08-14T08:25:45.845Z","user":"admin"}
+{"backupPath":"/Users/lloydhird/development/PKSyllabus/backups/NewTest-syllabus-backup-2025-08-14T08-25-57-590Z.json","level":"info","message":"Backup created","service":"pksyllabus","timestamp":"2025-08-14T08:25:57.591Z","user":"admin"}
+{"ip":"::1","level":"info","message":"Fetching senior syllabus data","service":"pksyllabus","timestamp":"2025-08-14T08:26:04.907Z","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"}
+{"belts":9,"level":"info","message":"senior syllabus data retrieved successfully","service":"pksyllabus","timestamp":"2025-08-14T08:26:04.909Z"}
+{"ip":"::1","level":"info","message":"Fetching senior syllabus data","service":"pksyllabus","timestamp":"2025-08-14T08:26:04.921Z","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"}
+{"belts":9,"level":"info","message":"senior syllabus data retrieved successfully","service":"pksyllabus","timestamp":"2025-08-14T08:26:04.922Z"}
+{"ip":"::1","level":"info","message":"Fetching senior syllabus data","service":"pksyllabus","timestamp":"2025-08-14T08:26:36.398Z","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"}
+{"belts":9,"level":"info","message":"senior syllabus data retrieved successfully","service":"pksyllabus","timestamp":"2025-08-14T08:26:36.401Z"}
+{"ip":"::1","level":"info","message":"Fetching senior syllabus data","service":"pksyllabus","timestamp":"2025-08-14T08:26:36.410Z","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"}
+{"belts":9,"level":"info","message":"senior syllabus data retrieved successfully","service":"pksyllabus","timestamp":"2025-08-14T08:26:36.411Z"}
+{"ip":"::1","level":"info","message":"Fetching junior syllabus data","service":"pksyllabus","timestamp":"2025-08-14T08:26:40.473Z","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"}
+{"belts":8,"level":"info","message":"junior syllabus data retrieved successfully","service":"pksyllabus","timestamp":"2025-08-14T08:26:40.474Z"}
+{"ip":"::1","level":"info","message":"Fetching junior syllabus data","service":"pksyllabus","timestamp":"2025-08-14T08:26:40.480Z","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"}
+{"belts":8,"level":"info","message":"junior syllabus data retrieved successfully","service":"pksyllabus","timestamp":"2025-08-14T08:26:40.482Z"}
+{"ip":"::1","level":"info","message":"Fetching senior syllabus data","service":"pksyllabus","timestamp":"2025-08-14T08:26:41.681Z","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"}
+{"belts":9,"level":"info","message":"senior syllabus data retrieved successfully","service":"pksyllabus","timestamp":"2025-08-14T08:26:41.683Z"}
+{"ip":"::1","level":"info","message":"Fetching senior syllabus data","service":"pksyllabus","timestamp":"2025-08-14T08:26:41.690Z","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"}
+{"belts":9,"level":"info","message":"senior syllabus data retrieved successfully","service":"pksyllabus","timestamp":"2025-08-14T08:26:41.692Z"}
+{"ip":"::1","level":"info","message":"Fetching senior syllabus data","service":"pksyllabus","timestamp":"2025-08-14T08:29:35.264Z","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"}
+{"belts":9,"level":"info","message":"senior syllabus data retrieved successfully","service":"pksyllabus","timestamp":"2025-08-14T08:29:35.264Z"}
+{"ip":"::1","level":"info","message":"Fetching senior syllabus data","service":"pksyllabus","timestamp":"2025-08-14T08:29:35.267Z","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"}
+{"belts":9,"level":"info","message":"senior syllabus data retrieved successfully","service":"pksyllabus","timestamp":"2025-08-14T08:29:35.267Z"}
+{"ip":"::1","level":"info","message":"Fetching senior syllabus data","service":"pksyllabus","timestamp":"2025-08-14T08:30:34.351Z","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"}
+{"belts":9,"level":"info","message":"senior syllabus data retrieved successfully","service":"pksyllabus","timestamp":"2025-08-14T08:30:34.352Z"}
+{"ip":"::1","level":"info","message":"Fetching senior syllabus data","service":"pksyllabus","timestamp":"2025-08-14T08:30:34.355Z","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"}
+{"belts":9,"level":"info","message":"senior syllabus data retrieved successfully","service":"pksyllabus","timestamp":"2025-08-14T08:30:34.356Z"}
+{"ip":"::1","level":"info","message":"Fetching senior syllabus data","service":"pksyllabus","timestamp":"2025-08-14T08:32:37.349Z","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"}
+{"belts":9,"level":"info","message":"senior syllabus data retrieved successfully","service":"pksyllabus","timestamp":"2025-08-14T08:32:37.350Z"}
+{"ip":"::1","level":"info","message":"Fetching senior syllabus data","service":"pksyllabus","timestamp":"2025-08-14T08:32:37.354Z","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"}
+{"belts":9,"level":"info","message":"senior syllabus data retrieved successfully","service":"pksyllabus","timestamp":"2025-08-14T08:32:37.355Z"}
+{"ip":"::1","level":"info","message":"Fetching senior syllabus data","service":"pksyllabus","timestamp":"2025-08-14T08:33:00.777Z","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"}
+{"belts":9,"level":"info","message":"senior syllabus data retrieved successfully","service":"pksyllabus","timestamp":"2025-08-14T08:33:00.777Z"}
+{"ip":"::1","level":"info","message":"Fetching senior syllabus data","service":"pksyllabus","timestamp":"2025-08-14T08:33:00.780Z","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"}
+{"belts":9,"level":"info","message":"senior syllabus data retrieved successfully","service":"pksyllabus","timestamp":"2025-08-14T08:33:00.782Z"}
+{"ip":"::1","level":"info","message":"Fetching senior syllabus data","service":"pksyllabus","timestamp":"2025-08-14T08:38:06.080Z","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"}
+{"belts":9,"level":"info","message":"senior syllabus data retrieved successfully","service":"pksyllabus","timestamp":"2025-08-14T08:38:06.081Z"}
+{"ip":"::1","level":"info","message":"Fetching senior syllabus data","service":"pksyllabus","timestamp":"2025-08-14T08:38:06.085Z","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"}
+{"belts":9,"level":"info","message":"senior syllabus data retrieved successfully","service":"pksyllabus","timestamp":"2025-08-14T08:38:06.086Z"}

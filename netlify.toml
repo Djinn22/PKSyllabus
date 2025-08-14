@@ -1,0 +1,18 @@
+[build]
+  command = "npm run build --prefix client"
+  publish = "client/build"
+
+# Proxy API calls to your backend service
+# IMPORTANT: Replace the URL below with your real backend URL (https://your-backend.example.com)
+# If you later deploy the backend under a different domain, update this and redeploy.
+[[redirects]]
+  from = "/api/*"
+  to = "https://your-backend.example.com/:splat"
+  status = 200
+  force = true
+
+# Single Page App fallback so client routes work (e.g., /admin, /junior, /senior)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

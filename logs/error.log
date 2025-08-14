@@ -1,1 +1,15 @@
 {"error":"users.find is not a function","level":"error","message":"Login error","service":"pksyllabus","timestamp":"2025-08-09T02:31:46.681Z"}
+{"error":"loadUsers(...).map is not a function","level":"error","message":"Error fetching users","service":"pksyllabus","timestamp":"2025-08-09T08:29:25.873Z"}
+{"error":"loadUsers(...).map is not a function","level":"error","message":"Error fetching users","service":"pksyllabus","timestamp":"2025-08-09T08:29:25.876Z"}
+{"error":"loadUsers(...).map is not a function","level":"error","message":"Error fetching users","service":"pksyllabus","timestamp":"2025-08-09T08:38:41.054Z"}
+{"error":"loadUsers(...).map is not a function","level":"error","message":"Error fetching users","service":"pksyllabus","timestamp":"2025-08-09T08:38:41.057Z"}
+{"error":"loadUsers(...).map is not a function","level":"error","message":"Error fetching users","service":"pksyllabus","timestamp":"2025-08-09T08:40:42.317Z"}
+{"error":"loadUsers(...).map is not a function","level":"error","message":"Error fetching users","service":"pksyllabus","timestamp":"2025-08-09T08:40:42.326Z"}
+{"error":"loadUsers(...).map is not a function","level":"error","message":"Error fetching users","service":"pksyllabus","timestamp":"2025-08-09T08:43:40.103Z"}
+{"error":"loadUsers(...).map is not a function","level":"error","message":"Error fetching users","service":"pksyllabus","timestamp":"2025-08-09T08:43:40.107Z"}
+{"error":"loadUsers(...).map is not a function","level":"error","message":"Error fetching users","service":"pksyllabus","timestamp":"2025-08-14T08:16:50.947Z"}
+{"error":"loadUsers(...).map is not a function","level":"error","message":"Error fetching users","service":"pksyllabus","timestamp":"2025-08-14T08:16:50.949Z"}
+{"error":"loadUsers(...).map is not a function","level":"error","message":"Error fetching users","service":"pksyllabus","timestamp":"2025-08-14T08:20:43.151Z"}
+{"error":"loadUsers(...).map is not a function","level":"error","message":"Error fetching users","service":"pksyllabus","timestamp":"2025-08-14T08:20:43.153Z"}
+{"error":"loadUsers(...).map is not a function","level":"error","message":"Error fetching users","service":"pksyllabus","timestamp":"2025-08-14T08:21:40.179Z"}
+{"error":"loadUsers(...).map is not a function","level":"error","message":"Error fetching users","service":"pksyllabus","timestamp":"2025-08-14T08:21:40.181Z"}

@@ -11,7 +11,14 @@ const SimpleNav = ({ isAuthenticated, isAdmin }) => {
     navigate('/login');
   };
   return (
-    <div className="nav-container">
+    <div className="nav-container" style={{ position: 'relative' }}>
+      {/* Subtle top-right Admin link to force login */}
+      <div style={{ position: 'absolute', top: 8, right: 12 }}>
+        <NavLink to="/login" className={({ isActive }) => `admin-link${isActive ? ' active' : ''}`}>
+          Admin
+        </NavLink>
+      </div>
+
       <div className="nav-buttons">
         <NavLink 
           to="/senior"
@@ -25,29 +32,14 @@ const SimpleNav = ({ isAuthenticated, isAdmin }) => {
         >
           Junior Syllabus
         </NavLink>
-        
-        {isAuthenticated ? (
-          <>
-            <NavLink 
-              to="/admin"
-              className={({ isActive }) => `nav-button admin${isActive ? ' active' : ''}`}
-            >
-              Admin
-            </NavLink>
-            <button 
-              onClick={handleLogout}
-              className="nav-button logout"
-            >
-              Logout
-            </button>
-          </>
-        ) : (
-          <NavLink 
-            to="/login" 
-            className={({ isActive }) => `nav-button login${isActive ? ' active' : ''}`}
+
+        {isAuthenticated && (
+          <button 
+            onClick={handleLogout}
+            className="nav-button logout"
           >
-            Admin Login
-          </NavLink>
+            Logout
+          </button>
         )}
       </div>
     </div>

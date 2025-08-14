@@ -35,8 +35,14 @@ const Navigation = () => {
           backgroundColor: '#2c3e50',
           padding: '1rem',
           margin: '1rem 0',
-          borderRadius: '8px'
+          borderRadius: '8px',
+          position: 'relative'
         }}>
+          <div className="nav-top-right">
+            <NavLink to="/login" className={({ isActive }) => isActive ? 'admin-link active' : 'admin-link'}>
+              Admin
+            </NavLink>
+          </div>
           <h3 style={{ color: 'white', margin: '0 0 1rem 0', textAlign: 'center' }}>Syllabus Navigation</h3>
           <ul style={{
             display: 'flex',

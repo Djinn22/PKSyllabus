@@ -3,7 +3,7 @@ import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 const ProtectedRoute = ({ children, requireAdmin = false }) => {
-  const { user, loading } = useAuth();
+  const { user, loading, shouldReauth } = useAuth();
   const location = useLocation();
 
   if (loading) {
@@ -13,6 +13,11 @@ const ProtectedRoute = ({ children, requireAdmin = false }) => {
   if (!user) {
     // Redirect to login if not authenticated
     return <Navigate to="/login" state={{ from: location }} replace />;
+  }
+
+  // Enforce periodic re-authentication
+  if (shouldReauth()) {
+    return <Navigate to="/login" state={{ from: location, reason: 'reauth' }} replace />;
   }
 
   if (requireAdmin && !user.isAdmin) {
